@@ -219,13 +219,23 @@
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0,0,0,0.8); z-index: 2000; justify-content: center; align-items: center;
         }
-        .modal-content { background: white; padding: 3vh; border-radius: 20px; width: 40vw; text-align: center; transition: background-color 0.3s;}
+        
+        .modal-content { 
+            background: white; 
+            padding: 3vh; 
+            border-radius: 20px; 
+            width: 40vw; 
+            max-height: 85vh; 
+            overflow-y: auto; 
+            text-align: center; 
+            transition: background-color 0.3s;
+        }
+        
         .team-award-btn {
             display: block; width: 100%; margin: 1vh 0; padding: 1.5vh; font-size: 2.2vh;
             background-color: #00acc1; color: white; border: none; border-radius: 10px;
             font-weight: bold; cursor: pointer;
         }
-        .footer-reset { margin-top: auto; font-size: 1.2vh; color: #666; cursor: pointer; text-decoration: underline; padding-bottom: 1vh;}
 
         /* 📱 Mobile Mode Overrides */
         body.mobile-mode {
@@ -239,7 +249,8 @@
             min-height: 100vh;
         }
         body.mobile-mode #left-panel {
-            min-height: 100vh;
+            min-height: auto;
+            height: auto;
             border-right: none !important;
             border-bottom: 4px dashed #b2ebf2;
             padding: 1vh 1vw;
@@ -248,8 +259,8 @@
             width: 100%;
             border-left: none !important;
             height: auto;
-            min-height: 80vh;
-            display: flex !important; /* Force panel below board */
+            min-height: 50vh;
+            display: flex !important;
         }
         body.mobile-mode .toggle-panel-btn {
             display: none !important;
@@ -262,7 +273,7 @@
             min-height: 12vh;
         }
         body.mobile-mode .modal-content {
-            width: 85vw;
+            width: 90vw;
         }
 
         /* 🌙 Dark Mode Overrides */
@@ -285,6 +296,8 @@
             background-color: #2d2d2d;
             border-color: #004d40;
         }
+        body.dark-mode .menu-box,
+        body.dark-mode .modal-content,
         body.dark-mode .sc-name,
         body.dark-mode .item-name,
         body.dark-mode #vocab-container,
@@ -414,13 +427,15 @@
             <button class="btn toggle-panel-btn" id="toggle-panel-btn" onclick="toggleRightPanel()" title="Toggle Right Panel">🙈</button>
             
             <h1 id="game-title">🐾 Guess What Animal! 🐾</h1>
+            
             <div class="top-info-bar">
-                <div style="display: flex; flex-direction: column; align-items: center; gap: 1vh; width: 9vw;">
+                <div style="display: flex; flex-direction: column; align-items: center; gap: 1vh; min-width: 100px;">
                     <div class="info-box guess-box">
                         <div class="label-text">🎯 Guesses</div>
                         <div class="guess-text" id="guess-count">0</div>
                     </div>
                     <button class="btn undo-btn" id="left-undo-btn" onclick="undoLastAction()" style="display:none; font-size:1.6vh; padding:0.5vh 1vw; width: 100%;">↩️ Undo</button>
+                    <button class="btn" id="left-shuffle-btn" onclick="renderGrid()" style="display:none; font-size:1.6vh; padding:0.5vh 1vw; width: 100%;">🔀 Shuffle</button>
                 </div>
                 <div id="team-leaderboard-container"><div class="leaderboard" id="leaderboard"></div></div>
             </div>
@@ -563,6 +578,10 @@
             });
             if (isMobileMode) document.body.classList.add('mobile-mode');
             else document.body.classList.remove('mobile-mode');
+            
+            if (document.getElementById('game-wrapper').style.display === 'flex') {
+                applyResponsiveLayout();
+            }
         }
 
         function toggleThemeMode() {
@@ -697,7 +716,6 @@
             return value.replace(/,/g, ' / '); 
         }
 
-        // Smart Grammar Engine
         function getQuestionText(key, val, category) {
             const emojiToText = {"🥩": "meat-eater", "🌿": "plant-eater", "🖐️": "use hands", "🍴": "use fork/spoon", "🍬": "sweet", "🧂": "salty", "❄️": "cold", "♨️": "hot", "👤": "individual sport", "👥": "team sport", "🏠": "indoor", "🌳": "outdoor", "🚫": "no ball/puck", "⚽": "uses ball/puck"};
             
@@ -745,7 +763,9 @@
         function showScreen(screenId) {
             document.querySelectorAll('.full-screen-menu').forEach(el => el.style.display = 'none');
             document.getElementById('game-wrapper').style.display = 'none';
-            if(screenId) document.getElementById(screenId).style.display = 'flex';
+            if(screenId) {
+                document.getElementById(screenId).style.display = 'flex';
+            }
         }
 
         function setTempTeams(num) { tempTeamCount = num; showScreen('student-setup-menu'); }
@@ -762,37 +782,56 @@
 
         function selectMode(mode) { gameMode = mode; launchGame(); }
 
+        function applyResponsiveLayout() {
+            const rp = document.getElementById('right-panel'), lp = document.getElementById('left-panel');
+            const leftUndo = document.getElementById('left-undo-btn');
+            const leftShuffle = document.getElementById('left-shuffle-btn');
+            const rightActionBtns = document.getElementById('right-action-btns');
+            
+            if (isMobileMode) {
+                rp.style.display = 'flex';
+                document.getElementById('toggle-panel-btn').style.display = 'none';
+                lp.style.borderRight = 'none'; 
+                
+                if (gameMode !== 'team') {
+                    leftUndo.style.display = 'block';
+                    leftShuffle.style.display = 'block';
+                    if (rightActionBtns) rightActionBtns.style.display = 'none';
+                }
+            } else {
+                rp.style.display = 'flex';
+                lp.style.borderRight = '4px dashed #b2ebf2';
+                
+                if (gameMode !== 'team') {
+                    document.getElementById('toggle-panel-btn').style.display = 'flex';
+                    leftUndo.style.display = 'none';
+                    leftShuffle.style.display = 'none';
+                    if (rightActionBtns) rightActionBtns.style.display = 'flex';
+                } else {
+                    document.getElementById('toggle-panel-btn').style.display = 'none';
+                }
+            }
+        }
+
         function launchGame() {
             showScreen(null); document.getElementById('game-wrapper').style.display = 'flex';
             
-            const rp = document.getElementById('right-panel'), lp = document.getElementById('left-panel');
             const teamBoard = document.getElementById('team-leaderboard-container'), teamDice = document.getElementById('team-dice-container');
             const p2Card = document.getElementById('twop-secret-card-container'), p2Board = document.getElementById('twop-scoreboard-container');
             const timerUi = document.getElementById('timer-ui'), resetBtn = document.getElementById('classroom-reset-btn'), sidebarContent = document.getElementById('sidebar-content-container');
             const leftUndo = document.getElementById('left-undo-btn');
-            const rightActionBtns = document.getElementById('right-action-btns');
+            const leftShuffle = document.getElementById('left-shuffle-btn');
+            
             const exampleQList = document.getElementById('example-questions-list');
             const exampleQHeader = document.getElementById('example-q-header');
 
-            lp.style.borderRight = 'none'; rp.style.display = 'none';
             teamBoard.style.display = 'none'; teamDice.style.display = 'none';
             p2Card.style.display = 'none'; p2Board.style.display = 'none';
-            leftUndo.style.display = 'none';
+            leftUndo.style.display = 'none'; leftShuffle.style.display = 'none';
             resetBtn.style.display = 'block'; 
-            
-            if(rightActionBtns) rightActionBtns.style.display = 'none';
             isRightPanelVisible = true;
             document.getElementById('toggle-panel-btn').innerText = '🙈';
 
-            // Override panel display if Mobile
-            if(isMobileMode) {
-                rp.style.display = 'flex';
-                document.getElementById('toggle-panel-btn').style.display = 'none';
-            } else {
-                rp.style.display = 'flex';
-            }
-
-            // P1/P2 Rows
             const p1Label = document.getElementById('p1-label');
             const p2Label = document.getElementById('p2-label');
             const p1Controls = document.getElementById('p1-controls');
@@ -800,21 +839,16 @@
             const p2Row = document.getElementById('p2-score-row');
 
             if (gameMode === 'team') {
-                if(!isMobileMode) lp.style.borderRight = '4px dashed #b2ebf2'; 
                 teamBoard.style.display = 'flex'; teamDice.style.display = 'flex';
                 sidebarContent.style.display = 'block';
                 leftUndo.style.display = 'block'; 
                 exampleQList.style.display = 'block';
                 exampleQHeader.style.display = 'block';
                 resetBtn.innerText = '🗑️ Reset Scores';
-                if(!isMobileMode) document.getElementById('toggle-panel-btn').style.display = 'none';
                 timerUi.style.display = useTimer ? 'flex' : 'none';
                 updateTeamLeaderboard();
             } else {
-                if(!isMobileMode) lp.style.borderRight = '4px dashed #b2ebf2'; 
                 p2Card.style.display = 'flex'; 
-                if(!isMobileMode) document.getElementById('toggle-panel-btn').style.display = 'flex';
-                if(rightActionBtns) rightActionBtns.style.display = 'flex';
                 sidebarContent.style.display = (gameMode === '2p-student') ? 'block' : 'none';
                 exampleQList.style.display = 'none';
                 exampleQHeader.style.display = 'none';
@@ -838,6 +872,8 @@
                     resetBtn.innerText = '🗑️ Reset Score';
                 }
             }
+            
+            applyResponsiveLayout();
             updateSidebarContent();
             renderGrid();
         }
@@ -1087,6 +1123,7 @@
                         closeVictoryModal(); 
                         updateTeamLeaderboard(); 
                         resetBoard();
+                        renderGrid();
                     };
                     list.appendChild(b);
                 });
