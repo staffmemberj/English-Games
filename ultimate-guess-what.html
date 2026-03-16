@@ -64,20 +64,14 @@
             height: 100%; box-sizing: border-box; transition: all 0.3s ease;
         }
         
-        /* Right Panel Refactored for Top-Alignment */
         #right-panel {
             flex: 1.2; display: flex; flex-direction: column; align-items: center; 
             padding: 1.5vh 1vw; background-color: #e0f2f1; height: 100%; box-sizing: border-box;
-            border-left: 4px dashed #b2ebf2; display: none; 
+            border-left: 4px dashed #b2ebf2; display: none; overflow-y: auto;
         }
 
-        /* Wrapper for everything above the reset button */
         #right-panel-top-content {
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            overflow-y: auto; /* Scans internally if content exceeds height */
+            width: 100%; display: flex; flex-direction: column; align-items: center;
             flex-grow: 1;
         }
 
@@ -131,7 +125,7 @@
             width: 90%; box-sizing: border-box; margin-bottom: 1vh;
         }
 
-        .reset-scores-btn { background-color: #f44336; font-size: 1.8vh; padding: 1vh; margin-top: 1vh; flex-shrink: 0; }
+        .reset-scores-btn { background-color: #f44336; font-size: 1.8vh; padding: 1vh; margin-top: auto; flex-shrink: 0; }
         .reset-scores-btn:hover { background-color: #d32f2f; transform: scale(1.05); }
         
         @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.03); } 100% { transform: scale(1); } }
@@ -180,7 +174,6 @@
             justify-content: center; padding: 0; margin: 0; flex-shrink: 0; border-radius: 15px;
         }
 
-        /* Sidebar content aligned to top */
         #sidebar-content-container {
             background: white; border: 0.4vh solid #00acc1; border-radius: 15px;
             padding: 1.2vh 1.5vw; margin-top: 0.5vh; text-align: left; box-shadow: 0 4px 8px rgba(0,0,0,0.1);
@@ -369,7 +362,6 @@
                     </div>
                 </div>
             </div>
-
             <button class="btn reset-scores-btn" id="classroom-reset-btn" onclick="triggerResetScores()">🗑️ Reset Scores</button>
         </div>
     </div>
@@ -387,109 +379,106 @@
                 title: "🐾 Guess What Animal! 🐾",
                 traits: [ { key: "colorName", type: "color" }, { key: "legs", type: "text" }, { key: "diet", type: "text" } ],
                 items: [
-                    { name: "Lion", emoji: "🦁", colorStyle: "background-color: gold;", colorName: "Gold", legs: 4, diet: "🥩" },
-                    { name: "Sloth", emoji: "🦥", colorStyle: "background-color: #8B4513;", colorName: "Brown", legs: 2, diet: "🌿" },
-                    { name: "Shark", emoji: "🦈", colorStyle: "background-color: gray;", colorName: "Grey", legs: 0, diet: "🥩" },
-                    { name: "Owl", emoji: "🦉", colorStyle: "background-color: #8B4513;", colorName: "Brown", legs: 2, diet: "🥩" },
-                    { name: "Elephant", emoji: "🐘", colorStyle: "background-color: gray;", colorName: "Grey", legs: 4, diet: "🌿" },
-                    { name: "Cow", emoji: "🐄", colorStyle: "background: radial-gradient(circle, black 30%, white 30%);", colorName: "Spotted,Black & White", legs: 4, diet: "🌿" },
-                    { name: "Gorilla", emoji: "🦍", colorStyle: "background-color: #333;", colorName: "Black", legs: 2, diet: "🌿" },
-                    { name: "Hippo", emoji: "🦛", colorStyle: "background-color: gray;", colorName: "Grey", legs: 4, diet: "🌿" },
-                    { name: "Turtle", emoji: "🐢", colorStyle: "background-color: #4CAF50;", colorName: "Green", legs: 4, diet: "🌿" },
-                    { name: "Camel", emoji: "🐪", colorStyle: "background-color: #D2B48C;", colorName: "Tan", legs: 4, diet: "🌿" },
-                    { name: "Rhino", emoji: "🦏", colorStyle: "background-color: gray;", colorName: "Grey", legs: 4, diet: "🌿" },
-                    { name: "Sheep", emoji: "🐑", colorStyle: "background-color: white;", colorName: "White", legs: 4, diet: "🌿" },
-                    { name: "Horse", emoji: "🐎", colorStyle: "background-color: #8B4513;", colorName: "Brown", legs: 4, diet: "🌿" },
-                    { name: "Deer", emoji: "🦌", colorStyle: "background-color: #8B4513;", colorName: "Brown", legs: 4, diet: "🌿" },
-                    { name: "Rabbit", emoji: "🐇", colorStyle: "background-color: white;", colorName: "White", legs: 4, diet: "🌿" },
-                    { name: "Otter", emoji: "🦦", colorStyle: "background-color: #8B4513;", colorName: "Brown", legs: 4, diet: "🥩" }, 
-                    { name: "Panda", emoji: "🐼", colorStyle: "background: linear-gradient(90deg, black 50%, white 50%);", colorName: "Black & White", legs: 4, diet: "🌿" },
-                    { name: "Zebra", emoji: "🦓", colorStyle: "background: repeating-linear-gradient(90deg, black, black 5px, white 5px, white 10px);", colorName: "Striped,Black & White", legs: 4, diet: "🌿" },
-                    { name: "Giraffe", emoji: "🦒", colorStyle: "background: radial-gradient(circle, #8B4513 40%, #ffd700 40%);", colorName: "Spotted,Yellow & Brown", legs: 4, diet: "🌿" },
-                    { name: "Pig", emoji: "🐷", colorStyle: "background-color: pink;", colorName: "Pink", legs: 4, diet: "🌿" }
+                    { name: "lion", emoji: "🦁", colorStyle: "background-color: gold;", colorName: "gold", legs: 4, diet: "🥩" },
+                    { name: "sloth", emoji: "🦥", colorStyle: "background-color: #8B4513;", colorName: "brown", legs: 2, diet: "🌿" },
+                    { name: "shark", emoji: "🦈", colorStyle: "background-color: gray;", colorName: "grey", legs: 0, diet: "🥩" },
+                    { name: "owl", emoji: "🦉", colorStyle: "background-color: #8B4513;", colorName: "brown", legs: 2, diet: "🥩" },
+                    { name: "elephant", emoji: "🐘", colorStyle: "background-color: gray;", colorName: "grey", legs: 4, diet: "🌿" },
+                    { name: "cow", emoji: "🐄", colorStyle: "background: radial-gradient(circle, black 30%, white 30%);", colorName: "spotted,black & white", legs: 4, diet: "🌿" },
+                    { name: "gorilla", emoji: "🦍", colorStyle: "background-color: #333;", colorName: "black", legs: 2, diet: "🌿" },
+                    { name: "hippo", emoji: "🦛", colorStyle: "background-color: gray;", colorName: "grey", legs: 4, diet: "🌿" },
+                    { name: "turtle", emoji: "🐢", colorStyle: "background-color: #4CAF50;", colorName: "green", legs: 4, diet: "🌿" },
+                    { name: "camel", emoji: "🐪", colorStyle: "background-color: #D2B48C;", colorName: "tan", legs: 4, diet: "🌿" },
+                    { name: "rhino", emoji: "🦏", colorStyle: "background-color: gray;", colorName: "grey", legs: 4, diet: "🌿" },
+                    { name: "sheep", emoji: "🐑", colorStyle: "background-color: white;", colorName: "white", legs: 4, diet: "🌿" },
+                    { name: "horse", emoji: "🐎", colorStyle: "background-color: #8B4513;", colorName: "brown", legs: 4, diet: "🌿" },
+                    { name: "deer", emoji: "🦌", colorStyle: "background-color: #8B4513;", colorName: "brown", legs: 4, diet: "🌿" },
+                    { name: "rabbit", emoji: "🐇", colorStyle: "background-color: white;", colorName: "white", legs: 4, diet: "🌿" },
+                    { name: "otter", emoji: "🦦", colorStyle: "background-color: #8B4513;", colorName: "brown", legs: 4, diet: "🥩" }, 
+                    { name: "panda", emoji: "🐼", colorStyle: "background: linear-gradient(90deg, black 50%, white 50%);", colorName: "black & white", legs: 4, diet: "🌿" },
+                    { name: "zebra", emoji: "🦓", colorStyle: "background: repeating-linear-gradient(90deg, black, black 5px, white 5px, white 10px);", colorName: "striped,black & white", legs: 4, diet: "🌿" },
+                    { name: "giraffe", emoji: "🦒", colorStyle: "background: radial-gradient(circle, #8B4513 40%, #ffd700 40%);", colorName: "spotted,yellow & brown", legs: 4, diet: "🌿" },
+                    { name: "pig", emoji: "🐷", colorStyle: "background-color: pink;", colorName: "pink", legs: 4, diet: "🌿" }
                 ],
                 examples: ["Is it brown?", "Does it have spots?", "Does it have 4 legs?", "Is it a plant-eater?"],
                 vocab: [
-                    { title: "Colors/Patterns", items: ["Gold", "Brown", "Grey", "Black", "Green", "Tan", "White", "Pink", "Black & White", "Spotted", "Striped", "Yellow & Brown"] },
-                    { title: "Diet", items: ["Meat-eater", "Plant-eater"] }
+                    { title: "colors/patterns", items: ["gold", "brown", "grey", "black", "green", "tan", "white", "pink", "black & white", "spotted", "striped", "yellow & brown"] },
+                    { title: "diet", items: ["meat-eater 🥩", "plant-eater 🌿"] }
                 ]
             },
             food: {
                 title: "🍕 Guess What Food! 🍕",
                 traits: [ { key: "style", type: "text" }, { key: "taste", type: "text" }, { key: "temp", type: "text" } ],
                 items: [
-                    { name: "Apple", emoji: "🍎", style: "🖐️", taste: "🍬", temp: "❄️" },
-                    { name: "Banana", emoji: "🍌", style: "🖐️", taste: "🍬", temp: "❄️" },
-                    { name: "Pizza", emoji: "🍕", style: "🖐️", taste: "🧂", temp: "♨️" },
-                    { name: "Ice Cream", emoji: "🍦", style: "🍴", taste: "🍬", temp: "❄️" },
-                    { name: "Burger", emoji: "🍔", style: "🖐️", taste: "🧂", temp: "♨️" },
-                    { name: "Salad", emoji: "🥗", style: "🍴", taste: "🧂", temp: "❄️" },
-                    { name: "Soup", emoji: "🥣", style: "🍴", taste: "🧂", temp: "♨️" },
-                    { name: "Bread", emoji: "🍞", style: "🖐️", taste: "🧂", temp: "❄️" },
-                    { name: "Sandwich", emoji: "🥪", style: "🖐️", taste: "🧂", temp: "❄️" },
-                    { name: "Egg", emoji: "🥚", style: "🖐️", taste: "🧂", temp: "❄️" },
-                    { name: "Pancakes", emoji: "🥞", style: "🍴", taste: "🍬", temp: "♨️" },
-                    { name: "Carrot", emoji: "🥕", style: "🖐️", taste: "🧂", temp: "❄️" },
-                    { name: "Donut", emoji: "🍩", style: "🖐️", taste: "🍬", temp: "❄️" },
-                    { name: "Chips", emoji: "🥔", style: "🖐️", taste: "🧂", temp: "❄️" },
-                    { name: "Cheese", emoji: "🧀", style: "🖐️", taste: "🧂", temp: "❄️" },
-                    { name: "Pear", emoji: "🍐", style: "🖐️", taste: "🍬", temp: "❄️" },
-                    { name: "Grapes", emoji: "🍇", style: "🖐️", taste: "🍬", temp: "❄️" },
-                    { name: "Pretzel", emoji: "🥨", style: "🖐️", taste: "🧂", temp: "❄️" },
-                    { name: "Hot Dog", emoji: "🌭", style: "🖐️", taste: "🧂", temp: "♨️" },
-                    { name: "Corn", emoji: "🌽", style: "🖐️", taste: "🍬", temp: "♨️" }
+                    { name: "apple", emoji: "🍎", style: "🖐️", taste: "🍬", temp: "❄️" },
+                    { name: "banana", emoji: "🍌", style: "🖐️", taste: "🍬", temp: "❄️" },
+                    { name: "pizza", emoji: "🍕", style: "🖐️", taste: "🧂", temp: "♨️" },
+                    { name: "ice cream", emoji: "🍦", style: "🍴", taste: "🍬", temp: "❄️" },
+                    { name: "burger", emoji: "🍔", style: "🖐️", taste: "🧂", temp: "♨️" },
+                    { name: "salad", emoji: "🥗", style: "🍴", taste: "🧂", temp: "❄️" },
+                    { name: "soup", emoji: "🥣", style: "🍴", taste: "🧂", temp: "♨️" },
+                    { name: "bread", emoji: "🍞", style: "🖐️", taste: "🧂", temp: "❄️" },
+                    { name: "sandwich", emoji: "🥪", style: "🖐️", taste: "🧂", temp: "❄️" },
+                    { name: "egg", emoji: "🥚", style: "🖐️", taste: "🧂", temp: "❄️" },
+                    { name: "pancakes", emoji: "🥞", style: "🍴", taste: "🍬", temp: "♨️" },
+                    { name: "carrot", emoji: "🥕", style: "🖐️", taste: "🧂", temp: "❄️" },
+                    { name: "donut", emoji: "🍩", style: "🖐️", taste: "🍬", temp: "❄️" },
+                    { name: "chips", emoji: "🥔", style: "🖐️", taste: "🧂", temp: "❄️" },
+                    { name: "cheese", emoji: "🧀", style: "🖐️", taste: "🧂", temp: "❄️" },
+                    { name: "pear", emoji: "🍐", style: "🖐️", taste: "🍬", temp: "❄️" },
+                    { name: "grapes", emoji: "🍇", style: "🖐️", taste: "🍬", temp: "❄️" },
+                    { name: "pretzel", emoji: "🥨", style: "🖐️", taste: "🧂", temp: "❄️" },
+                    { name: "hot dog", emoji: "🌭", style: "🖐️", taste: "🧂", temp: "♨️" },
+                    { name: "corn", emoji: "🌽", style: "🖐️", taste: "🍬", temp: "♨️" }
                 ],
                 examples: ["Do you use hands to eat it?", "Is it sweet?", "Is it salty?", "Is it hot?"],
                 vocab: [
-                    { title: "Style", items: ["Use hands", "Use fork/spoon"] },
-                    { title: "Taste", items: ["Sweet", "Salty"] },
-                    { title: "Temperature", items: ["Hot", "Cold"] }
+                    { title: "style", items: ["use hands 🖐️", "use fork/spoon 🍴"] },
+                    { title: "taste", items: ["sweet 🍬", "salty 🧂"] },
+                    { title: "temperature", items: ["hot ♨️", "cold ❄️"] }
                 ]
             },
             sports: {
                 title: "⚽ Guess What Sport! ⚽",
                 traits: [ { key: "teamType", type: "text" }, { key: "location", type: "text" }, { key: "gear", type: "text" } ],
                 items: [
-                    { name: "Judo", emoji: "🥋", teamType: "👤", location: "🏠", gear: "🚫" },
-                    { name: "Swimming", emoji: "🏊", teamType: "👤", location: "🏠", gear: "🚫" },
-                    { name: "Gymnastics", emoji: "🤸", teamType: "👤", location: "🏠", gear: "🚫" },
-                    { name: "Table Tennis", emoji: "🏓", teamType: "👤", location: "🏠", gear: "⚽" },
-                    { name: "Badminton", emoji: "🏸", teamType: "👤", location: "🏠", gear: "⚽" },
-                    { name: "Bowling", emoji: "🎳", teamType: "👤", location: "🏠", gear: "⚽" },
-                    { name: "Dance", emoji: "💃", teamType: "👥", location: "🏠", gear: "🚫" },
-                    { name: "Cheer", emoji: "📣", teamType: "👥", location: "🏠", gear: "🚫" },
-                    { name: "Basketball", emoji: "🏀", teamType: "👥", location: "🏠", gear: "⚽" },
-                    { name: "Volleyball", emoji: "🏐", teamType: "👥", location: "🏠", gear: "⚽" },
-                    { name: "Dodgeball", emoji: "🔴", teamType: "👥", location: "🏠", gear: "⚽" },
-                    { name: "Track", emoji: "🏃", teamType: "👤", location: "🌳", gear: "🚫" },
-                    { name: "Skiing", emoji: "⛷️", teamType: "👤", location: "🌳", gear: "🚫" },
-                    { name: "Surfing", emoji: "🏄", teamType: "👤", location: "🌳", gear: "🚫" },
-                    { name: "Tennis", emoji: "🎾", teamType: "👤", location: "🌳", gear: "⚽" },
-                    { name: "Golf", emoji: "⛳", teamType: "👤", location: "🌳", gear: "⚽" },
-                    { name: "Relay Race", emoji: "👟", teamType: "👥", location: "🌳", gear: "🚫" },
-                    { name: "Tug of War", emoji: "➰", teamType: "👥", location: "🌳", gear: "🚫" },
-                    { name: "Soccer", emoji: "⚽", teamType: "👥", location: "🌳", gear: "⚽" },
-                    { name: "Baseball", emoji: "⚾", teamType: "👥", location: "🌳", gear: "⚽" },
-                    { name: "Rugby", emoji: "🏉", teamType: "👥", location: "🌳", gear: "⚽" }
+                    { name: "judo", emoji: "🥋", teamType: "👤", location: "🏠", gear: "🚫" },
+                    { name: "swimming", emoji: "🏊", teamType: "👤", location: "🏠", gear: "🚫" },
+                    { name: "gymnastics", emoji: "🤸", teamType: "👤", location: "🏠", gear: "🚫" },
+                    { name: "table tennis", emoji: "🏓", teamType: "👤", location: "🏠", gear: "⚽" },
+                    { name: "badminton", emoji: "🏸", teamType: "👤", location: "🏠", gear: "⚽" },
+                    { name: "bowling", emoji: "🎳", teamType: "👤", location: "🏠", gear: "⚽" },
+                    { name: "dance", emoji: "💃", teamType: "👥", location: "🏠", gear: "🚫" },
+                    { name: "cheerleading", emoji: "📣", teamType: "👥", location: "🏠", gear: "🚫" },
+                    { name: "basketball", emoji: "🏀", teamType: "👥", location: "🏠", gear: "⚽" },
+                    { name: "volleyball", emoji: "🏐", teamType: "👥", location: "🏠", gear: "⚽" },
+                    { name: "dodgeball", emoji: "🔴", teamType: "👥", location: "🏠", gear: "⚽" },
+                    { name: "track", emoji: "🏃", teamType: "👤", location: "🌳", gear: "🚫" },
+                    { name: "skiing", emoji: "⛷️", teamType: "👤", location: "🌳", gear: "🚫" },
+                    { name: "surfing", emoji: "🏄", teamType: "👤", location: "🌳", gear: "🚫" },
+                    { name: "tennis", emoji: "🎾", teamType: "👤", location: "🌳", gear: "⚽" },
+                    { name: "relay race", emoji: "👟", teamType: "👥", location: "🌳", gear: "🚫" },
+                    { name: "tug of war", emoji: "➰", teamType: "👥", location: "🌳", gear: "🚫" },
+                    { name: "soccer", emoji: "⚽", teamType: "👥", location: "🌳", gear: "⚽" },
+                    { name: "baseball", emoji: "⚾", teamType: "👥", location: "🌳", gear: "⚽" },
+                    { name: "rugby", emoji: "🏉", teamType: "👥", location: "🌳", gear: "⚽" }
                 ],
                 examples: ["Is it a team sport?", "Do you play it outdoors?", "Do you use a ball or puck?", "Is it an individual sport?"],
                 vocab: [
-                    { title: "Players", items: ["Individual Sport", "Team Sport"] },
-                    { title: "Location", items: ["Indoor", "Outdoor"] },
-                    { title: "Gear", items: ["Uses Ball/Puck", "No Ball/Puck"] }
+                    { title: "players", items: ["individual sport 👤", "team sport 👥"] },
+                    { title: "location", items: ["indoor 🏠", "outdoor 🌳"] },
+                    { title: "gear", items: ["uses ball/puck ⚽", "no ball/puck 🚫"] }
                 ]
             }
         };
-
-        gameData.sports.items.length = 20;
 
         let currentCategory = 'animals', currentLayout = [], guessCount = 0, actionHistory = [], gameMode = '', pendingTraitKey = "";
         let tempTeamCount = 0, teams = [], studentsPerTeam = 0, availableTeams = [], availableStudents = {};
         let useTimer = false, timerInterval, p1Score = 0, p2Score = 0, isRightPanelVisible = true;
 
         function getTooltip(traitKey, value) {
-            const tooltips = {"🥩": "Meat-eater", "🌿": "Plant-eater", "🖐️": "Use hands", "🍴": "Use fork/spoon", "🍬": "Sweet", "🧂": "Salty", "❄️": "Cold", "♨️": "Hot", "👤": "Individual Sport", "👥": "Team Sport", "🏠": "Indoor", "🌳": "Outdoor", "🚫": "No Ball/Puck", "⚽": "Uses Ball/Puck"};
-            if (traitKey === 'legs') return value + " Legs";
+            const tooltips = {"🥩": "meat-eater", "🌿": "plant-eater", "🖐️": "use hands", "🍴": "use fork/spoon", "🍬": "sweet", "🧂": "salty", "❄️": "cold", "♨️": "hot", "👤": "individual sport", "👥": "team sport", "🏠": "indoor", "🌳": "outdoor", "🚫": "no ball/puck", "⚽": "uses ball/puck"};
+            if (traitKey === 'legs') return value + " legs";
             if (tooltips[value]) return tooltips[value];
             return value.replace(/,/g, ' / '); 
         }
@@ -516,26 +505,26 @@
 
         function launchGame() {
             showScreen(null); document.getElementById('game-wrapper').style.display = 'flex';
-            const leftPanel = document.getElementById('left-panel'), rightPanel = document.getElementById('right-panel');
+            const rp = document.getElementById('right-panel'), lp = document.getElementById('left-panel');
             const teamBoard = document.getElementById('team-leaderboard-container'), teamDice = document.getElementById('team-dice-container');
             const p2Card = document.getElementById('twop-secret-card-container'), p2Board = document.getElementById('twop-scoreboard-container');
             const timerUi = document.getElementById('timer-ui'), resetBtn = document.getElementById('classroom-reset-btn'), sidebarContent = document.getElementById('sidebar-content-container');
 
-            leftPanel.style.borderRight = 'none'; rightPanel.style.display = 'none';
+            lp.style.borderRight = 'none'; rp.style.display = 'none';
             teamBoard.style.display = 'none'; teamDice.style.display = 'none';
             p2Card.style.display = 'none'; p2Board.style.display = 'none';
             resetBtn.style.display = 'none'; isRightPanelVisible = true;
             document.getElementById('toggle-panel-btn').innerText = '🙈';
 
             if (gameMode === 'team') {
-                leftPanel.style.borderRight = '4px dashed #b2ebf2'; rightPanel.style.display = 'flex';
+                lp.style.borderRight = '4px dashed #b2ebf2'; rp.style.display = 'flex';
                 teamBoard.style.display = 'flex'; teamDice.style.display = 'flex';
                 resetBtn.style.display = 'block'; sidebarContent.style.display = 'block';
                 document.getElementById('toggle-panel-btn').style.display = 'none';
                 timerUi.style.display = useTimer ? 'flex' : 'none';
                 updateTeamLeaderboard();
             } else {
-                leftPanel.style.borderRight = '4px dashed #b2ebf2'; rightPanel.style.display = 'flex';
+                lp.style.borderRight = '4px dashed #b2ebf2'; rp.style.display = 'flex';
                 p2Card.style.display = 'flex'; document.getElementById('toggle-panel-btn').style.display = 'flex';
                 sidebarContent.style.display = (gameMode === '2p-student') ? 'block' : 'none';
                 drawSecretCard();
@@ -695,17 +684,16 @@
                     return;
                 }
                 const itemName = lastAction.name, vowel = /^[aeiou]/i.test(itemName);
-                document.getElementById('verify-question-text').innerText = `Is it ${vowel ? 'an' : 'a'} ${itemName}?`;
+                document.getElementById('verify-question-text').innerText = `is it ${vowel ? 'an' : 'a'} ${itemName}?`;
                 document.getElementById('verify-answer-modal').style.display = 'flex';
             }
         }
 
         function verifySuccess() {
             document.getElementById('verify-answer-modal').style.display = 'none';
-            document.getElementById('victory-stats-text').innerText = `It took you ${guessCount} guesses to find the answer!`;
+            document.getElementById('victory-stats-text').innerText = `it took you ${guessCount} guesses to find the answer!`;
             document.getElementById('two-player-victory-modal').style.display = 'flex';
         }
-
         function closeVerifyModal() { document.getElementById('verify-answer-modal').style.display = 'none'; }
         function closeTwoPlayerVictory() { document.getElementById('two-player-victory-modal').style.display = 'none'; renderGrid(); executeDrawCard(); }
         function closeVictoryModal() { document.getElementById('victory-modal').style.display = 'none'; }
