@@ -521,7 +521,7 @@
     
     <div id="trait-question-modal" class="modal-overlay">
         <div class="modal-content">
-            <h2 style="color: var(--main-teal); margin-top: 0;">Ask your opponent:</h2>
+            <h2 id="trait-question-header" style="color: var(--main-teal); margin-top: 0;">Ask your opponent:</h2>
             <p id="trait-question-text" style="font-size: 3.5vh; font-weight: bold; margin: 4vh 0;"></p>
             <div style="display: flex; justify-content: center; gap: 2vw;">
                 <button class="btn" id="trait-yes-btn" style="background-color: #4CAF50; font-size: 2.2vh; padding: 1.5vh 3vw;" onclick="answerTraitQuestion(true)">👍 Yes</button>
@@ -533,7 +533,7 @@
 
     <div id="verify-answer-modal" class="modal-overlay">
         <div class="modal-content">
-            <h2 style="color: var(--main-teal); margin-top: 0;">Ask your opponent:</h2>
+            <h2 id="verify-question-header" style="color: var(--main-teal); margin-top: 0;">Ask your opponent:</h2>
             <p id="verify-question-text" style="font-size: 3.5vh; font-weight: bold; margin: 4vh 0;"></p>
             <div style="display: flex; justify-content: center; gap: 2vw;">
                 <button class="btn" id="verify-yes-btn" style="background-color: #4CAF50; font-size: 2.2vh; padding: 1.5vh 3vw;" onclick="verifySuccess()">👍 Yes</button>
@@ -824,6 +824,9 @@
             
             const exampleQList = document.getElementById('example-questions-list');
             const exampleQHeader = document.getElementById('example-q-header');
+            
+            const traitHeader = document.getElementById('trait-question-header');
+            const verifyHeader = document.getElementById('verify-question-header');
 
             teamBoard.style.display = 'none'; teamDice.style.display = 'none';
             p2Card.style.display = 'none'; p2Board.style.display = 'none';
@@ -839,6 +842,8 @@
             const p2Row = document.getElementById('p2-score-row');
 
             if (gameMode === 'team') {
+                traitHeader.innerText = "Ask the teacher:";
+                verifyHeader.innerText = "Ask the teacher:";
                 teamBoard.style.display = 'flex'; teamDice.style.display = 'flex';
                 sidebarContent.style.display = 'block';
                 leftUndo.style.display = 'block'; 
@@ -848,6 +853,8 @@
                 timerUi.style.display = useTimer ? 'flex' : 'none';
                 updateTeamLeaderboard();
             } else {
+                traitHeader.innerText = "Ask your opponent:";
+                verifyHeader.innerText = "Ask your opponent:";
                 p2Card.style.display = 'flex'; 
                 sidebarContent.style.display = (gameMode === '2p-student') ? 'block' : 'none';
                 exampleQList.style.display = 'none';
