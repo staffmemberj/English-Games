@@ -90,6 +90,12 @@
         .label-text { font-weight: bold; color: var(--main-teal); font-size: 1.4vh; text-transform: uppercase; }
         .point-text { font-size: 2.5vh; color: #ff5722; font-weight: bold; margin: 0.2vh 0; }
         .guess-text { font-size: 3.5vh; color: var(--guess-blue); font-weight: bold; }
+        
+        .bonus-btn {
+            background-color: #fff9c4; color: #f57c00; border: 2px solid #ffd54f;
+            border-radius: 8px; padding: 0.2vh 0.5vw; font-size: 1.3vh;
+            font-weight: bold; cursor: pointer; width: 100%; transition: transform 0.1s;
+        }
 
         .controls { margin-bottom: 1vh; display: flex; justify-content: center; align-items: center; gap: 1vw; flex-wrap: wrap;}
         
@@ -474,7 +480,7 @@
             const tooltips = {"🥩": "meat-eater", "🌿": "plant-eater", "🖐️": "use hands", "🍴": "use fork/spoon", "🍬": "sweet", "🧂": "salty", "❄️": "cold", "♨️": "hot", "👤": "individual sport", "👥": "team sport", "🏠": "indoor", "🌳": "outdoor", "🚫": "no ball/puck", "⚽": "uses ball/puck"};
             if (traitKey === 'legs') return value + " legs";
             if (tooltips[value]) return tooltips[value];
-            return value; 
+            return value.replace(/,/g, ' / '); 
         }
 
         function showScreen(screenId) {
@@ -489,7 +495,7 @@
         function initClassroom(timerEnabled) {
             useTimer = timerEnabled; teams = []; availableTeams = []; availableStudents = {};
             for (let i = 1; i <= tempTeamCount; i++) {
-                teams.push({ name: "team " + i, score: 0 }); availableTeams.push(i); availableStudents[i] = [];
+                teams.push({ name: "Team " + i, score: 0 }); availableTeams.push(i); availableStudents[i] = [];
                 for(let j = 1; j <= studentsPerTeam; j++) availableStudents[i].push(j);
             }
             gameMode = 'team'; launchGame();
@@ -677,18 +683,14 @@
                     modal.querySelector('#draw-continue-btn').style.display = 'none'; modal.querySelector('.undo-btn').innerText = "OK"; modal.style.display = 'flex';
                     return;
                 }
-                
                 const itemName = lastAction.name;
                 let question = "";
-                
-                // CATEGORY GRAMMAR ENGINE
                 if (currentCategory === 'animals') {
-                    const startsWithVowel = /^[aeiou]/i.test(itemName);
-                    question = `Is it ${startsWithVowel ? 'an' : 'a'} ${itemName}?`;
+                    const vowel = /^[aeiou]/i.test(itemName);
+                    question = `Is it ${vowel ? 'an' : 'a'} ${itemName}?`;
                 } else {
                     question = `Is it ${itemName}?`;
                 }
-
                 document.getElementById('verify-question-text').innerText = question;
                 document.getElementById('verify-answer-modal').style.display = 'flex';
             }
