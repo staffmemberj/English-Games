@@ -450,7 +450,7 @@
                     { name: "Otter", emoji: "🦦", colorStyle: "background-color: #8B4513;", colorName: "Brown", legs: 4, diet: "🥩" }, 
                     { name: "Panda", emoji: "🐼", colorStyle: "background: linear-gradient(90deg, black 50%, white 50%);", colorName: "Black & White", legs: 4, diet: "🌿" },
                     { name: "Zebra", emoji: "🦓", colorStyle: "background: repeating-linear-gradient(90deg, black, black 5px, white 5px, white 10px);", colorName: "Striped,Black & White", legs: 4, diet: "🌿" },
-                    { name: "Giraffe", emoji: "🦒", colorStyle: "background: radial-gradient(circle, #8B4513 40%, #ffd700 40%);", colorName: "Spotted", legs: 4, diet: "🌿" },
+                    { name: "Giraffe", emoji: "🦒", colorStyle: "background: radial-gradient(circle, #8B4513 40%, #ffd700 40%);", colorName: "Spotted,Yellow & Brown", legs: 4, diet: "🌿" },
                     { name: "Pig", emoji: "🐷", colorStyle: "background-color: pink;", colorName: "Pink", legs: 4, diet: "🌿" }
                 ],
                 examples: [
@@ -849,11 +849,9 @@
             document.getElementById('guess-count').innerText = guessCount;
         }
 
-        // --- NEW TRAIT SELECTION LOGIC ---
         function handleTraitClick(traitKey, traitValue, event) {
             event.stopPropagation();
             if (traitValue.includes(',')) {
-                // If there are multiple options, show the choice modal
                 pendingTraitKey = traitKey;
                 const options = traitValue.split(',');
                 const container = document.getElementById('trait-btn-container');
@@ -873,7 +871,6 @@
                 });
                 document.getElementById('trait-choice-modal').style.display = 'flex';
             } else {
-                // Single trait, eliminate directly
                 executeElimination(traitKey, traitValue);
             }
         }
@@ -887,7 +884,6 @@
             const elimThisTurn = [];
             currentLayout.forEach(item => {
                 const card = document.getElementById('card-' + item.name);
-                // .includes() ensures we match exact subsets, like finding "Black & White" inside "Spotted,Black & White"
                 if (String(item[traitKey]).includes(targetValue) && !card.classList.contains('eliminated')) {
                     card.classList.add('eliminated'); 
                     elimThisTurn.push('card-' + item.name);
@@ -965,10 +961,8 @@
                     let rawValue = item[trait.key];
                     let valHTML = trait.type === 'color' ? `<div class="color-circle" style="${item.colorStyle}"></div>` : rawValue;
                     
-                    // Generate tooltip via dictionary function
                     let hoverText = getTooltip(trait.key, rawValue);
                     
-                    // Uses handleTraitClick instead of executeElimination directly
                     traitsHTML += `<div class="trait-col" title="${hoverText}" onclick="handleTraitClick('${trait.key}', '${rawValue}', event)"><div class="trait-value">${valHTML}</div></div>`;
                 });
 
