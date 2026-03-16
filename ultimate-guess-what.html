@@ -69,7 +69,7 @@
         #right-panel {
             flex: 1.2; display: flex; flex-direction: column; align-items: center; 
             padding: 1.5vh 1vw; background-color: #e0f2f1; height: 100%; box-sizing: border-box;
-            border-left: 4px dashed #b2ebf2; display: none;
+            border-left: 4px dashed #b2ebf2; display: none; overflow-y: auto;
         }
 
         h1 { font-size: 2.8vh; color: var(--main-teal); margin: 0.5vh 0; }
@@ -123,7 +123,12 @@
             font-size: 2.8vh; z-index: 10;
         }
         
-        .reset-scores-btn { background-color: #f44336; width: 85%; font-size: 1.8vh; padding: 1.2vh; margin-top: auto; margin-bottom: 1vh; }
+        /* Common Box Sizing to ensure uniform widths in the right panel */
+        .secret-card-display, .dice-display, .draw-btn, #sidebar-content-container, .score-row, .reset-scores-btn {
+            width: 90%; box-sizing: border-box; margin-bottom: 1.5vh;
+        }
+
+        .reset-scores-btn { background-color: #f44336; font-size: 1.8vh; padding: 1.2vh; margin-top: auto; flex-shrink: 0; }
         .reset-scores-btn:hover { background-color: #d32f2f; transform: scale(1.05); }
         
         @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.03); } 100% { transform: scale(1); } }
@@ -139,12 +144,12 @@
             display: flex; flex-direction: column; align-items: center; justify-content: space-evenly; 
             cursor: pointer; height: 100%; box-shadow: 0 0.6vh 1.2vh rgba(0,0,0,0.08); transition: all 0.2s;
         }
-        .card.eliminated { opacity: 0.15; filter: grayscale(100%); transform: scale(0.92); box-shadow: none; }
+        .card.eliminated { opacity: 0.15; filter: grayscale(100%); transform: scale(0.92); box-shadow: none; cursor: default; }
         .emoji { font-size: 5vh; line-height: 1; pointer-events: none; }
         .item-name { font-size: 2vh; font-weight: bold; margin: 0; pointer-events: none; }
         .traits-row { display: flex; width: 100%; justify-content: space-around; }
         .trait-col { display: flex; flex-direction: column; align-items: center; padding: 0.3vh; border-radius: 1vh; cursor: pointer; }
-        .trait-col:hover { background-color: #f0f0f0; }
+        .card:not(.eliminated) .trait-col:hover { background-color: #f0f0f0; }
         .trait-value { font-size: 2.8vh; font-weight: bold; pointer-events: none; }
         .color-circle { width: 3vh; height: 3vh; border-radius: 50%; border: 2px solid #bdbdbd; pointer-events: none; }
 
@@ -155,8 +160,8 @@
         #twop-secret-card-container { display: flex; flex-direction: column; align-items: center; width: 100%; }
         .secret-card-display {
             background: white; border: 0.6vh solid var(--win-pink); border-radius: 20px;
-            width: 90%; padding: 2vh 1vw; display: flex; align-items: center; justify-content: center; gap: 1vw;
-            box-shadow: 0 8px 16px rgba(0,0,0,0.15); margin-bottom: 2vh;
+            padding: 2vh 1vw; display: flex; align-items: center; justify-content: center; gap: 1vw;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.15);
         }
         .sc-emoji { font-size: 6vh; }
         .sc-name { font-size: 3vh; font-weight: bold; color: #333; }
@@ -165,28 +170,46 @@
         #team-dice-container { display: flex; flex-direction: column; align-items: center; width: 100%; height: 100%; }
         .dice-display {
             background: white; border: 0.5vh solid var(--accent-orange); border-radius: 15px;
-            width: 85%; padding: 1vh; display: flex; flex-direction: column; align-items: center; justify-content: center;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1); margin-bottom: 1vh;
+            padding: 1vh; display: flex; flex-direction: column; align-items: center; justify-content: center;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
         }
         .dice-label { font-size: 1.5vh; font-weight: bold; color: #757575; text-transform: uppercase; }
         .dice-value { font-size: 3.5vh; font-weight: bold; color: var(--main-teal); }
-        .draw-btn { background-color: var(--guess-blue); width: 90%; font-size: 1.8vh; padding: 1.2vh; margin-bottom: 1.5vh; }
-        .timer-btn { background-color: #e91e63; }
-
-        /* Example Questions Box */
-        #question-examples-container {
-            width: 85%; background: white; border: 0.4vh solid #00acc1; border-radius: 15px;
-            padding: 1vh 1vw; margin-top: 1vh; text-align: left; box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        .draw-btn { background-color: var(--guess-blue); font-size: 1.8vh; padding: 1.2vh; flex-shrink: 0; }
+        
+        /* Compact Timer Button */
+        .timer-btn { 
+            background-color: #e91e63; 
+            width: 25%; 
+            font-size: 4vh; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            padding: 0; 
+            margin: 0; /* Clear margins to perfectly align with the adjacent box */
+            flex-shrink: 0; 
+            border-radius: 15px; /* Match the border radius of the timer display */
         }
-        .question-title { font-weight: bold; color: var(--main-teal); font-size: 1.8vh; text-align: center; margin-bottom: 0.5vh; }
-        #example-questions-list { margin: 0; padding-left: 20px; font-size: 1.6vh; color: #333; }
-        #example-questions-list li { margin-bottom: 0.5vh; }
+
+        /* Example Questions & Vocab Box */
+        #sidebar-content-container {
+            background: white; border: 0.4vh solid #00acc1; border-radius: 15px;
+            padding: 1.5vh 1.5vw; margin-top: 0.5vh; text-align: left; box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .sidebar-subtitle { font-weight: bold; color: var(--main-teal); font-size: 1.6vh; text-align: left; margin-bottom: 0.5vh; margin-top: 0.5vh; }
+        #example-questions-list { margin: 0; padding-left: 20px; font-size: 1.4vh; color: #333; text-align: left; list-style-type: disc; }
+        #example-questions-list li { margin-bottom: 0.4vh; }
+        
+        #vocab-container { font-size: 1.4vh; color: #333; text-align: left; }
+        .vocab-group-title { font-weight: bold; margin-top: 1.5vh; margin-bottom: 0.2vh; }
+        .vocab-group-list { margin: 0; padding-left: 20px; list-style-type: disc; }
+        .vocab-group-list li { margin-bottom: 0.4vh; }
 
         /* 1-on-1 Scoreboard */
         #twop-scoreboard-container { width: 100%; display: flex; flex-direction: column; align-items: center; gap: 1.5vh; }
         .score-row {
             background: white; border: 3px solid #ffcc80; border-radius: 15px;
-            width: 90%; padding: 1vh 1vw; display: flex; flex-direction: column; align-items: center;
+            padding: 1vh 1vw; display: flex; flex-direction: column; align-items: center;
             box-shadow: 0 4px 8px rgba(0,0,0,0.1);
         }
         .score-header { font-weight: bold; color: var(--main-teal); font-size: 2vh; margin-bottom: 0.5vh; }
@@ -329,29 +352,32 @@
             
             <div id="team-dice-container">
                 <div class="sidebar-title">Who's Turn?</div>
-                <div style="display:flex; gap:1vw; width:90%; justify-content:center;">
-                    <div class="dice-display">
+                <div style="display:flex; gap:1vw; width:90%; justify-content:center; margin-bottom: 1vh;">
+                    <div class="dice-display" style="width: 50%; margin-bottom: 0;">
                         <div class="dice-label">Team</div>
                         <div class="dice-value" id="dice-result-team">❓</div>
                     </div>
-                    <div class="dice-display">
+                    <div class="dice-display" style="width: 50%; margin-bottom: 0;">
                         <div class="dice-label">Student</div>
                         <div class="dice-value" id="dice-result-student">❓</div>
                     </div>
                 </div>
                 <button class="btn draw-btn" onclick="rollDice()">🎲 Roll Turn</button>
 
-                <div id="timer-ui" style="display:none; width:100%; flex-direction:column; align-items:center;">
-                    <div class="dice-display" style="width:50%; margin-bottom: 0.5vh;">
+                <div id="timer-ui" style="display:none; width:90%; flex-direction:row; justify-content:space-between; gap:1vw; margin-bottom:1.5vh;">
+                    <div class="dice-display" style="width:75%; margin-bottom:0;">
                         <div class="dice-label">Timer</div>
                         <div class="dice-value" id="timer-display">15</div>
                     </div>
-                    <button class="btn draw-btn timer-btn" onclick="startTimer()">⏱️ Start Clock</button>
+                    <button class="btn timer-btn" onclick="startTimer()">⏳</button>
                 </div>
 
-                <div id="question-examples-container">
-                    <div class="question-title">💡 Example Questions</div>
+                <div id="sidebar-content-container">
+                    <div class="sidebar-subtitle" style="color:#e91e63;">💡 Example Questions</div>
                     <ul id="example-questions-list"></ul>
+                    
+                    <div class="sidebar-subtitle" style="color:#ff9800; margin-top: 1.5vh;">📚 Key Vocabulary</div>
+                    <div id="vocab-container"></div>
                 </div>
                 
                 <button class="btn reset-scores-btn" onclick="triggerResetScores()">🗑️ Reset Scores</button>
@@ -454,9 +480,14 @@
                     { name: "Pig", emoji: "🐷", colorStyle: "background-color: pink;", colorName: "Pink", legs: 4, diet: "🌿" }
                 ],
                 examples: [
-                    "Does it have a pattern?",
+                    "Is it brown?",
+                    "Does it have spots?",
                     "Does it have 4 legs?",
-                    "Does it eat meat 🥩?"
+                    "Is it a plant-eater?"
+                ],
+                vocab: [
+                    { title: "Colors/Patterns", items: ["Gold", "Brown", "Grey", "Black", "Green", "Tan", "White", "Pink", "Black & White", "Spotted", "Striped", "Yellow & Brown"] },
+                    { title: "Diet", items: ["Meat-eater", "Plant-eater"] }
                 ]
             },
             food: {
@@ -485,9 +516,15 @@
                     { name: "Corn", emoji: "🌽", style: "🖐️", taste: "🍬", temp: "♨️" }
                 ],
                 examples: [
-                    "Do you eat it with your hands 🖐️?",
-                    "Is it sweet 🍬?",
-                    "Is it eaten hot ♨️?"
+                    "Do you use hands to eat it?",
+                    "Is it sweet?",
+                    "Is it salty?",
+                    "Is it hot?"
+                ],
+                vocab: [
+                    { title: "Style", items: ["Use hands", "Use fork/spoon"] },
+                    { title: "Taste", items: ["Sweet", "Salty"] },
+                    { title: "Temperature", items: ["Hot", "Cold"] }
                 ]
             },
             sports: {
@@ -517,9 +554,15 @@
                     { name: "Rugby", emoji: "🏉", teamType: "👥", location: "🌳", gear: "⚽" }
                 ],
                 examples: [
-                    "Is it a team sport 👥?",
-                    "Do you play it outdoors 🌳?",
-                    "Do you use a ball or puck ⚽?"
+                    "Is it a team sport?",
+                    "Do you play it outdoors?",
+                    "Do you use a ball or puck?",
+                    "Is it an individual sport?"
+                ],
+                vocab: [
+                    { title: "Players", items: ["Individual Sport", "Team Sport"] },
+                    { title: "Location", items: ["Indoor", "Outdoor"] },
+                    { title: "Gear", items: ["Uses Ball/Puck", "No Ball/Puck"] }
                 ]
             }
         };
@@ -546,11 +589,10 @@
         let p2Score = 0;
         let isRightPanelVisible = true;
 
-        // Tooltip Dictionary
         function getTooltip(traitKey, value) {
             const tooltips = {
-                "🥩": "Meat Eater",
-                "🌿": "Plant Eater",
+                "🥩": "Meat-eater",
+                "🌿": "Plant-eater",
                 "🖐️": "Use hands",
                 "🍴": "Use fork/spoon",
                 "🍬": "Sweet",
@@ -649,7 +691,7 @@
                 timerUi.style.display = useTimer ? 'flex' : 'none';
                 
                 updateTeamLeaderboard();
-                updateExampleQuestions();
+                updateSidebarContent();
             } else {
                 leftPanel.style.borderRight = '4px dashed #b2ebf2';
                 rightPanel.style.display = 'flex';
@@ -747,13 +789,31 @@
             }, 1000);
         }
 
-        function updateExampleQuestions() {
-            const list = document.getElementById('example-questions-list');
-            list.innerHTML = '';
+        function updateSidebarContent() {
+            const qList = document.getElementById('example-questions-list');
+            qList.innerHTML = '';
             gameData[currentCategory].examples.forEach(q => {
                 const li = document.createElement('li');
                 li.innerText = q;
-                list.appendChild(li);
+                qList.appendChild(li);
+            });
+
+            const vContainer = document.getElementById('vocab-container');
+            vContainer.innerHTML = '';
+            gameData[currentCategory].vocab.forEach(vGroup => {
+                const title = document.createElement('div');
+                title.className = 'vocab-group-title';
+                title.innerText = vGroup.title;
+                vContainer.appendChild(title);
+
+                const ul = document.createElement('ul');
+                ul.className = 'vocab-group-list';
+                vGroup.items.forEach(item => {
+                    const li = document.createElement('li');
+                    li.innerText = item;
+                    ul.appendChild(li);
+                });
+                vContainer.appendChild(ul);
             });
         }
 
@@ -825,7 +885,7 @@
             document.getElementById('game-title').innerText = titles[currentCategory];
             renderGrid();
             if(gameMode.startsWith('2p')) executeDrawCard(); 
-            if(gameMode === 'team') updateExampleQuestions();
+            if(gameMode === 'team') updateSidebarContent();
         }
 
         function shuffleArray(array) {
@@ -841,14 +901,23 @@
             const card = document.getElementById(cardId);
             const wasElim = card.classList.contains('eliminated');
             card.classList.toggle('eliminated');
-            if (!wasElim) { guessCount++; actionHistory.push({ type: 'single', id: cardId }); }
-            else { actionHistory = actionHistory.filter(a => a.id !== cardId); }
+            if (!wasElim) { 
+                guessCount++; 
+                actionHistory.push({ type: 'single', id: cardId }); 
+            } else { 
+                actionHistory = actionHistory.filter(a => a.id !== cardId); 
+            }
             document.getElementById('guess-count').innerText = guessCount;
         }
 
-        // --- NEW TRAIT SELECTION LOGIC ---
-        function handleTraitClick(traitKey, traitValue, event) {
+        function handleTraitClick(traitKey, traitValue, event, cardId) {
             event.stopPropagation();
+            const cardElement = document.getElementById(cardId);
+            
+            if (cardElement && cardElement.classList.contains('eliminated')) {
+                return;
+            }
+
             if (traitValue.includes(',')) {
                 pendingTraitKey = traitKey;
                 const options = traitValue.split(',');
@@ -961,7 +1030,7 @@
                     
                     let hoverText = getTooltip(trait.key, rawValue);
                     
-                    traitsHTML += `<div class="trait-col" title="${hoverText}" onclick="handleTraitClick('${trait.key}', '${rawValue}', event)"><div class="trait-value">${valHTML}</div></div>`;
+                    traitsHTML += `<div class="trait-col" title="${hoverText}" onclick="handleTraitClick('${trait.key}', '${rawValue}', event, 'card-${item.name}')"><div class="trait-value">${valHTML}</div></div>`;
                 });
 
                 card.innerHTML = `<div class="emoji">${item.emoji}</div><div class="item-name">${item.name}</div><div class="traits-row">${traitsHTML}</div>`;
