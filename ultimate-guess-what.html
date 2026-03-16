@@ -60,7 +60,7 @@
         
         /* Left Panel (The Board) */
         #left-panel {
-            position: relative; /* Anchor for absolute buttons */
+            position: relative; 
             flex: 4; display: flex; flex-direction: column; padding: 1vh 1vw 1vh 2vw;
             height: 100%; box-sizing: border-box; transition: all 0.3s ease;
         }
@@ -123,7 +123,7 @@
             font-size: 2.8vh; z-index: 10;
         }
         
-        /* Common Box Sizing to ensure uniform widths in the right panel */
+        /* Box consistency */
         .secret-card-display, .dice-display, .draw-btn, #sidebar-content-container, .score-row, .reset-scores-btn {
             width: 90%; box-sizing: border-box; margin-bottom: 1.5vh;
         }
@@ -153,10 +153,9 @@
         .trait-value { font-size: 2.8vh; font-weight: bold; pointer-events: none; }
         .color-circle { width: 3vh; height: 3vh; border-radius: 50%; border: 2px solid #bdbdbd; pointer-events: none; }
 
-        /* Right Panel Shared Elements */
+        /* Right Panel Elements */
         .sidebar-title { font-size: 2.2vh; color: var(--main-teal); font-weight: bold; margin-bottom: 1vh; text-transform: uppercase; text-align: center;}
         
-        /* Secret Card UI (1-on-1) */
         #twop-secret-card-container { display: flex; flex-direction: column; align-items: center; width: 100%; }
         .secret-card-display {
             background: white; border: 0.6vh solid var(--win-pink); border-radius: 20px;
@@ -166,7 +165,6 @@
         .sc-emoji { font-size: 6vh; }
         .sc-name { font-size: 3vh; font-weight: bold; color: #333; }
 
-        /* Dice Roller & Timer UI (Teams) */
         #team-dice-container { display: flex; flex-direction: column; align-items: center; width: 100%; height: 100%; }
         .dice-display {
             background: white; border: 0.5vh solid var(--accent-orange); border-radius: 15px;
@@ -176,22 +174,11 @@
         .dice-label { font-size: 1.5vh; font-weight: bold; color: #757575; text-transform: uppercase; }
         .dice-value { font-size: 3.5vh; font-weight: bold; color: var(--main-teal); }
         .draw-btn { background-color: var(--guess-blue); font-size: 1.8vh; padding: 1.2vh; flex-shrink: 0; }
-        
-        /* Compact Timer Button */
         .timer-btn { 
-            background-color: #e91e63; 
-            width: 25%; 
-            font-size: 4vh; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            padding: 0; 
-            margin: 0; /* Clear margins to perfectly align with the adjacent box */
-            flex-shrink: 0; 
-            border-radius: 15px; /* Match the border radius of the timer display */
+            background-color: #e91e63; width: 25%; font-size: 4vh; display: flex; align-items: center; 
+            justify-content: center; padding: 0; margin: 0; flex-shrink: 0; border-radius: 15px;
         }
 
-        /* Example Questions & Vocab Box */
         #sidebar-content-container {
             background: white; border: 0.4vh solid #00acc1; border-radius: 15px;
             padding: 1.5vh 1.5vw; margin-top: 0.5vh; text-align: left; box-shadow: 0 4px 8px rgba(0,0,0,0.1);
@@ -205,7 +192,6 @@
         .vocab-group-list { margin: 0; padding-left: 20px; list-style-type: disc; }
         .vocab-group-list li { margin-bottom: 0.4vh; }
 
-        /* 1-on-1 Scoreboard */
         #twop-scoreboard-container { width: 100%; display: flex; flex-direction: column; align-items: center; gap: 1.5vh; }
         .score-row {
             background: white; border: 3px solid #ffcc80; border-radius: 15px;
@@ -316,7 +302,6 @@
     </div>
 
     <div id="game-wrapper">
-        
         <div id="left-panel">
             <select class="category-select" id="category-selector" onchange="changeCategory()">
                 <option value="animals">🐾 Animals</option>
@@ -349,15 +334,14 @@
         </div>
 
         <div id="right-panel">
-            
             <div id="team-dice-container">
                 <div class="sidebar-title">Who's Turn?</div>
                 <div style="display:flex; gap:1vw; width:90%; justify-content:center; margin-bottom: 1vh;">
-                    <div class="dice-display" style="width: 50%; margin-bottom: 0;">
+                    <div class="dice-display" style="width: 50%;">
                         <div class="dice-label">Team</div>
                         <div class="dice-value" id="dice-result-team">❓</div>
                     </div>
-                    <div class="dice-display" style="width: 50%; margin-bottom: 0;">
+                    <div class="dice-display" style="width: 50%;">
                         <div class="dice-label">Student</div>
                         <div class="dice-value" id="dice-result-student">❓</div>
                     </div>
@@ -371,16 +355,6 @@
                     </div>
                     <button class="btn timer-btn" onclick="startTimer()">⏳</button>
                 </div>
-
-                <div id="sidebar-content-container">
-                    <div class="sidebar-subtitle" style="color:#e91e63;">💡 Example Questions</div>
-                    <ul id="example-questions-list"></ul>
-                    
-                    <div class="sidebar-subtitle" style="color:#ff9800; margin-top: 1.5vh;">📚 Key Vocabulary</div>
-                    <div id="vocab-container"></div>
-                </div>
-                
-                <button class="btn reset-scores-btn" onclick="triggerResetScores()">🗑️ Reset Scores</button>
             </div>
 
             <div id="twop-secret-card-container">
@@ -392,8 +366,15 @@
                 <button class="btn draw-btn" onclick="drawSecretCard(true)">🃏 Draw New Card</button>
             </div>
 
+            <div id="sidebar-content-container">
+                <div class="sidebar-subtitle" style="color:#e91e63;">💡 Example Questions</div>
+                <ul id="example-questions-list"></ul>
+                <div class="sidebar-subtitle" style="color:#ff9800; margin-top: 1.5vh;">📚 Key Vocabulary</div>
+                <div id="vocab-container"></div>
+            </div>
+
             <div id="twop-scoreboard-container">
-                <div class="sidebar-title" style="margin-top: 2vh;">Scoreboard</div>
+                <div class="sidebar-title" style="margin-top: 1vh;">Scoreboard</div>
                 <div class="score-row">
                     <div class="score-header" id="p1-label">Player 1</div>
                     <div class="score-number" id="p1-score">0</div>
@@ -411,46 +392,15 @@
                     </div>
                 </div>
             </div>
+            
+            <button class="btn reset-scores-btn" id="classroom-reset-btn" onclick="triggerResetScores()">🗑️ Reset Scores</button>
         </div>
     </div>
 
-    <div id="victory-modal">
-        <div class="modal-content">
-            <h2 id="modal-points-title">Award points to:</h2>
-            <div id="team-award-list"></div>
-            <button style="background-color: #9e9e9e; margin-top: 10px; color:white; border:none; padding:1vh 2vw; border-radius:10px; cursor:pointer;" onclick="closeVictoryModal()">Cancel</button>
-        </div>
-    </div>
-    
-    <div id="reset-modal">
-        <div class="modal-content">
-            <h2 style="color: var(--main-teal); margin-top: 0;">Are you sure you want to reset all scores?</h2>
-            <div style="display: flex; justify-content: center; gap: 2vw; margin-top: 3vh;">
-                <button class="btn" style="background-color: #f44336; font-size: 2.2vh; padding: 1.5vh 3vw;" onclick="executeResetScores()">Yes</button>
-                <button class="btn undo-btn" style="font-size: 2.2vh; padding: 1.5vh 3vw;" onclick="closeResetModal()">No</button>
-            </div>
-        </div>
-    </div>
-
-    <div id="draw-warning-modal">
-        <div class="modal-content">
-            <h2 style="color: #e91e63; margin-top: 0;">⚠️ WARNING! ⚠️</h2>
-            <p style="font-size: 2.2vh; color: #333; margin-bottom: 3vh;">Only draw a new card if the teacher tells you to, or if the current round is completely over.</p>
-            <div style="display: flex; justify-content: center; gap: 2vw;">
-                <button class="btn" style="background-color: #4CAF50; font-size: 2.2vh; padding: 1.5vh 3vw;" onclick="confirmDrawCard()">Continue</button>
-                <button class="btn undo-btn" style="font-size: 2.2vh; padding: 1.5vh 3vw;" onclick="closeDrawWarningModal()">Cancel</button>
-            </div>
-        </div>
-    </div>
-
-    <div id="trait-choice-modal">
-        <div class="modal-content">
-            <h2 style="color: var(--main-teal); margin-top: 0;">Which characteristic?</h2>
-            <div id="trait-btn-container" style="display: flex; justify-content: center; gap: 2vw; margin-top: 3vh; flex-wrap: wrap;">
-                </div>
-            <button class="btn undo-btn" style="margin-top: 3vh;" onclick="closeTraitModal()">Cancel</button>
-        </div>
-    </div>
+    <div id="victory-modal"><div class="modal-content"><h2 id="modal-points-title">Award points to:</h2><div id="team-award-list"></div><button class="btn undo-btn" onclick="closeVictoryModal()">Cancel</button></div></div>
+    <div id="reset-modal"><div class="modal-content"><h2 style="color: var(--main-teal);">Are you sure?</h2><div style="display: flex; justify-content: center; gap: 2vw; margin-top: 3vh;"><button class="btn" style="background-color: #f44336;" onclick="executeResetScores()">Yes</button><button class="btn undo-btn" onclick="closeResetModal()">No</button></div></div></div>
+    <div id="draw-warning-modal"><div class="modal-content"><h2 style="color: #e91e63;">⚠️ WARNING! ⚠️</h2><p style="font-size: 2.2vh;">Only draw a new card if the round is over.</p><div style="display: flex; justify-content: center; gap: 2vw;"><button class="btn" style="background-color: #4CAF50;" onclick="confirmDrawCard()">Continue</button><button class="btn undo-btn" onclick="closeDrawWarningModal()">Cancel</button></div></div></div>
+    <div id="trait-choice-modal"><div class="modal-content"><h2 style="color: var(--main-teal);">Which characteristic?</h2><div id="trait-btn-container" style="display: flex; justify-content: center; gap: 2vw; margin-top: 3vh; flex-wrap: wrap;"></div><button class="btn undo-btn" style="margin-top: 3vh;" onclick="closeTraitModal()">Cancel</button></div></div>
 
     <script>
         const gameData = {
@@ -479,12 +429,7 @@
                     { name: "Giraffe", emoji: "🦒", colorStyle: "background: radial-gradient(circle, #8B4513 40%, #ffd700 40%);", colorName: "Spotted,Yellow & Brown", legs: 4, diet: "🌿" },
                     { name: "Pig", emoji: "🐷", colorStyle: "background-color: pink;", colorName: "Pink", legs: 4, diet: "🌿" }
                 ],
-                examples: [
-                    "Is it brown?",
-                    "Does it have spots?",
-                    "Does it have 4 legs?",
-                    "Is it a plant-eater?"
-                ],
+                examples: ["Is it brown?", "Does it have spots?", "Does it have 4 legs?", "Is it a plant-eater?"],
                 vocab: [
                     { title: "Colors/Patterns", items: ["Gold", "Brown", "Grey", "Black", "Green", "Tan", "White", "Pink", "Black & White", "Spotted", "Striped", "Yellow & Brown"] },
                     { title: "Diet", items: ["Meat-eater", "Plant-eater"] }
@@ -515,12 +460,7 @@
                     { name: "Hot Dog", emoji: "🌭", style: "🖐️", taste: "🧂", temp: "♨️" },
                     { name: "Corn", emoji: "🌽", style: "🖐️", taste: "🍬", temp: "♨️" }
                 ],
-                examples: [
-                    "Do you use hands to eat it?",
-                    "Is it sweet?",
-                    "Is it salty?",
-                    "Is it hot?"
-                ],
+                examples: ["Do you use hands to eat it?", "Is it sweet?", "Is it salty?", "Is it hot?"],
                 vocab: [
                     { title: "Style", items: ["Use hands", "Use fork/spoon"] },
                     { title: "Taste", items: ["Sweet", "Salty"] },
@@ -553,12 +493,7 @@
                     { name: "Baseball", emoji: "⚾", teamType: "👥", location: "🌳", gear: "⚽" },
                     { name: "Rugby", emoji: "🏉", teamType: "👥", location: "🌳", gear: "⚽" }
                 ],
-                examples: [
-                    "Is it a team sport?",
-                    "Do you play it outdoors?",
-                    "Do you use a ball or puck?",
-                    "Is it an individual sport?"
-                ],
+                examples: ["Is it a team sport?", "Do you play it outdoors?", "Do you use a ball or puck?", "Is it an individual sport?"],
                 vocab: [
                     { title: "Players", items: ["Individual Sport", "Team Sport"] },
                     { title: "Location", items: ["Indoor", "Outdoor"] },
@@ -569,43 +504,12 @@
 
         gameData.sports.items.length = 20;
 
-        let currentCategory = 'animals';
-        let currentLayout = [];
-        let guessCount = 0;
-        let actionHistory = [];
-        let gameMode = '';
-        let pendingTraitKey = "";
-        
-        let tempTeamCount = 0;
-        let teams = [];
-        let studentsPerTeam = 0;
-        let availableTeams = [];
-        let availableStudents = {};
-        
-        let useTimer = false;
-        let timerInterval;
-        
-        let p1Score = 0;
-        let p2Score = 0;
-        let isRightPanelVisible = true;
+        let currentCategory = 'animals', currentLayout = [], guessCount = 0, actionHistory = [], gameMode = '', pendingTraitKey = "";
+        let tempTeamCount = 0, teams = [], studentsPerTeam = 0, availableTeams = [], availableStudents = {};
+        let useTimer = false, timerInterval, p1Score = 0, p2Score = 0, isRightPanelVisible = true;
 
         function getTooltip(traitKey, value) {
-            const tooltips = {
-                "🥩": "Meat-eater",
-                "🌿": "Plant-eater",
-                "🖐️": "Use hands",
-                "🍴": "Use fork/spoon",
-                "🍬": "Sweet",
-                "🧂": "Salty",
-                "❄️": "Cold",
-                "♨️": "Hot",
-                "👤": "Individual Sport",
-                "👥": "Team Sport",
-                "🏠": "Indoor",
-                "🌳": "Outdoor",
-                "🚫": "No Ball/Puck",
-                "⚽": "Uses Ball/Puck"
-            };
+            const tooltips = {"🥩": "Meat-eater", "🌿": "Plant-eater", "🖐️": "Use hands", "🍴": "Use fork/spoon", "🍬": "Sweet", "🧂": "Salty", "❄️": "Cold", "♨️": "Hot", "👤": "Individual Sport", "👥": "Team Sport", "🏠": "Indoor", "🌳": "Outdoor", "🚫": "No Ball/Puck", "⚽": "Uses Ball/Puck"};
             if (traitKey === 'legs') return value + " Legs";
             if (tooltips[value]) return tooltips[value];
             return value.replace(/,/g, ' / '); 
@@ -617,385 +521,184 @@
             if(screenId) document.getElementById(screenId).style.display = 'flex';
         }
 
-        function setTempTeams(num) {
-            tempTeamCount = num;
-            showScreen('student-setup-menu');
-        }
-
-        function setTempStudents(num) {
-            studentsPerTeam = num;
-            showScreen('timer-setup-menu');
-        }
+        function setTempTeams(num) { tempTeamCount = num; showScreen('student-setup-menu'); }
+        function setTempStudents(num) { studentsPerTeam = num; showScreen('timer-setup-menu'); }
 
         function initClassroom(timerEnabled) {
-            useTimer = timerEnabled;
-            teams = [];
-            availableTeams = [];
-            availableStudents = {};
-
+            useTimer = timerEnabled; teams = []; availableTeams = []; availableStudents = {};
             for (let i = 1; i <= tempTeamCount; i++) {
-                teams.push({ name: "Team " + i, score: 0 });
-                availableTeams.push(i);
-                
-                availableStudents[i] = [];
-                for(let j = 1; j <= studentsPerTeam; j++) {
-                    availableStudents[i].push(j);
-                }
+                teams.push({ name: "Team " + i, score: 0 }); availableTeams.push(i); availableStudents[i] = [];
+                for(let j = 1; j <= studentsPerTeam; j++) availableStudents[i].push(j);
             }
-            
-            gameMode = 'team';
-            launchGame();
+            gameMode = 'team'; launchGame();
         }
 
-        function selectMode(mode) {
-            gameMode = mode;
-            launchGame();
-        }
+        function selectMode(mode) { gameMode = mode; launchGame(); }
 
         function launchGame() {
-            showScreen(null);
-            document.getElementById('game-wrapper').style.display = 'flex';
-            
-            const leftPanel = document.getElementById('left-panel');
-            const rightPanel = document.getElementById('right-panel');
-            const teamBoard = document.getElementById('team-leaderboard-container');
-            const teamDice = document.getElementById('team-dice-container');
-            const p2Card = document.getElementById('twop-secret-card-container');
-            const p2Board = document.getElementById('twop-scoreboard-container');
-            const timerUi = document.getElementById('timer-ui');
-            const togglePanelBtn = document.getElementById('toggle-panel-btn');
-            const categorySelect = document.getElementById('category-selector');
+            showScreen(null); document.getElementById('game-wrapper').style.display = 'flex';
+            const leftPanel = document.getElementById('left-panel'), rightPanel = document.getElementById('right-panel');
+            const teamBoard = document.getElementById('team-leaderboard-container'), teamDice = document.getElementById('team-dice-container');
+            const p2Card = document.getElementById('twop-secret-card-container'), p2Board = document.getElementById('twop-scoreboard-container');
+            const timerUi = document.getElementById('timer-ui'), resetBtn = document.getElementById('classroom-reset-btn');
 
-            leftPanel.style.borderRight = 'none';
-            rightPanel.style.display = 'none';
-            teamBoard.style.display = 'none';
-            teamDice.style.display = 'none';
-            p2Card.style.display = 'none';
-            p2Board.style.display = 'none';
-            
-            categorySelect.style.display = 'block';
-            
-            isRightPanelVisible = true;
-            togglePanelBtn.innerText = '🙈';
+            leftPanel.style.borderRight = 'none'; rightPanel.style.display = 'none';
+            teamBoard.style.display = 'none'; teamDice.style.display = 'none';
+            p2Card.style.display = 'none'; p2Board.style.display = 'none';
+            resetBtn.style.display = 'none'; isRightPanelVisible = true;
+            document.getElementById('toggle-panel-btn').innerText = '🙈';
 
             if (gameMode === 'team') {
-                leftPanel.style.borderRight = '4px dashed #b2ebf2';
-                rightPanel.style.display = 'flex';
-                teamBoard.style.display = 'flex';
-                teamDice.style.display = 'flex';
-                togglePanelBtn.style.display = 'none'; 
-                
-                document.getElementById('dice-result-team').innerText = "❓";
-                document.getElementById('dice-result-student').innerText = "❓";
-                
+                leftPanel.style.borderRight = '4px dashed #b2ebf2'; rightPanel.style.display = 'flex';
+                teamBoard.style.display = 'flex'; teamDice.style.display = 'flex';
+                resetBtn.style.display = 'block'; document.getElementById('toggle-panel-btn').style.display = 'none';
                 timerUi.style.display = useTimer ? 'flex' : 'none';
-                
                 updateTeamLeaderboard();
-                updateSidebarContent();
             } else {
-                leftPanel.style.borderRight = '4px dashed #b2ebf2';
-                rightPanel.style.display = 'flex';
-                p2Card.style.display = 'flex';
-                togglePanelBtn.style.display = 'flex'; 
+                leftPanel.style.borderRight = '4px dashed #b2ebf2'; rightPanel.style.display = 'flex';
+                p2Card.style.display = 'flex'; document.getElementById('toggle-panel-btn').style.display = 'flex';
                 drawSecretCard();
-                
                 if (gameMode !== '2p-student') {
                     p2Board.style.display = 'flex';
-                    if (gameMode === '2p-teacher') {
-                        document.getElementById('p1-label').innerText = 'Teacher';
-                        document.getElementById('p2-label').innerText = 'Student';
-                    } else if (gameMode === '2p-inperson') {
-                        document.getElementById('p1-label').innerText = 'Player 1';
-                        document.getElementById('p2-label').innerText = 'Player 2';
-                    }
+                    const labels = { '2p-teacher': ['Teacher', 'Student'], '2p-inperson': ['Player 1', 'Player 2'] };
+                    document.getElementById('p1-label').innerText = labels[gameMode][0];
+                    document.getElementById('p2-label').innerText = labels[gameMode][1];
                 }
             }
+            updateSidebarContent();
             renderGrid();
         }
         
         function toggleRightPanel() {
-            const rightPanel = document.getElementById('right-panel');
-            const leftPanel = document.getElementById('left-panel');
-            const toggleBtn = document.getElementById('toggle-panel-btn');
-
-            if (isRightPanelVisible) {
-                rightPanel.style.display = 'none';
-                leftPanel.style.borderRight = 'none';
-                toggleBtn.innerText = '👁️';
-                isRightPanelVisible = false;
-            } else {
-                rightPanel.style.display = 'flex';
-                leftPanel.style.borderRight = '4px dashed #b2ebf2';
-                toggleBtn.innerText = '🙈';
-                isRightPanelVisible = true;
-            }
+            const rp = document.getElementById('right-panel'), lp = document.getElementById('left-panel'), btn = document.getElementById('toggle-panel-btn');
+            isRightPanelVisible = !isRightPanelVisible;
+            rp.style.display = isRightPanelVisible ? 'flex' : 'none';
+            lp.style.borderRight = isRightPanelVisible ? '4px dashed #b2ebf2' : 'none';
+            btn.innerText = isRightPanelVisible ? '🙈' : '👁️';
         }
 
         function rollDice() {
-            if(useTimer) {
-                clearInterval(timerInterval);
-                const display = document.getElementById('timer-display');
-                display.innerText = "15";
-                display.style.color = "var(--main-teal)";
-            }
-
-            const teamDisplay = document.getElementById('dice-result-team');
-            const studentDisplay = document.getElementById('dice-result-student');
-            
-            if (availableTeams.length === 0) {
-                for (let i = 1; i <= teams.length; i++) availableTeams.push(i);
-            }
-            
+            if(useTimer) { clearInterval(timerInterval); const d = document.getElementById('timer-display'); d.innerText = "15"; d.style.color = "var(--main-teal)"; }
+            if (availableTeams.length === 0) for (let i = 1; i <= teams.length; i++) availableTeams.push(i);
             const tIndex = Math.floor(Math.random() * availableTeams.length);
-            const selectedTeam = availableTeams[tIndex];
-            availableTeams.splice(tIndex, 1);
-
-            if (availableStudents[selectedTeam].length === 0) {
-                for(let j = 1; j <= studentsPerTeam; j++) availableStudents[selectedTeam].push(j);
-            }
-
+            const selectedTeam = availableTeams[tIndex]; availableTeams.splice(tIndex, 1);
+            if (availableStudents[selectedTeam].length === 0) for(let j = 1; j <= studentsPerTeam; j++) availableStudents[selectedTeam].push(j);
             const sIndex = Math.floor(Math.random() * availableStudents[selectedTeam].length);
-            const selectedStudent = availableStudents[selectedTeam][sIndex];
-            availableStudents[selectedTeam].splice(sIndex, 1);
+            const selectedStudent = availableStudents[selectedTeam][sIndex]; availableStudents[selectedTeam].splice(sIndex, 1);
 
             let rolls = 0;
             const rollInterval = setInterval(() => {
-                teamDisplay.innerText = Math.ceil(Math.random() * teams.length);
-                studentDisplay.innerText = Math.ceil(Math.random() * studentsPerTeam);
-                rolls++;
-                if(rolls > 10) {
-                    clearInterval(rollInterval);
-                    teamDisplay.innerText = selectedTeam;
-                    studentDisplay.innerText = selectedStudent;
-                }
+                document.getElementById('dice-result-team').innerText = Math.ceil(Math.random() * teams.length);
+                document.getElementById('dice-result-student').innerText = Math.ceil(Math.random() * studentsPerTeam);
+                if(++rolls > 10) { clearInterval(rollInterval); document.getElementById('dice-result-team').innerText = selectedTeam; document.getElementById('dice-result-student').innerText = selectedStudent; }
             }, 50);
         }
 
         function startTimer() {
-            clearInterval(timerInterval);
-            let timeLeft = 15;
-            const display = document.getElementById('timer-display');
-            display.innerText = timeLeft;
-            display.style.color = 'var(--main-teal)';
-
+            clearInterval(timerInterval); let timeLeft = 15; const d = document.getElementById('timer-display');
+            d.innerText = timeLeft; d.style.color = 'var(--main-teal)';
             timerInterval = setInterval(() => {
-                timeLeft--;
-                display.innerText = timeLeft;
-                if (timeLeft <= 5) display.style.color = '#e57373';
-                if (timeLeft <= 0) {
-                    clearInterval(timerInterval);
-                    display.innerText = "TIME'S UP!";
-                }
+                d.innerText = --timeLeft;
+                if (timeLeft <= 5) d.style.color = '#e57373';
+                if (timeLeft <= 0) { clearInterval(timerInterval); d.innerText = "TIME'S UP!"; }
             }, 1000);
         }
 
         function updateSidebarContent() {
-            const qList = document.getElementById('example-questions-list');
-            qList.innerHTML = '';
-            gameData[currentCategory].examples.forEach(q => {
-                const li = document.createElement('li');
-                li.innerText = q;
-                qList.appendChild(li);
-            });
-
-            const vContainer = document.getElementById('vocab-container');
-            vContainer.innerHTML = '';
+            const qList = document.getElementById('example-questions-list'); qList.innerHTML = '';
+            gameData[currentCategory].examples.forEach(q => { const li = document.createElement('li'); li.innerText = q; qList.appendChild(li); });
+            const vContainer = document.getElementById('vocab-container'); vContainer.innerHTML = '';
             gameData[currentCategory].vocab.forEach(vGroup => {
-                const title = document.createElement('div');
-                title.className = 'vocab-group-title';
-                title.innerText = vGroup.title;
-                vContainer.appendChild(title);
-
-                const ul = document.createElement('ul');
-                ul.className = 'vocab-group-list';
-                vGroup.items.forEach(item => {
-                    const li = document.createElement('li');
-                    li.innerText = item;
-                    ul.appendChild(li);
-                });
+                const title = document.createElement('div'); title.className = 'vocab-group-title'; title.innerText = vGroup.title; vContainer.appendChild(title);
+                const ul = document.createElement('ul'); ul.className = 'vocab-group-list';
+                vGroup.items.forEach(item => { const li = document.createElement('li'); li.innerText = item; ul.appendChild(li); });
                 vContainer.appendChild(ul);
             });
         }
 
         function updateTeamLeaderboard() {
             const lb = document.getElementById('leaderboard'); lb.innerHTML = '';
-            teams.forEach((team, index) => {
+            teams.forEach((t, i) => {
                 const box = document.createElement('div'); box.className = 'info-box';
-                box.innerHTML = `
-                    <div class="label-text">${team.name}</div>
-                    <div class="point-text">${team.score}</div>
-                    <button class="bonus-btn" onclick="awardBonus(${index})">⭐ +10</button>
-                `;
+                box.innerHTML = `<div class="label-text">${t.name}</div><div class="point-text">${t.score}</div><button class="bonus-btn" onclick="awardBonus(${i})">⭐ +10</button>`;
                 lb.appendChild(box);
             });
         }
-        function awardBonus(index) { teams[index].score += 10; updateTeamLeaderboard(); }
+        function awardBonus(i) { teams[i].score += 10; updateTeamLeaderboard(); }
+        function triggerResetScores() { document.getElementById('reset-modal').style.display = 'flex'; }
+        function closeResetModal() { document.getElementById('reset-modal').style.display = 'none'; }
+        function executeResetScores() { teams.forEach(t => t.score = 0); updateTeamLeaderboard(); closeResetModal(); }
+        function adjScore(n, a) { if (n === 1) { p1Score = Math.max(0, p1Score + a); document.getElementById('p1-score').innerText = p1Score; } else { p2Score = Math.max(0, p2Score + a); document.getElementById('p2-score').innerText = p2Score; } }
 
-        function triggerResetScores() {
-            document.getElementById('reset-modal').style.display = 'flex';
-        }
-
-        function closeResetModal() {
-            document.getElementById('reset-modal').style.display = 'none';
-        }
-
-        function executeResetScores() {
-            teams.forEach(team => team.score = 0);
-            updateTeamLeaderboard();
-            closeResetModal();
-        }
-
-        function adjScore(playerNum, amount) {
-            if (playerNum === 1) {
-                p1Score = Math.max(0, p1Score + amount);
-                document.getElementById('p1-score').innerText = p1Score;
-            } else {
-                p2Score = Math.max(0, p2Score + amount);
-                document.getElementById('p2-score').innerText = p2Score;
-            }
-        }
-        
-        function drawSecretCard(isManualClick = false) {
-            if ((gameMode === '2p-student' || gameMode === '2p-inperson') && isManualClick) {
-                document.getElementById('draw-warning-modal').style.display = 'flex';
-                return; 
-            }
+        function drawSecretCard(manual = false) {
+            if ((gameMode === '2p-student' || gameMode === '2p-inperson') && manual) { document.getElementById('draw-warning-modal').style.display = 'flex'; return; }
             executeDrawCard();
         }
-
         function executeDrawCard() {
-            const items = gameData[currentCategory].items;
-            const randomItem = items[Math.floor(Math.random() * items.length)];
-            document.getElementById('sc-emoji').innerText = randomItem.emoji;
-            document.getElementById('sc-name').innerText = randomItem.name;
+            const items = gameData[currentCategory].items; const randomItem = items[Math.floor(Math.random() * items.length)];
+            document.getElementById('sc-emoji').innerText = randomItem.emoji; document.getElementById('sc-name').innerText = randomItem.name;
         }
-
-        function confirmDrawCard() {
-            document.getElementById('draw-warning-modal').style.display = 'none';
-            executeDrawCard();
-        }
-
-        function closeDrawWarningModal() {
-            document.getElementById('draw-warning-modal').style.display = 'none';
-        }
+        function confirmDrawCard() { document.getElementById('draw-warning-modal').style.display = 'none'; executeDrawCard(); }
+        function closeDrawWarningModal() { document.getElementById('draw-warning-modal').style.display = 'none'; }
 
         function changeCategory() {
             currentCategory = document.getElementById('category-selector').value;
-            const titles = { animals: "🐾 Guess What Animal! 🐾", food: "🍕 Guess What Food! 🍕", sports: "⚽ Guess What Sport! ⚽" };
-            document.getElementById('game-title').innerText = titles[currentCategory];
-            renderGrid();
-            if(gameMode.startsWith('2p')) executeDrawCard(); 
-            if(gameMode === 'team') updateSidebarContent();
-        }
-
-        function shuffleArray(array) {
-            let s = [...array];
-            for (let i = s.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [s[i], s[j]] = [s[j], s[i]];
-            }
-            return s;
+            document.getElementById('game-title').innerText = gameData[currentCategory].title;
+            renderGrid(); if(gameMode.startsWith('2p')) executeDrawCard(); updateSidebarContent();
         }
 
         function toggleCard(cardId) {
-            const card = document.getElementById(cardId);
-            const wasElim = card.classList.contains('eliminated');
-            card.classList.toggle('eliminated');
-            if (!wasElim) { 
-                guessCount++; 
-                actionHistory.push({ type: 'single', id: cardId }); 
-            } else { 
-                actionHistory = actionHistory.filter(a => a.id !== cardId); 
-            }
-            document.getElementById('guess-count').innerText = guessCount;
+            const c = document.getElementById(cardId); if (c.classList.contains('eliminated')) return;
+            c.classList.add('eliminated'); guessCount++; document.getElementById('guess-count').innerText = guessCount;
+            actionHistory.push({ type: 'single', id: cardId });
         }
 
         function handleTraitClick(traitKey, traitValue, event, cardId) {
-            event.stopPropagation();
-            const cardElement = document.getElementById(cardId);
-            
-            if (cardElement && cardElement.classList.contains('eliminated')) {
-                return;
-            }
-
+            event.stopPropagation(); const c = document.getElementById(cardId); if (c.classList.contains('eliminated')) return;
             if (traitValue.includes(',')) {
-                pendingTraitKey = traitKey;
-                const options = traitValue.split(',');
-                const container = document.getElementById('trait-btn-container');
-                container.innerHTML = '';
-                
-                options.forEach(opt => {
-                    const btn = document.createElement('button');
-                    btn.className = 'btn';
-                    btn.style.fontSize = '2.2vh';
-                    btn.style.padding = '1.5vh 3vw';
-                    btn.innerText = opt;
-                    btn.onclick = () => {
-                        closeTraitModal();
-                        executeElimination(traitKey, opt);
-                    };
+                const container = document.getElementById('trait-btn-container'); container.innerHTML = '';
+                traitValue.split(',').forEach(opt => {
+                    const btn = document.createElement('button'); btn.className = 'btn'; btn.innerText = opt;
+                    btn.onclick = () => { closeTraitModal(); executeElimination(traitKey, opt); };
                     container.appendChild(btn);
                 });
                 document.getElementById('trait-choice-modal').style.display = 'flex';
-            } else {
-                executeElimination(traitKey, traitValue);
-            }
+            } else { executeElimination(traitKey, traitValue); }
         }
 
-        function closeTraitModal() {
-            document.getElementById('trait-choice-modal').style.display = 'none';
-        }
+        function closeTraitModal() { document.getElementById('trait-choice-modal').style.display = 'none'; }
 
         function executeElimination(traitKey, targetValue) {
-            guessCount++;
-            const elimThisTurn = [];
+            guessCount++; const elim = [];
             currentLayout.forEach(item => {
-                const card = document.getElementById('card-' + item.name);
-                if (String(item[traitKey]).includes(targetValue) && !card.classList.contains('eliminated')) {
-                    card.classList.add('eliminated'); 
-                    elimThisTurn.push('card-' + item.name);
-                }
+                const c = document.getElementById('card-' + item.name);
+                if (String(item[traitKey]).includes(targetValue) && !c.classList.contains('eliminated')) { c.classList.add('eliminated'); elim.push('card-' + item.name); }
             });
-            actionHistory.push({ type: 'trait', ids: elimThisTurn });
+            actionHistory.push({ type: 'trait', ids: elim });
             document.getElementById('guess-count').innerText = guessCount;
         }
 
         function undoLastAction() {
             if (actionHistory.length === 0) return;
             const last = actionHistory.pop();
-            if (last.type === 'single') {
-                const el = document.getElementById(last.id);
-                if(el) el.classList.remove('eliminated');
-            } else {
-                last.ids.forEach(id => {
-                    const el = document.getElementById(id);
-                    if(el) el.classList.remove('eliminated');
-                });
-            }
-            guessCount = Math.max(0, guessCount - 1);
-            document.getElementById('guess-count').innerText = guessCount;
+            if (last.type === 'single') { document.getElementById(last.id).classList.remove('eliminated'); }
+            else { last.ids.forEach(id => document.getElementById(id).classList.remove('eliminated')); }
+            guessCount = Math.max(0, guessCount - 1); document.getElementById('guess-count').innerText = guessCount;
         }
 
         function triggerVictory() {
-            if (guessCount === 0) return;
-            
-            if (useTimer) clearInterval(timerInterval);
-
+            if (guessCount === 0) return; if (useTimer) clearInterval(timerInterval);
             if (gameMode === 'team') {
                 const pts = guessCount === 1 ? 100 : guessCount <= 3 ? 75 : guessCount <= 5 ? 50 : 25;
                 document.getElementById('modal-points-title').innerText = `Award ${pts} points to:`;
                 const list = document.getElementById('team-award-list'); list.innerHTML = '';
                 teams.forEach((t, i) => {
-                    const b = document.createElement('button'); b.className = 'team-award-btn';
-                    b.innerText = t.name; b.onclick = () => { t.score += pts; closeVictoryModal(); updateTeamLeaderboard(); renderGrid(); };
+                    const b = document.createElement('button'); b.className = 'team-award-btn'; b.innerText = t.name;
+                    b.onclick = () => { t.score += pts; closeVictoryModal(); updateTeamLeaderboard(); renderGrid(); };
                     list.appendChild(b);
                 });
                 document.getElementById('victory-modal').style.display = 'flex';
-            } else {
-                alert(`🎉 YOU FOUND IT! 🎉\n\nIt took ${guessCount} guesses!`);
-                renderGrid();
-                executeDrawCard(); 
-            }
+            } else { alert(`🎉 YOU FOUND IT! 🎉\n\nGuesses: ${guessCount}`); renderGrid(); executeDrawCard(); }
         }
 
         function closeVictoryModal() { document.getElementById('victory-modal').style.display = 'none'; }
@@ -1003,40 +706,27 @@
         function resetBoard() {
             document.querySelectorAll('.card').forEach(c => c.classList.remove('eliminated'));
             guessCount = 0; actionHistory = []; document.getElementById('guess-count').innerText = 0;
-            if(useTimer) {
-                clearInterval(timerInterval);
-                const display = document.getElementById('timer-display');
-                display.innerText = "15";
-                display.style.color = "var(--main-teal)";
-            }
+            if(useTimer) { clearInterval(timerInterval); document.getElementById('timer-display').innerText = "15"; }
         }
 
+        function shuffleArray(arr) { let s = [...arr]; for (let i = s.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [s[i], s[j]] = [s[j], s[i]]; } return s; }
+
         function renderGrid() {
-            const container = document.getElementById('grid-container');
-            container.innerHTML = ''; guessCount = 0; actionHistory = [];
-            
-            const categoryObj = gameData[currentCategory];
-            currentLayout = shuffleArray(categoryObj.items);
-
+            const container = document.getElementById('grid-container'); container.innerHTML = ''; 
+            guessCount = 0; actionHistory = []; document.getElementById('guess-count').innerText = 0;
+            const cat = gameData[currentCategory]; currentLayout = shuffleArray(cat.items);
             currentLayout.forEach(item => {
-                const card = document.createElement('div');
-                card.className = 'card'; card.id = 'card-' + item.name;
+                const card = document.createElement('div'); card.className = 'card'; card.id = 'card-' + item.name;
                 card.onclick = () => toggleCard(card.id);
-
                 let traitsHTML = '';
-                categoryObj.traits.forEach(trait => {
-                    let rawValue = item[trait.key];
-                    let valHTML = trait.type === 'color' ? `<div class="color-circle" style="${item.colorStyle}"></div>` : rawValue;
-                    
-                    let hoverText = getTooltip(trait.key, rawValue);
-                    
-                    traitsHTML += `<div class="trait-col" title="${hoverText}" onclick="handleTraitClick('${trait.key}', '${rawValue}', event, 'card-${item.name}')"><div class="trait-value">${valHTML}</div></div>`;
+                cat.traits.forEach(trait => {
+                    let val = item[trait.key];
+                    let display = trait.type === 'color' ? `<div class="color-circle" style="${item.colorStyle}"></div>` : val;
+                    traitsHTML += `<div class="trait-col" title="${getTooltip(trait.key, val)}" onclick="handleTraitClick('${trait.key}', '${val}', event, 'card-${item.name}')"><div class="trait-value">${display}</div></div>`;
                 });
-
                 card.innerHTML = `<div class="emoji">${item.emoji}</div><div class="item-name">${item.name}</div><div class="traits-row">${traitsHTML}</div>`;
                 container.appendChild(card);
             });
-            document.getElementById('guess-count').innerText = 0;
         }
     </script>
 </body>
