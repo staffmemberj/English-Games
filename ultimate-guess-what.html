@@ -200,7 +200,7 @@
         .score-btn.sub { background-color: #e57373; color: white; }
 
         /* Modals */
-        #victory-modal, #reset-modal, #draw-warning-modal {
+        #victory-modal, #reset-modal, #draw-warning-modal, #trait-choice-modal {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0,0,0,0.8); z-index: 2000; justify-content: center; align-items: center;
         }
@@ -417,6 +417,15 @@
         </div>
     </div>
 
+    <div id="trait-choice-modal">
+        <div class="modal-content">
+            <h2 style="color: var(--main-teal); margin-top: 0;">Which characteristic?</h2>
+            <div id="trait-btn-container" style="display: flex; justify-content: center; gap: 2vw; margin-top: 3vh; flex-wrap: wrap;">
+                </div>
+            <button class="btn undo-btn" style="margin-top: 3vh;" onclick="closeTraitModal()">Cancel</button>
+        </div>
+    </div>
+
     <script>
         const gameData = {
             animals: {
@@ -428,7 +437,7 @@
                     { name: "Shark", emoji: "🦈", colorStyle: "background-color: gray;", colorName: "Grey", legs: 0, diet: "🥩" },
                     { name: "Owl", emoji: "🦉", colorStyle: "background-color: #8B4513;", colorName: "Brown", legs: 2, diet: "🥩" },
                     { name: "Elephant", emoji: "🐘", colorStyle: "background-color: gray;", colorName: "Grey", legs: 4, diet: "🌿" },
-                    { name: "Cow", emoji: "🐄", colorStyle: "background: radial-gradient(circle, black 30%, white 30%);", colorName: "Spotted", legs: 4, diet: "🌿" },
+                    { name: "Cow", emoji: "🐄", colorStyle: "background: radial-gradient(circle, black 30%, white 30%);", colorName: "Spotted,Black & White", legs: 4, diet: "🌿" },
                     { name: "Gorilla", emoji: "🦍", colorStyle: "background-color: #333;", colorName: "Black", legs: 2, diet: "🌿" },
                     { name: "Hippo", emoji: "🦛", colorStyle: "background-color: gray;", colorName: "Grey", legs: 4, diet: "🌿" },
                     { name: "Turtle", emoji: "🐢", colorStyle: "background-color: #4CAF50;", colorName: "Green", legs: 4, diet: "🌿" },
@@ -439,8 +448,8 @@
                     { name: "Deer", emoji: "🦌", colorStyle: "background-color: #8B4513;", colorName: "Brown", legs: 4, diet: "🌿" },
                     { name: "Rabbit", emoji: "🐇", colorStyle: "background-color: white;", colorName: "White", legs: 4, diet: "🌿" },
                     { name: "Otter", emoji: "🦦", colorStyle: "background-color: #8B4513;", colorName: "Brown", legs: 4, diet: "🥩" }, 
-                    { name: "Panda", emoji: "🐼", colorStyle: "background: linear-gradient(90deg, black 50%, white 50%);", colorName: "B/W", legs: 4, diet: "🌿" },
-                    { name: "Zebra", emoji: "🦓", colorStyle: "background: repeating-linear-gradient(90deg, black, black 5px, white 5px, white 10px);", colorName: "B/W", legs: 4, diet: "🌿" },
+                    { name: "Panda", emoji: "🐼", colorStyle: "background: linear-gradient(90deg, black 50%, white 50%);", colorName: "Black & White", legs: 4, diet: "🌿" },
+                    { name: "Zebra", emoji: "🦓", colorStyle: "background: repeating-linear-gradient(90deg, black, black 5px, white 5px, white 10px);", colorName: "Striped,Black & White", legs: 4, diet: "🌿" },
                     { name: "Giraffe", emoji: "🦒", colorStyle: "background: radial-gradient(circle, #8B4513 40%, #ffd700 40%);", colorName: "Spotted", legs: 4, diet: "🌿" },
                     { name: "Pig", emoji: "🐷", colorStyle: "background-color: pink;", colorName: "Pink", legs: 4, diet: "🌿" }
                 ],
@@ -525,6 +534,7 @@
         let guessCount = 0;
         let actionHistory = [];
         let gameMode = '';
+        let pendingTraitKey = "";
         
         let tempTeamCount = 0;
         let teams = [];
@@ -539,13 +549,13 @@
         let p2Score = 0;
         let isRightPanelVisible = true;
 
-        // Tooltip Helper Function
+        // Tooltip Dictionary
         function getTooltip(traitKey, value) {
             const tooltips = {
                 "🥩": "Meat Eater",
                 "🌿": "Plant Eater",
-                "🖐️": "Handheld",
-                "🍴": "Use Utensils",
+                "🖐️": "Use hands",
+                "🍴": "Use fork/spoon",
                 "🍬": "Sweet",
                 "🧂": "Salty",
                 "❄️": "Cold",
@@ -559,7 +569,7 @@
             };
             if (traitKey === 'legs') return value + " Legs";
             if (tooltips[value]) return tooltips[value];
-            return value; // Fallback for colors like "Gold", "Brown", etc.
+            return value.replace(/,/g, ' / '); 
         }
 
         function showScreen(screenId) {
@@ -839,13 +849,48 @@
             document.getElementById('guess-count').innerText = guessCount;
         }
 
-        function eliminateByTrait(traitKey, traitValue, event) {
-            event.stopPropagation(); guessCount++;
+        // --- NEW TRAIT SELECTION LOGIC ---
+        function handleTraitClick(traitKey, traitValue, event) {
+            event.stopPropagation();
+            if (traitValue.includes(',')) {
+                // If there are multiple options, show the choice modal
+                pendingTraitKey = traitKey;
+                const options = traitValue.split(',');
+                const container = document.getElementById('trait-btn-container');
+                container.innerHTML = '';
+                
+                options.forEach(opt => {
+                    const btn = document.createElement('button');
+                    btn.className = 'btn';
+                    btn.style.fontSize = '2.2vh';
+                    btn.style.padding = '1.5vh 3vw';
+                    btn.innerText = opt;
+                    btn.onclick = () => {
+                        closeTraitModal();
+                        executeElimination(traitKey, opt);
+                    };
+                    container.appendChild(btn);
+                });
+                document.getElementById('trait-choice-modal').style.display = 'flex';
+            } else {
+                // Single trait, eliminate directly
+                executeElimination(traitKey, traitValue);
+            }
+        }
+
+        function closeTraitModal() {
+            document.getElementById('trait-choice-modal').style.display = 'none';
+        }
+
+        function executeElimination(traitKey, targetValue) {
+            guessCount++;
             const elimThisTurn = [];
             currentLayout.forEach(item => {
                 const card = document.getElementById('card-' + item.name);
-                if (String(item[traitKey]) === String(traitValue) && !card.classList.contains('eliminated')) {
-                    card.classList.add('eliminated'); elimThisTurn.push('card-' + item.name);
+                // .includes() ensures we match exact subsets, like finding "Black & White" inside "Spotted,Black & White"
+                if (String(item[traitKey]).includes(targetValue) && !card.classList.contains('eliminated')) {
+                    card.classList.add('eliminated'); 
+                    elimThisTurn.push('card-' + item.name);
                 }
             });
             actionHistory.push({ type: 'trait', ids: elimThisTurn });
@@ -919,9 +964,12 @@
                 categoryObj.traits.forEach(trait => {
                     let rawValue = item[trait.key];
                     let valHTML = trait.type === 'color' ? `<div class="color-circle" style="${item.colorStyle}"></div>` : rawValue;
+                    
+                    // Generate tooltip via dictionary function
                     let hoverText = getTooltip(trait.key, rawValue);
                     
-                    traitsHTML += `<div class="trait-col" title="${hoverText}" onclick="eliminateByTrait('${trait.key}', '${rawValue}', event)"><div class="trait-value">${valHTML}</div></div>`;
+                    // Uses handleTraitClick instead of executeElimination directly
+                    traitsHTML += `<div class="trait-col" title="${hoverText}" onclick="handleTraitClick('${trait.key}', '${rawValue}', event)"><div class="trait-value">${valHTML}</div></div>`;
                 });
 
                 card.innerHTML = `<div class="emoji">${item.emoji}</div><div class="item-name">${item.name}</div><div class="traits-row">${traitsHTML}</div>`;
