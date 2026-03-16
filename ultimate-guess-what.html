@@ -539,6 +539,29 @@
         let p2Score = 0;
         let isRightPanelVisible = true;
 
+        // Tooltip Helper Function
+        function getTooltip(traitKey, value) {
+            const tooltips = {
+                "🥩": "Meat Eater",
+                "🌿": "Plant Eater",
+                "🖐️": "Handheld",
+                "🍴": "Use Utensils",
+                "🍬": "Sweet",
+                "🧂": "Salty",
+                "❄️": "Cold",
+                "♨️": "Hot",
+                "👤": "Individual Sport",
+                "👥": "Team Sport",
+                "🏠": "Indoor",
+                "🌳": "Outdoor",
+                "🚫": "No Ball/Puck",
+                "⚽": "Uses Ball/Puck"
+            };
+            if (traitKey === 'legs') return value + " Legs";
+            if (tooltips[value]) return tooltips[value];
+            return value; // Fallback for colors like "Gold", "Brown", etc.
+        }
+
         function showScreen(screenId) {
             document.querySelectorAll('.full-screen-menu').forEach(el => el.style.display = 'none');
             document.getElementById('game-wrapper').style.display = 'none';
@@ -894,8 +917,11 @@
 
                 let traitsHTML = '';
                 categoryObj.traits.forEach(trait => {
-                    let val = trait.type === 'color' ? `<div class="color-circle" style="${item.colorStyle}"></div>` : item[trait.key];
-                    traitsHTML += `<div class="trait-col" onclick="eliminateByTrait('${trait.key}', '${item[trait.key]}', event)"><div class="trait-value">${val}</div></div>`;
+                    let rawValue = item[trait.key];
+                    let valHTML = trait.type === 'color' ? `<div class="color-circle" style="${item.colorStyle}"></div>` : rawValue;
+                    let hoverText = getTooltip(trait.key, rawValue);
+                    
+                    traitsHTML += `<div class="trait-col" title="${hoverText}" onclick="eliminateByTrait('${trait.key}', '${rawValue}', event)"><div class="trait-value">${valHTML}</div></div>`;
                 });
 
                 card.innerHTML = `<div class="emoji">${item.emoji}</div><div class="item-name">${item.name}</div><div class="traits-row">${traitsHTML}</div>`;
