@@ -109,13 +109,22 @@
         .undo-btn { background-color: #9e9e9e; }
         .win-btn { background-color: var(--win-pink); animation: pulse 2s infinite; }
         
+        /* Absolute Positioned UI Elements */
         .category-select { 
             position: absolute; top: 1.5vh; left: 1.5vw;
             font-size: 2vh; padding: 0.5vh 1vw; border-radius: 10px; border: 2px solid var(--main-teal); 
             font-weight: bold; cursor: pointer; z-index: 10; background: white; color: var(--main-teal);
         }
-        .toggle-panel-btn { 
+
+        .settings-btn {
             position: absolute; top: 1.5vh; right: 1.5vw;
+            background-color: #607d8b; width: 5.5vh; height: 5.5vh; 
+            border-radius: 50%; padding: 0; display: flex; align-items: center; justify-content: center;
+            font-size: 2.8vh; z-index: 10;
+        }
+
+        .toggle-panel-btn { 
+            position: absolute; top: 8vh; right: 1.5vw;
             background-color: #607d8b; width: 5.5vh; height: 5.5vh; 
             border-radius: 50%; padding: 0; display: none; align-items: center; justify-content: center;
             font-size: 2.8vh; z-index: 10;
@@ -204,7 +213,7 @@
         .score-btn.sub { background-color: #e57373; color: white; }
 
         /* Modals */
-        #victory-modal, #reset-modal, #draw-warning-modal, #trait-choice-modal, #verify-answer-modal, #two-player-victory-modal {
+        #victory-modal, #reset-modal, #draw-warning-modal, #trait-choice-modal, #verify-answer-modal, #two-player-victory-modal, #settings-modal {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0,0,0,0.8); z-index: 2000; justify-content: center; align-items: center;
         }
@@ -214,8 +223,6 @@
             background-color: #00acc1; color: white; border: none; border-radius: 10px;
             font-weight: bold; cursor: pointer;
         }
-
-        .footer-reset { margin-top: auto; font-size: 1.2vh; color: #666; cursor: pointer; text-decoration: underline; padding-bottom: 1vh;}
     </style>
 </head>
 <body>
@@ -303,7 +310,10 @@
                 <option value="food">🍕 Food</option>
                 <option value="sports">⚽ Sports</option>
             </select>
+            
+            <button class="btn settings-btn" id="settings-btn" onclick="openSettingsModal()" title="Settings">⚙️</button>
             <button class="btn toggle-panel-btn" id="toggle-panel-btn" onclick="toggleRightPanel()" title="Toggle Right Panel">🙈</button>
+            
             <h1 id="game-title">🐾 Guess What Animal! 🐾</h1>
             <div class="top-info-bar">
                 <div class="info-box guess-box">
@@ -315,11 +325,9 @@
             <div class="controls" id="main-controls">
                 <button class="btn" onclick="renderGrid()">🔀 Shuffle Board</button>
                 <button class="btn undo-btn" onclick="undoLastAction()">↩️ Undo</button>
-                <button class="btn" onclick="resetBoard()">🔄 Reset</button>
                 <button class="btn win-btn" onclick="triggerVictory()">🎉 Found It!</button>
             </div>
             <div id="grid-container"></div>
-            <div class="footer-reset" onclick="location.reload()">Exit Game / Return to Menu</div>
         </div>
 
         <div id="right-panel">
@@ -372,6 +380,18 @@
     <div id="trait-choice-modal"><div class="modal-content"><h2 style="color: var(--main-teal);">Which characteristic?</h2><div id="trait-btn-container" style="display: flex; justify-content: center; gap: 2vw; margin-top: 3vh; flex-wrap: wrap;"></div><button class="btn undo-btn" style="margin-top: 3vh;" onclick="closeTraitModal()">Cancel</button></div></div>
     <div id="verify-answer-modal"><div class="modal-content"><h2 style="color: var(--main-teal); margin-top: 0;">Ask your opponent:</h2><p id="verify-question-text" style="font-size: 3.5vh; font-weight: bold; margin: 4vh 0;"></p><div style="display: flex; justify-content: center; gap: 2vw;"><button class="btn" style="background-color: #4CAF50; font-size: 2.2vh; padding: 1.5vh 3vw;" onclick="verifySuccess()">Yes</button><button class="btn" style="background-color: #f44336; font-size: 2.2vh; padding: 1.5vh 3vw;" onclick="closeVerifyModal()">No</button></div></div></div>
     <div id="two-player-victory-modal"><div class="modal-content"><h2 style="color: #4CAF50; font-size: 4vh;">🎉 YOU FOUND IT! 🎉</h2><p id="victory-stats-text" style="font-size: 2.5vh; margin: 3vh 0;"></p><button class="btn draw-btn" style="width: auto; padding: 2vh 4vw;" onclick="closeTwoPlayerVictory()">Next Round</button></div></div>
+    
+    <div id="settings-modal">
+        <div class="modal-content">
+            <h2 style="color: var(--main-teal); margin-top: 0;">⚙️ Game Settings ⚙️</h2>
+            <div style="display: flex; flex-direction: column; gap: 2vh; margin-top: 3vh; align-items: center;">
+                <button class="btn" style="background-color: var(--guess-blue); width: 80%; font-size: 2.2vh; padding: 1.5vh;" onclick="executeSettingsReset()">🔄 Reset Board</button>
+                <button class="btn" style="background-color: var(--accent-orange); width: 80%; font-size: 2.2vh; padding: 1.5vh;" onclick="location.reload()">🏠 Setup / Menu</button>
+                <button class="btn" style="background-color: #f44336; width: 80%; font-size: 2.2vh; padding: 1.5vh; color: white;" onclick="window.close()">✖️ Close Window</button>
+                <button class="btn undo-btn" style="width: 80%; font-size: 2.2vh; padding: 1.5vh; margin-top: 1vh;" onclick="closeSettingsModal()">Back</button>
+            </div>
+        </div>
+    </div>
 
     <script>
         const gameData = {
@@ -598,6 +618,12 @@
         function triggerResetScores() { document.getElementById('reset-modal').style.display = 'flex'; }
         function closeResetModal() { document.getElementById('reset-modal').style.display = 'none'; }
         function executeResetScores() { teams.forEach(t => t.score = 0); updateTeamLeaderboard(); closeResetModal(); }
+        
+        // --- NEW SETTINGS LOGIC ---
+        function openSettingsModal() { document.getElementById('settings-modal').style.display = 'flex'; }
+        function closeSettingsModal() { document.getElementById('settings-modal').style.display = 'none'; }
+        function executeSettingsReset() { resetBoard(); closeSettingsModal(); }
+
         function adjScore(n, a) { if (n === 1) { p1Score = Math.max(0, p1Score + a); document.getElementById('p1-score').innerText = p1Score; } else { p2Score = Math.max(0, p2Score + a); document.getElementById('p2-score').innerText = p2Score; } }
 
         function drawSecretCard(manual = false) {
@@ -683,14 +709,17 @@
                     modal.querySelector('#draw-continue-btn').style.display = 'none'; modal.querySelector('.undo-btn').innerText = "OK"; modal.style.display = 'flex';
                     return;
                 }
+                
                 const itemName = lastAction.name;
                 let question = "";
+                
                 if (currentCategory === 'animals') {
                     const vowel = /^[aeiou]/i.test(itemName);
                     question = `Is it ${vowel ? 'an' : 'a'} ${itemName}?`;
                 } else {
                     question = `Is it ${itemName}?`;
                 }
+                
                 document.getElementById('verify-question-text').innerText = question;
                 document.getElementById('verify-answer-modal').style.display = 'flex';
             }
