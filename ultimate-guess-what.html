@@ -26,6 +26,7 @@
             display: flex;
             flex-direction: column;
             box-sizing: border-box;
+            transition: background-color 0.3s, color 0.3s;
         }
 
         /* Menus */
@@ -34,10 +35,12 @@
             display: flex; flex-direction: column; align-items: center; justify-content: center;
             background: linear-gradient(135deg, #00acc1, var(--main-teal));
             color: white; z-index: 1000;
+            transition: background 0.3s;
         }
         .menu-box {
             background: white; padding: 5vh 5vw; border-radius: 30px; color: #333;
             box-shadow: 0 10px 20px rgba(0,0,0,0.2); max-width: 90%;
+            transition: background-color 0.3s, color 0.3s;
         }
         .menu-title { font-size: clamp(16px, 4.5vw, 4vh); white-space: nowrap; color: var(--main-teal); margin: 0 0 2vh 0; }
         .menu-btn-container { display: flex; justify-content: center; gap: 2vw; margin-top: 3vh; flex-wrap: wrap;}
@@ -68,6 +71,7 @@
             flex: 1.2; display: flex; flex-direction: column; align-items: center; 
             padding: 1.5vh 1vw; background-color: #e0f2f1; height: 100%; box-sizing: border-box;
             border-left: 4px dashed #b2ebf2; display: none; overflow-y: auto;
+            transition: background-color 0.3s, border-color 0.3s;
         }
 
         #right-panel-top-content {
@@ -77,7 +81,7 @@
 
         h1 { font-size: 2.8vh; color: var(--main-teal); margin: 0.5vh 0; }
         
-        .top-info-bar { display: flex; justify-content: center; align-items: flex-start; gap: 2vw; margin-bottom: 1.5vh; }
+        .top-info-bar { display: flex; justify-content: center; align-items: flex-start; gap: 2vw; margin-bottom: 0.5vh; }
         #team-leaderboard-container { display: none; flex-direction: row; align-items: flex-start; }
         .leaderboard { display: flex; justify-content: center; gap: 1vw; flex-wrap: wrap; }
         
@@ -85,6 +89,7 @@
             background: white; padding: 0.5vh 1vw; border-radius: 12px; border: 3px solid #ffcc80;
             min-width: 6vw; box-shadow: 0 2px 4px rgba(0,0,0,0.1);
             display: flex; flex-direction: column; align-items: center; justify-content: center;
+            transition: background-color 0.3s;
         }
         .guess-box { border-color: var(--guess-blue); min-width: 9vw; justify-content: flex-start; padding-top: 1vh;}
         .label-text { font-weight: bold; color: var(--main-teal); font-size: 1.4vh; text-transform: uppercase; }
@@ -97,7 +102,7 @@
             font-weight: bold; cursor: pointer; width: 100%; transition: transform 0.1s;
         }
 
-        .controls { margin-top: 1.5vh; margin-bottom: 1vh; display: flex; justify-content: center; align-items: center; gap: 1.5vw; flex-wrap: wrap;}
+        .controls { margin-bottom: 1vh; display: flex; justify-content: center; align-items: center; gap: 1vw; flex-wrap: wrap;}
         
         .btn {
             background-color: var(--accent-orange); color: white; border: none; padding: 0.8vh 1.5vw;
@@ -107,22 +112,19 @@
         .btn:active { transform: scale(0.95); }
         .btn:disabled { background-color: #bdbdbd !important; cursor: default; transform: none; }
         .undo-btn { background-color: #9e9e9e; }
-        .win-btn { background-color: var(--win-pink); animation: pulse 2s infinite; font-size: 2.2vh; padding: 1.2vh 3vw; }
         
-        /* Absolute Positioned UI Elements */
         .category-select { 
             position: absolute; top: 1.5vh; left: 1.5vw;
             font-size: 2vh; padding: 0.5vh 1vw; border-radius: 10px; border: 2px solid var(--main-teal); 
             font-weight: bold; cursor: pointer; z-index: 10; background: white; color: var(--main-teal);
+            transition: background-color 0.3s, color 0.3s;
         }
-
-        .settings-btn {
+        .settings-btn { 
             position: absolute; top: 1.5vh; right: 1.5vw;
             background-color: #607d8b; width: 5.5vh; height: 5.5vh; 
             border-radius: 50%; padding: 0; display: flex; align-items: center; justify-content: center;
             font-size: 2.8vh; z-index: 10;
         }
-
         .toggle-panel-btn { 
             position: absolute; top: 8vh; right: 1.5vw;
             background-color: #607d8b; width: 5.5vh; height: 5.5vh; 
@@ -130,7 +132,6 @@
             font-size: 2.8vh; z-index: 10;
         }
         
-        /* Common Box Sizing to ensure uniform widths in the right panel */
         .secret-card-display, .dice-display, .draw-btn, #sidebar-content-container, .score-row, .reset-scores-btn {
             width: 90%; box-sizing: border-box; margin-bottom: 1vh;
         }
@@ -138,9 +139,6 @@
         .reset-scores-btn { background-color: #f44336; font-size: 1.8vh; padding: 1vh; margin-top: auto; flex-shrink: 0; }
         .reset-scores-btn:hover { background-color: #d32f2f; transform: scale(1.05); }
         
-        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.03); } 100% { transform: scale(1); } }
-
-        /* Grid */
         #grid-container {
             flex: 1; min-height: 0; display: grid;
             grid-template-columns: repeat(5, 1fr); grid-template-rows: repeat(4, 1fr); 
@@ -153,30 +151,29 @@
         }
         .card.eliminated { opacity: 0.15; filter: grayscale(100%); transform: scale(0.92); box-shadow: none; cursor: default; }
         .emoji { font-size: 4.5vh; line-height: 1; pointer-events: none; }
-        .item-name { font-size: 1.8vh; font-weight: bold; margin: 0; pointer-events: none; }
+        .item-name { font-size: 1.8vh; font-weight: bold; margin: 0; pointer-events: none; transition: color 0.3s;}
         .traits-row { display: flex; width: 100%; justify-content: space-around; }
-        .trait-col { display: flex; flex-direction: column; align-items: center; padding: 0.3vh; border-radius: 1vh; cursor: pointer; }
+        .trait-col { display: flex; flex-direction: column; align-items: center; padding: 0.3vh; border-radius: 1vh; cursor: pointer; transition: background-color 0.2s;}
         .card:not(.eliminated) .trait-col:hover { background-color: #f0f0f0; }
         .trait-value { font-size: 2.5vh; font-weight: bold; pointer-events: none; }
-        .color-circle { width: 2.8vh; height: 2.8vh; border-radius: 50%; border: 2px solid #bdbdbd; pointer-events: none; }
+        .color-circle { width: 2.8vh; height: 2.8vh; border-radius: 50%; border: 2px solid #bdbdbd; pointer-events: none; transition: border-color 0.3s;}
 
-        /* Right Panel Shared Elements */
         .sidebar-title { font-size: 2vh; color: var(--main-teal); font-weight: bold; margin-bottom: 1vh; text-transform: uppercase; text-align: center;}
         
         #twop-secret-card-container { display: flex; flex-direction: column; align-items: center; width: 100%; }
         .secret-card-display {
             background: white; border: 0.6vh solid var(--win-pink); border-radius: 20px;
             padding: 1.5vh 1vw; display: flex; align-items: center; justify-content: center; gap: 1vw;
-            box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.15); transition: background-color 0.3s;
         }
         .sc-emoji { font-size: 5vh; }
-        .sc-name { font-size: 2.5vh; font-weight: bold; color: #333; }
+        .sc-name { font-size: 2.5vh; font-weight: bold; color: #333; transition: color 0.3s;}
 
         #team-dice-container { display: flex; flex-direction: column; align-items: center; width: 100%; }
         .dice-display {
             background: white; border: 0.5vh solid var(--accent-orange); border-radius: 15px;
             padding: 0.8vh; display: flex; flex-direction: column; align-items: center; justify-content: center;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1); transition: background-color 0.3s;
         }
         .dice-label { font-size: 1.3vh; font-weight: bold; color: #757575; text-transform: uppercase; }
         .dice-value { font-size: 3vh; font-weight: bold; color: var(--main-teal); }
@@ -189,12 +186,13 @@
         #sidebar-content-container {
             background: white; border: 0.4vh solid #00acc1; border-radius: 15px;
             padding: 1.2vh 1.5vw; margin-top: 0.5vh; text-align: left; box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            transition: background-color 0.3s;
         }
         .sidebar-subtitle { font-weight: bold; color: var(--main-teal); font-size: 1.5vh; text-align: left; margin-bottom: 0.5vh; margin-top: 0.5vh; }
         #example-questions-list { margin: 0; padding-left: 20px; font-size: 1.3vh; color: #333; text-align: left; list-style-type: disc; }
         #example-questions-list li { margin-bottom: 0.3vh; }
         
-        #vocab-container { font-size: 1.3vh; color: #333; text-align: left; }
+        #vocab-container { font-size: 1.3vh; color: #333; text-align: left; transition: color 0.3s;}
         .vocab-group-title { font-weight: bold; margin-top: 1.2vh; margin-bottom: 0.2vh; }
         .vocab-group-list { margin: 0; padding-left: 20px; list-style-type: disc; }
         .vocab-group-list li { margin-bottom: 0.3vh; }
@@ -203,7 +201,7 @@
         .score-row {
             background: white; border: 3px solid #ffcc80; border-radius: 15px;
             padding: 1vh 1vw; display: flex; flex-direction: column; align-items: center;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1); margin-bottom: 0.5vh;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1); margin-bottom: 0.5vh; transition: background-color 0.3s;
         }
         .score-header { font-weight: bold; color: var(--main-teal); font-size: 1.8vh; margin-bottom: 0.3vh; }
         .score-number { font-size: 3.5vh; color: #ff5722; font-weight: bold; }
@@ -211,23 +209,114 @@
         .score-btn { 
             background-color: #e0e0e0; border: none; font-size: 2vh; font-weight: bold; 
             width: 3.5vh; height: 3.5vh; border-radius: 50%; cursor: pointer; color: #333;
+            display: flex; align-items: center; justify-content: center; padding: 0; transition: background-color 0.3s, color 0.3s;
         }
         .score-btn.add { background-color: #81c784; color: white; }
         .score-btn.sub { background-color: #e57373; color: white; }
 
         /* Modals */
-        #victory-modal, #reset-modal, #draw-warning-modal, #trait-choice-modal, #verify-answer-modal, #two-player-victory-modal, #settings-modal {
+        .modal-overlay {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0,0,0,0.8); z-index: 2000; justify-content: center; align-items: center;
         }
-        .modal-content { background: white; padding: 3vh; border-radius: 20px; width: 40vw; text-align: center; }
+        .modal-content { background: white; padding: 3vh; border-radius: 20px; width: 40vw; text-align: center; transition: background-color 0.3s;}
         .team-award-btn {
             display: block; width: 100%; margin: 1vh 0; padding: 1.5vh; font-size: 2.2vh;
             background-color: #00acc1; color: white; border: none; border-radius: 10px;
             font-weight: bold; cursor: pointer;
         }
-
         .footer-reset { margin-top: auto; font-size: 1.2vh; color: #666; cursor: pointer; text-decoration: underline; padding-bottom: 1vh;}
+
+        /* 📱 Mobile Mode Overrides */
+        body.mobile-mode {
+            overflow-y: auto !important;
+            overflow-x: hidden;
+            height: auto;
+        }
+        body.mobile-mode #game-wrapper {
+            flex-direction: column !important;
+            height: auto !important;
+            min-height: 100vh;
+        }
+        body.mobile-mode #left-panel {
+            min-height: 100vh;
+            border-right: none !important;
+            border-bottom: 4px dashed #b2ebf2;
+            padding: 1vh 1vw;
+        }
+        body.mobile-mode #right-panel {
+            width: 100%;
+            border-left: none !important;
+            height: auto;
+            min-height: 80vh;
+            display: flex !important; /* Force panel below board */
+        }
+        body.mobile-mode .toggle-panel-btn {
+            display: none !important;
+        }
+        body.mobile-mode #grid-container {
+            grid-template-columns: repeat(4, 1fr) !important;
+            grid-template-rows: repeat(5, 1fr) !important;
+        }
+        body.mobile-mode .card {
+            min-height: 12vh;
+        }
+        body.mobile-mode .modal-content {
+            width: 85vw;
+        }
+
+        /* 🌙 Dark Mode Overrides */
+        body.dark-mode {
+            --bg-color: #121212;
+            --main-teal: #80deea;
+            color: #e0e0e0;
+        }
+        body.dark-mode .full-screen-menu {
+            background: linear-gradient(135deg, #00363a, #001214);
+        }
+        body.dark-mode .menu-box, 
+        body.dark-mode .card, 
+        body.dark-mode .info-box, 
+        body.dark-mode .secret-card-display, 
+        body.dark-mode .dice-display, 
+        body.dark-mode .score-row, 
+        body.dark-mode #sidebar-content-container, 
+        body.dark-mode .modal-content {
+            background-color: #2d2d2d;
+            border-color: #004d40;
+        }
+        body.dark-mode .sc-name,
+        body.dark-mode .item-name,
+        body.dark-mode #vocab-container,
+        body.dark-mode #example-questions-list {
+            color: #e0e0e0;
+        }
+        body.dark-mode p[style*="color: #333"] { 
+            color: #e0e0e0 !important; 
+        }
+        body.dark-mode .category-select {
+            background-color: #2d2d2d;
+            color: var(--main-teal);
+        }
+        body.dark-mode .card:not(.eliminated) .trait-col:hover {
+            background-color: #424242 !important;
+        }
+        body.dark-mode .color-circle {
+            border-color: #757575;
+        }
+        body.dark-mode #right-panel {
+            background-color: #1e1e1e;
+        }
+        body.dark-mode #left-panel {
+            border-right-color: #004d40;
+        }
+        body.dark-mode.mobile-mode #left-panel {
+            border-bottom-color: #004d40;
+        }
+        body.dark-mode .score-btn { 
+            color: #e0e0e0; 
+            background-color: #424242; 
+        }
     </style>
 </head>
 <body>
@@ -238,6 +327,11 @@
             <div class="menu-btn-container">
                 <button class="menu-btn" style="background-color: #0288d1;" onclick="showScreen('twop-menu')">🤝 1-on-1 (2-Player)</button>
                 <button class="menu-btn" onclick="showScreen('team-setup-menu')">🏫 Classroom Teams</button>
+            </div>
+            
+            <div style="display: flex; justify-content: center; gap: 2vw; margin-top: 4vh; border-top: 2px dashed #b2ebf2; padding-top: 3vh;">
+                <button class="btn device-toggle-btn" style="background-color: #607d8b; font-size: 1.8vh;" onclick="toggleDeviceMode()">💻 PC Mode</button>
+                <button class="btn theme-toggle-btn" style="background-color: #607d8b; font-size: 1.8vh;" onclick="toggleThemeMode()">☀️ Light Mode</button>
             </div>
         </div>
     </div>
@@ -321,21 +415,17 @@
             
             <h1 id="game-title">🐾 Guess What Animal! 🐾</h1>
             <div class="top-info-bar">
-                <div class="info-box guess-box">
-                    <div class="label-text">🎯 Guesses</div>
-                    <div class="guess-text" id="guess-count">0</div>
+                <div style="display: flex; flex-direction: column; align-items: center; gap: 1vh; width: 9vw;">
+                    <div class="info-box guess-box">
+                        <div class="label-text">🎯 Guesses</div>
+                        <div class="guess-text" id="guess-count">0</div>
+                    </div>
+                    <button class="btn undo-btn" id="left-undo-btn" onclick="undoLastAction()" style="display:none; font-size:1.6vh; padding:0.5vh 1vw; width: 100%;">↩️ Undo</button>
                 </div>
                 <div id="team-leaderboard-container"><div class="leaderboard" id="leaderboard"></div></div>
             </div>
             
             <div id="grid-container"></div>
-            
-            <div class="controls" id="main-controls">
-                <button class="btn" onclick="renderGrid()">🔀 Shuffle</button>
-                <button class="btn win-btn" onclick="triggerVictory()">🎉 Found It!</button>
-                <button class="btn undo-btn" onclick="undoLastAction()">↩️ Undo</button>
-            </div>
-            
         </div>
 
         <div id="right-panel">
@@ -357,10 +447,14 @@
                     <div class="sidebar-title">Your Secret Card</div>
                     <div class="secret-card-display" id="secret-card"><div class="sc-emoji" id="sc-emoji">❓</div><div class="sc-name" id="sc-name">???</div></div>
                     <button class="btn draw-btn" onclick="drawSecretCard(true)">🃏 Draw New Card</button>
+                    <div id="right-action-btns" style="display:flex; width:90%; gap:1vw; margin-bottom: 1.5vh;">
+                        <button class="btn undo-btn" onclick="undoLastAction()" style="flex:1;">↩️ Undo</button>
+                        <button class="btn" onclick="renderGrid()" style="flex:1;">🔀 Shuffle</button>
+                    </div>
                 </div>
 
                 <div id="sidebar-content-container">
-                    <div class="sidebar-subtitle" style="color:#e91e63;">💡 Example Questions</div>
+                    <div class="sidebar-subtitle" style="color:#e91e63;" id="example-q-header">💡 Example Questions</div>
                     <ul id="example-questions-list"></ul>
                     <div class="sidebar-subtitle" style="color:#ff9800; margin-top: 1.5vh;">📚 Key Vocabulary</div>
                     <div id="vocab-container"></div>
@@ -368,31 +462,88 @@
 
                 <div id="twop-scoreboard-container">
                     <div class="sidebar-title" style="margin-top: 1vh;">Scoreboard</div>
-                    <div class="score-row">
-                        <div class="score-header" id="p1-label">Player 1</div><div class="score-number" id="p1-score">0</div>
-                        <div class="score-controls"><button class="score-btn sub" onclick="adjScore(1, -1)">-</button><button class="score-btn add" onclick="adjScore(1, 1)">+</button></div>
+                    
+                    <div class="score-row" id="p1-score-row">
+                        <div class="score-header" id="p1-label">My Points</div>
+                        <div class="score-number" id="p1-score">0</div>
+                        <div class="score-controls" id="p1-controls" style="display:none;">
+                            <button class="score-btn sub" onclick="adjScore(1, -1)">-</button>
+                            <button class="score-btn add" onclick="adjScore(1, 1)">+</button>
+                        </div>
                     </div>
-                    <div class="score-row">
-                        <div class="score-header" id="p2-label">Player 2</div><div class="score-number" id="p2-score">0</div>
-                        <div class="score-controls"><button class="score-btn sub" onclick="adjScore(2, -1)">-</button><button class="score-btn add" onclick="adjScore(2, 1)">+</button></div>
+                    
+                    <div class="score-row" id="p2-score-row" style="display:none;">
+                        <div class="score-header" id="p2-label">Student</div>
+                        <div class="score-number" id="p2-score">0</div>
+                        <div class="score-controls" id="p2-controls" style="display:none;">
+                            <button class="score-btn sub" onclick="adjScore(2, -1)">-</button>
+                            <button class="score-btn add" onclick="adjScore(2, 1)">+</button>
+                        </div>
                     </div>
+                    
                 </div>
             </div>
-            <button class="btn reset-scores-btn" id="classroom-reset-btn" onclick="triggerResetScores()">🗑️ Reset Scores</button>
+            <button class="btn reset-scores-btn" id="classroom-reset-btn" onclick="triggerResetScores()">🗑️ Reset Score</button>
         </div>
     </div>
 
-    <div id="victory-modal"><div class="modal-content"><h2 id="modal-points-title">Award points to:</h2><div id="team-award-list"></div><button class="btn undo-btn" onclick="closeVictoryModal()">Cancel</button></div></div>
-    <div id="reset-modal"><div class="modal-content"><h2 style="color: var(--main-teal);">Are you sure?</h2><div style="display: flex; justify-content: center; gap: 2vw; margin-top: 3vh;"><button class="btn" style="background-color: #f44336;" onclick="executeResetScores()">Yes</button><button class="btn undo-btn" onclick="closeResetModal()">No</button></div></div></div>
-    <div id="draw-warning-modal"><div class="modal-content"><h2 style="color: #e91e63;">⚠️ WARNING! ⚠️</h2><p id="draw-warning-text" style="font-size: 2.2vh;">Only draw a new card if the round is over.</p><div style="display: flex; justify-content: center; gap: 2vw;"><button class="btn" id="draw-continue-btn" style="background-color: #4CAF50;" onclick="confirmDrawCard()">Draw New Card</button><button class="btn undo-btn" onclick="closeDrawWarningModal()">Back</button></div></div></div>
-    <div id="trait-choice-modal"><div class="modal-content"><h2 style="color: var(--main-teal);">Which characteristic?</h2><div id="trait-btn-container" style="display: flex; justify-content: center; gap: 2vw; margin-top: 3vh; flex-wrap: wrap;"></div><button class="btn undo-btn" style="margin-top: 3vh;" onclick="closeTraitModal()">Cancel</button></div></div>
-    <div id="verify-answer-modal"><div class="modal-content"><h2 style="color: var(--main-teal); margin-top: 0;">Ask your opponent:</h2><p id="verify-question-text" style="font-size: 3.5vh; font-weight: bold; margin: 4vh 0;"></p><div style="display: flex; justify-content: center; gap: 2vw;"><button class="btn" style="background-color: #4CAF50; font-size: 2.2vh; padding: 1.5vh 3vw;" onclick="verifySuccess()">Yes</button><button class="btn" style="background-color: #f44336; font-size: 2.2vh; padding: 1.5vh 3vw;" onclick="closeVerifyModal()">No</button></div></div></div>
-    <div id="two-player-victory-modal"><div class="modal-content"><h2 style="color: #4CAF50; font-size: 4vh;">🎉 YOU FOUND IT! 🎉</h2><p id="victory-stats-text" style="font-size: 2.5vh; margin: 3vh 0;"></p><button class="btn draw-btn" style="width: auto; padding: 2vh 4vw;" onclick="closeTwoPlayerVictory()">Next Round</button></div></div>
+    <div id="victory-modal" class="modal-overlay"><div class="modal-content"><h2 id="modal-points-title" style="color: var(--main-teal);">Award points to:</h2><div id="team-award-list"></div><button class="btn undo-btn" onclick="closeVictoryModal()">Cancel</button></div></div>
     
-    <div id="settings-modal">
+    <div id="reset-modal" class="modal-overlay">
+        <div class="modal-content">
+            <h2 style="color: var(--main-teal); margin-top: 0;">Are you sure?</h2>
+            <p style="font-size: 2.2vh; color: #333; margin-bottom: 2vh;">This will reset points to 0 and cannot be undone.</p>
+            <div style="display: flex; justify-content: center; gap: 2vw; margin-top: 3vh;">
+                <button class="btn" id="reset-confirm-btn" style="background-color: #f44336; font-size: 2.2vh; padding: 1.5vh 3vw;" onclick="executeResetScores()">Yes</button>
+                <button class="btn undo-btn" style="font-size: 2.2vh; padding: 1.5vh 3vw;" onclick="closeResetModal()">No</button>
+            </div>
+        </div>
+    </div>
+    
+    <div id="draw-warning-modal" class="modal-overlay"><div class="modal-content"><h2 style="color: #e91e63;">⚠️ WARNING! ⚠️</h2><p id="draw-warning-text" style="font-size: 2.2vh;">Only draw a new card if the round is over.</p><div style="display: flex; justify-content: center; gap: 2vw;"><button class="btn" id="draw-continue-btn" style="background-color: #4CAF50;" onclick="confirmDrawCard()">Draw New Card</button><button class="btn undo-btn" onclick="closeDrawWarningModal()">Back</button></div></div></div>
+    
+    <div id="trait-choice-modal" class="modal-overlay"><div class="modal-content"><h2 style="color: var(--main-teal);">Which characteristic?</h2><div id="trait-btn-container" style="display: flex; justify-content: center; gap: 2vw; margin-top: 3vh; flex-wrap: wrap;"></div><button class="btn undo-btn" style="margin-top: 3vh;" onclick="closeTraitModal()">Cancel</button></div></div>
+    
+    <div id="trait-question-modal" class="modal-overlay">
+        <div class="modal-content">
+            <h2 style="color: var(--main-teal); margin-top: 0;">Ask your opponent:</h2>
+            <p id="trait-question-text" style="font-size: 3.5vh; font-weight: bold; margin: 4vh 0;"></p>
+            <div style="display: flex; justify-content: center; gap: 2vw;">
+                <button class="btn" id="trait-yes-btn" style="background-color: #4CAF50; font-size: 2.2vh; padding: 1.5vh 3vw;" onclick="answerTraitQuestion(true)">👍 Yes</button>
+                <button class="btn" id="trait-no-btn" style="background-color: #f44336; font-size: 2.2vh; padding: 1.5vh 3vw;" onclick="answerTraitQuestion(false)">👎 No</button>
+            </div>
+            <button class="btn undo-btn" style="margin-top: 3vh; font-size: 1.8vh;" onclick="closeTraitQuestionModal()">Cancel</button>
+        </div>
+    </div>
+
+    <div id="verify-answer-modal" class="modal-overlay">
+        <div class="modal-content">
+            <h2 style="color: var(--main-teal); margin-top: 0;">Ask your opponent:</h2>
+            <p id="verify-question-text" style="font-size: 3.5vh; font-weight: bold; margin: 4vh 0;"></p>
+            <div style="display: flex; justify-content: center; gap: 2vw;">
+                <button class="btn" id="verify-yes-btn" style="background-color: #4CAF50; font-size: 2.2vh; padding: 1.5vh 3vw;" onclick="verifySuccess()">👍 Yes</button>
+                <button class="btn" id="verify-no-btn" style="background-color: #f44336; font-size: 2.2vh; padding: 1.5vh 3vw;" onclick="verifyNo()">👎 No</button>
+            </div>
+            <button class="btn undo-btn" style="margin-top: 3vh; font-size: 1.8vh;" onclick="closeVerifyModal()">Cancel</button>
+        </div>
+    </div>
+
+    <div id="two-player-victory-modal" class="modal-overlay">
+        <div class="modal-content">
+            <h2 style="color: #4CAF50; font-size: 4vh;">🎉 YOU FOUND IT! 🎉</h2>
+            <p id="victory-stats-text" style="font-size: 2.5vh; margin: 3vh 0;"></p>
+            <button class="btn draw-btn" style="width: auto; padding: 2vh 4vw;" onclick="closeTwoPlayerVictory()">Next Round</button>
+        </div>
+    </div>
+    
+    <div id="settings-modal" class="modal-overlay">
         <div class="modal-content">
             <h2 style="color: var(--main-teal); margin-top: 0;">⚙️ Game Settings ⚙️</h2>
             <div style="display: flex; flex-direction: column; gap: 2vh; margin-top: 3vh; align-items: center;">
+                <div style="display: flex; gap: 2vw; width: 80%;">
+                    <button class="btn device-toggle-btn" style="background-color: #607d8b; flex: 1; font-size: 1.8vh; padding: 1.5vh;" onclick="toggleDeviceMode()">💻 PC Mode</button>
+                    <button class="btn theme-toggle-btn" style="background-color: #607d8b; flex: 1; font-size: 1.8vh; padding: 1.5vh;" onclick="toggleThemeMode()">☀️ Light Mode</button>
+                </div>
                 <button class="btn" style="background-color: var(--guess-blue); width: 80%; font-size: 2.2vh; padding: 1.5vh;" onclick="executeSettingsReset()">🔄 Reset Board</button>
                 <button class="btn" style="background-color: var(--accent-orange); width: 80%; font-size: 2.2vh; padding: 1.5vh;" onclick="location.reload()">🏠 Setup / Menu</button>
                 <button class="btn" style="background-color: #f44336; width: 80%; font-size: 2.2vh; padding: 1.5vh; color: white;" onclick="window.close()">✖️ Close Window</button>
@@ -402,6 +553,27 @@
     </div>
 
     <script>
+        let isMobileMode = false;
+        let isDarkMode = false;
+        
+        function toggleDeviceMode() {
+            isMobileMode = !isMobileMode;
+            document.querySelectorAll('.device-toggle-btn').forEach(btn => {
+                btn.innerHTML = isMobileMode ? '📱 Mobile Mode' : '💻 PC Mode';
+            });
+            if (isMobileMode) document.body.classList.add('mobile-mode');
+            else document.body.classList.remove('mobile-mode');
+        }
+
+        function toggleThemeMode() {
+            isDarkMode = !isDarkMode;
+            document.querySelectorAll('.theme-toggle-btn').forEach(btn => {
+                btn.innerHTML = isDarkMode ? '🌙 Dark Mode' : '☀️ Light Mode';
+            });
+            if (isDarkMode) document.body.classList.add('dark-mode');
+            else document.body.classList.remove('dark-mode');
+        }
+
         const gameData = {
             animals: {
                 title: "🐾 Guess What Animal! 🐾",
@@ -412,7 +584,7 @@
                     { name: "shark", emoji: "🦈", colorStyle: "background-color: gray;", colorName: "grey", legs: 0, diet: "🥩" },
                     { name: "owl", emoji: "🦉", colorStyle: "background-color: #8B4513;", colorName: "brown", legs: 2, diet: "🥩" },
                     { name: "elephant", emoji: "🐘", colorStyle: "background-color: gray;", colorName: "grey", legs: 4, diet: "🌿" },
-                    { name: "cow", emoji: "🐄", colorStyle: "background: radial-gradient(circle, black 30%, white 30%);", colorName: "spotted,black & white", legs: 4, diet: "🌿" },
+                    { name: "cow", emoji: "🐄", colorStyle: "background: radial-gradient(circle, black 30%, white 30%);", colorName: "spotted,black and white", legs: 4, diet: "🌿" },
                     { name: "gorilla", emoji: "🦍", colorStyle: "background-color: #333;", colorName: "black", legs: 2, diet: "🌿" },
                     { name: "hippo", emoji: "🦛", colorStyle: "background-color: gray;", colorName: "grey", legs: 4, diet: "🌿" },
                     { name: "turtle", emoji: "🐢", colorStyle: "background-color: #4CAF50;", colorName: "green", legs: 4, diet: "🌿" },
@@ -423,15 +595,19 @@
                     { name: "deer", emoji: "🦌", colorStyle: "background-color: #8B4513;", colorName: "brown", legs: 4, diet: "🌿" },
                     { name: "rabbit", emoji: "🐇", colorStyle: "background-color: white;", colorName: "white", legs: 4, diet: "🌿" },
                     { name: "otter", emoji: "🦦", colorStyle: "background-color: #8B4513;", colorName: "brown", legs: 4, diet: "🥩" }, 
-                    { name: "panda", emoji: "🐼", colorStyle: "background: linear-gradient(90deg, black 50%, white 50%);", colorName: "black & white", legs: 4, diet: "🌿" },
-                    { name: "zebra", emoji: "🦓", colorStyle: "background: repeating-linear-gradient(90deg, black, black 5px, white 5px, white 10px);", colorName: "striped,black & white", legs: 4, diet: "🌿" },
-                    { name: "giraffe", emoji: "🦒", colorStyle: "background: radial-gradient(circle, #8B4513 40%, #ffd700 40%);", colorName: "spotted,yellow & brown", legs: 4, diet: "🌿" },
+                    { name: "panda", emoji: "🐼", colorStyle: "background: linear-gradient(90deg, black 50%, white 50%);", colorName: "black and white", legs: 4, diet: "🌿" },
+                    { name: "zebra", emoji: "🦓", colorStyle: "background: repeating-linear-gradient(90deg, black, black 5px, white 5px, white 10px);", colorName: "striped,black and white", legs: 4, diet: "🌿" },
+                    { name: "giraffe", emoji: "🦒", colorStyle: "background: radial-gradient(circle, #8B4513 40%, #ffd700 40%);", colorName: "spotted,yellow and brown", legs: 4, diet: "🌿" },
                     { name: "pig", emoji: "🐷", colorStyle: "background-color: pink;", colorName: "pink", legs: 4, diet: "🌿" }
                 ],
-                examples: ["Is it brown?", "Does it have spots?", "Does it have 4 legs?", "Is it a plant-eater?"],
+                examples: [
+                    "Is it brown?",
+                    "Does it have 4 legs?",
+                    "Is it a meat-eater?"
+                ],
                 vocab: [
-                    { title: "colors/patterns", items: ["gold", "brown", "grey", "black", "green", "tan", "white", "pink", "black & white", "spotted", "striped", "yellow & brown"] },
-                    { title: "diet", items: ["meat-eater 🥩", "plant-eater 🌿"] }
+                    { title: "Colors/patterns", items: ["gold", "brown", "grey", "black", "green", "tan", "white", "pink", "black and white", "spotted", "striped", "yellow and brown"] },
+                    { title: "Diet", items: ["meat-eater 🥩", "plant-eater 🌿"] }
                 ]
             },
             food: {
@@ -459,11 +635,15 @@
                     { name: "hot dog", emoji: "🌭", style: "🖐️", taste: "🧂", temp: "♨️" },
                     { name: "corn", emoji: "🌽", style: "🖐️", taste: "🍬", temp: "♨️" }
                 ],
-                examples: ["Do you use hands to eat it?", "Is it sweet?", "Is it salty?", "Is it hot?"],
+                examples: [
+                    "Do you use your hands to eat it?",
+                    "Is it sweet?",
+                    "Is it hot?"
+                ],
                 vocab: [
-                    { title: "style", items: ["use hands 🖐️", "use fork/spoon 🍴"] },
-                    { title: "taste", items: ["sweet 🍬", "salty 🧂"] },
-                    { title: "temperature", items: ["hot ♨️", "cold ❄️"] }
+                    { title: "Style", items: ["use hands 🖐️", "use fork/spoon 🍴"] },
+                    { title: "Taste", items: ["sweet 🍬", "salty 🧂"] },
+                    { title: "Temperature", items: ["hot ♨️", "cold ❄️"] }
                 ]
             },
             sports: {
@@ -491,24 +671,75 @@
                     { name: "baseball", emoji: "⚾", teamType: "👥", location: "🌳", gear: "⚽" },
                     { name: "rugby", emoji: "🏉", teamType: "👥", location: "🌳", gear: "⚽" }
                 ],
-                examples: ["Is it a team sport?", "Do you play it outdoors?", "Do you use a ball or puck?", "Is it an individual sport?"],
+                examples: [
+                    "Is it a team sport?",
+                    "Do you play it outdoors?",
+                    "Do you use a ball or puck?"
+                ],
                 vocab: [
-                    { title: "players", items: ["individual sport 👤", "team sport 👥"] },
-                    { title: "location", items: ["indoor 🏠", "outdoor 🌳"] },
-                    { title: "gear", items: ["uses ball/puck ⚽", "no ball/puck 🚫"] }
+                    { title: "Players", items: ["individual sport 👤", "team sport 👥"] },
+                    { title: "Location", items: ["indoor 🏠", "outdoor 🌳"] },
+                    { title: "Gear", items: ["uses ball/puck ⚽", "no ball/puck 🚫"] }
                 ]
             }
         };
 
-        let currentCategory = 'animals', currentLayout = [], guessCount = 0, actionHistory = [], gameMode = '', pendingTraitKey = "";
+        let currentCategory = 'animals', currentLayout = [], guessCount = 0, actionHistory = [], gameMode = '';
+        let pendingAction = {}; 
         let tempTeamCount = 0, teams = [], studentsPerTeam = 0, availableTeams = [], availableStudents = {};
         let useTimer = false, timerInterval, p1Score = 0, p2Score = 0, isRightPanelVisible = true;
+        let resetTimerInterval;
 
         function getTooltip(traitKey, value) {
             const tooltips = {"🥩": "meat-eater", "🌿": "plant-eater", "🖐️": "use hands", "🍴": "use fork/spoon", "🍬": "sweet", "🧂": "salty", "❄️": "cold", "♨️": "hot", "👤": "individual sport", "👥": "team sport", "🏠": "indoor", "🌳": "outdoor", "🚫": "no ball/puck", "⚽": "uses ball/puck"};
             if (traitKey === 'legs') return value + " legs";
             if (tooltips[value]) return tooltips[value];
             return value.replace(/,/g, ' / '); 
+        }
+
+        // Smart Grammar Engine
+        function getQuestionText(key, val, category) {
+            const emojiToText = {"🥩": "meat-eater", "🌿": "plant-eater", "🖐️": "use hands", "🍴": "use fork/spoon", "🍬": "sweet", "🧂": "salty", "❄️": "cold", "♨️": "hot", "👤": "individual sport", "👥": "team sport", "🏠": "indoor", "🌳": "outdoor", "🚫": "no ball/puck", "⚽": "uses ball/puck"};
+            
+            let cleanVal = emojiToText[val] || String(val).trim();
+
+            if (category === 'animals') {
+                if (key === 'colorName') return `Is it ${cleanVal}?`;
+                if (key === 'legs') return `Does it have ${cleanVal} legs?`;
+                if (key === 'diet') return `Is it a ${cleanVal}?`;
+            }
+            if (category === 'food') {
+                if (key === 'style') {
+                    if (cleanVal === 'use hands') return 'Do you use your hands to eat it?';
+                    return 'Do you use a fork or spoon to eat it?';
+                }
+                if (key === 'taste') return `Is it ${cleanVal}?`;
+                if (key === 'temp') return `Is it ${cleanVal}?`;
+            }
+            if (category === 'sports') {
+                if (key === 'teamType') return `Is it ${cleanVal.includes('individual') ? 'an' : 'a'} ${cleanVal}?`;
+                if (key === 'location') return `Do you play it ${cleanVal === 'indoor' ? 'indoors' : 'outdoors'}?`;
+                if (key === 'gear') return cleanVal.includes('no') ? `Do you play without a ball or puck?` : `Do you use a ball or puck?`;
+            }
+            return `Is it ${cleanVal}?`;
+        }
+
+        function setYesNoText(question, yesId, noId) {
+            const yesBtn = document.getElementById(yesId);
+            const noBtn = document.getElementById(noId);
+            if (question.startsWith("Do you")) {
+                yesBtn.innerText = "👍 Yes, I do.";
+                noBtn.innerText = "👎 No, I don't.";
+            } else if (question.startsWith("Does it")) {
+                yesBtn.innerText = "👍 Yes, it does.";
+                noBtn.innerText = "👎 No, it doesn't.";
+            } else if (question.startsWith("Is it")) {
+                yesBtn.innerText = "👍 Yes, it is.";
+                noBtn.innerText = "👎 No, it isn't.";
+            } else {
+                yesBtn.innerText = "👍 Yes";
+                noBtn.innerText = "👎 No";
+            }
         }
 
         function showScreen(screenId) {
@@ -533,34 +764,78 @@
 
         function launchGame() {
             showScreen(null); document.getElementById('game-wrapper').style.display = 'flex';
+            
             const rp = document.getElementById('right-panel'), lp = document.getElementById('left-panel');
             const teamBoard = document.getElementById('team-leaderboard-container'), teamDice = document.getElementById('team-dice-container');
             const p2Card = document.getElementById('twop-secret-card-container'), p2Board = document.getElementById('twop-scoreboard-container');
             const timerUi = document.getElementById('timer-ui'), resetBtn = document.getElementById('classroom-reset-btn'), sidebarContent = document.getElementById('sidebar-content-container');
+            const leftUndo = document.getElementById('left-undo-btn');
+            const rightActionBtns = document.getElementById('right-action-btns');
+            const exampleQList = document.getElementById('example-questions-list');
+            const exampleQHeader = document.getElementById('example-q-header');
 
             lp.style.borderRight = 'none'; rp.style.display = 'none';
             teamBoard.style.display = 'none'; teamDice.style.display = 'none';
             p2Card.style.display = 'none'; p2Board.style.display = 'none';
-            resetBtn.style.display = 'none'; isRightPanelVisible = true;
+            leftUndo.style.display = 'none';
+            resetBtn.style.display = 'block'; 
+            
+            if(rightActionBtns) rightActionBtns.style.display = 'none';
+            isRightPanelVisible = true;
             document.getElementById('toggle-panel-btn').innerText = '🙈';
 
-            if (gameMode === 'team') {
-                lp.style.borderRight = '4px dashed #b2ebf2'; rp.style.display = 'flex';
-                teamBoard.style.display = 'flex'; teamDice.style.display = 'flex';
-                resetBtn.style.display = 'block'; sidebarContent.style.display = 'block';
+            // Override panel display if Mobile
+            if(isMobileMode) {
+                rp.style.display = 'flex';
                 document.getElementById('toggle-panel-btn').style.display = 'none';
+            } else {
+                rp.style.display = 'flex';
+            }
+
+            // P1/P2 Rows
+            const p1Label = document.getElementById('p1-label');
+            const p2Label = document.getElementById('p2-label');
+            const p1Controls = document.getElementById('p1-controls');
+            const p2Controls = document.getElementById('p2-controls');
+            const p2Row = document.getElementById('p2-score-row');
+
+            if (gameMode === 'team') {
+                if(!isMobileMode) lp.style.borderRight = '4px dashed #b2ebf2'; 
+                teamBoard.style.display = 'flex'; teamDice.style.display = 'flex';
+                sidebarContent.style.display = 'block';
+                leftUndo.style.display = 'block'; 
+                exampleQList.style.display = 'block';
+                exampleQHeader.style.display = 'block';
+                resetBtn.innerText = '🗑️ Reset Scores';
+                if(!isMobileMode) document.getElementById('toggle-panel-btn').style.display = 'none';
                 timerUi.style.display = useTimer ? 'flex' : 'none';
                 updateTeamLeaderboard();
             } else {
-                lp.style.borderRight = '4px dashed #b2ebf2'; rp.style.display = 'flex';
-                p2Card.style.display = 'flex'; document.getElementById('toggle-panel-btn').style.display = 'flex';
+                if(!isMobileMode) lp.style.borderRight = '4px dashed #b2ebf2'; 
+                p2Card.style.display = 'flex'; 
+                if(!isMobileMode) document.getElementById('toggle-panel-btn').style.display = 'flex';
+                if(rightActionBtns) rightActionBtns.style.display = 'flex';
                 sidebarContent.style.display = (gameMode === '2p-student') ? 'block' : 'none';
+                exampleQList.style.display = 'none';
+                exampleQHeader.style.display = 'none';
+                resetBtn.innerText = '🗑️ Reset Score';
                 drawSecretCard();
-                if (gameMode !== '2p-student') {
+                
+                if (gameMode === '2p-teacher') {
                     p2Board.style.display = 'flex';
-                    const labels = { '2p-teacher': ['Teacher', 'Student'], '2p-inperson': ['Player 1', 'Player 2'] };
-                    document.getElementById('p1-label').innerText = labels[gameMode][0];
-                    document.getElementById('p2-label').innerText = labels[gameMode][1];
+                    p1Label.innerText = 'Teacher';
+                    p2Label.innerText = 'Student';
+                    p1Controls.style.display = 'flex';
+                    p2Controls.style.display = 'flex';
+                    p2Row.style.display = 'flex';
+                    resetBtn.innerText = '🗑️ Reset Scores'; 
+                } else {
+                    p2Board.style.display = 'flex';
+                    p1Label.innerText = 'My Points';
+                    p1Controls.style.display = 'none';
+                    p2Controls.style.display = 'none';
+                    p2Row.style.display = 'none';
+                    resetBtn.innerText = '🗑️ Reset Score';
                 }
             }
             updateSidebarContent();
@@ -603,9 +878,16 @@
         }
 
         function updateSidebarContent() {
-            const qList = document.getElementById('example-questions-list'); qList.innerHTML = '';
-            gameData[currentCategory].examples.forEach(q => { const li = document.createElement('li'); li.innerText = q; qList.appendChild(li); });
-            const vContainer = document.getElementById('vocab-container'); vContainer.innerHTML = '';
+            const qList = document.getElementById('example-questions-list'); 
+            qList.innerHTML = '';
+            gameData[currentCategory].examples.forEach(q => { 
+                const li = document.createElement('li'); 
+                li.innerText = q; 
+                qList.appendChild(li); 
+            });
+
+            const vContainer = document.getElementById('vocab-container'); 
+            vContainer.innerHTML = '';
             gameData[currentCategory].vocab.forEach(vGroup => {
                 const title = document.createElement('div'); title.className = 'vocab-group-title'; title.innerText = vGroup.title; vContainer.appendChild(title);
                 const ul = document.createElement('ul'); ul.className = 'vocab-group-list';
@@ -623,15 +905,60 @@
             });
         }
         function awardBonus(i) { teams[i].score += 10; updateTeamLeaderboard(); }
-        function triggerResetScores() { document.getElementById('reset-modal').style.display = 'flex'; }
-        function closeResetModal() { document.getElementById('reset-modal').style.display = 'none'; }
-        function executeResetScores() { teams.forEach(t => t.score = 0); updateTeamLeaderboard(); closeResetModal(); }
+        
+        function triggerResetScores() { 
+            const modal = document.getElementById('reset-modal');
+            const confirmBtn = document.getElementById('reset-confirm-btn');
+            confirmBtn.disabled = true;
+            let timeLeft = 5;
+            confirmBtn.innerText = `Yes (${timeLeft})`;
+            
+            modal.style.display = 'flex'; 
+            
+            clearInterval(resetTimerInterval);
+            resetTimerInterval = setInterval(() => {
+                timeLeft--;
+                if (timeLeft > 0) {
+                    confirmBtn.innerText = `Yes (${timeLeft})`;
+                } else {
+                    clearInterval(resetTimerInterval);
+                    confirmBtn.disabled = false;
+                    confirmBtn.innerText = "Yes";
+                }
+            }, 1000);
+        }
+
+        function closeResetModal() { 
+            clearInterval(resetTimerInterval);
+            document.getElementById('reset-modal').style.display = 'none'; 
+        }
+
+        function executeResetScores() { 
+            if (gameMode === 'team') {
+                teams.forEach(t => t.score = 0); 
+                updateTeamLeaderboard(); 
+            } else {
+                p1Score = 0;
+                p2Score = 0;
+                document.getElementById('p1-score').innerText = 0;
+                document.getElementById('p2-score').innerText = 0;
+            }
+            closeResetModal(); 
+        }
         
         function openSettingsModal() { document.getElementById('settings-modal').style.display = 'flex'; }
         function closeSettingsModal() { document.getElementById('settings-modal').style.display = 'none'; }
         function executeSettingsReset() { resetBoard(); closeSettingsModal(); }
 
-        function adjScore(n, a) { if (n === 1) { p1Score = Math.max(0, p1Score + a); document.getElementById('p1-score').innerText = p1Score; } else { p2Score = Math.max(0, p2Score + a); document.getElementById('p2-score').innerText = p2Score; } }
+        function adjScore(n, a) { 
+            if (n === 1) { 
+                p1Score = Math.max(0, p1Score + a); 
+                document.getElementById('p1-score').innerText = p1Score; 
+            } else { 
+                p2Score = Math.max(0, p2Score + a); 
+                document.getElementById('p2-score').innerText = p2Score; 
+            } 
+        }
 
         function drawSecretCard(manual = false) {
             if ((gameMode === '2p-student' || gameMode === '2p-inperson') && manual) { 
@@ -657,36 +984,135 @@
             renderGrid(); if(gameMode.startsWith('2p')) executeDrawCard(); updateSidebarContent();
         }
 
+        // --- CLICK LOGIC ---
         function toggleCard(cardId) {
             const c = document.getElementById(cardId); if (c.classList.contains('eliminated')) return;
-            c.classList.add('eliminated'); guessCount++; document.getElementById('guess-count').innerText = guessCount;
-            actionHistory.push({ type: 'single', id: cardId, name: c.querySelector('.item-name').innerText });
+            const itemName = c.querySelector('.item-name').innerText;
+            pendingAction = { type: 'card', id: cardId, name: itemName };
+            
+            let question = "";
+            if (currentCategory === 'animals') {
+                const vowel = /^[aeiou]/i.test(itemName);
+                question = `Is it ${vowel ? 'an' : 'a'} ${itemName}?`;
+            } else {
+                question = `Is it ${itemName}?`;
+            }
+            
+            document.getElementById('verify-question-text').innerText = question;
+            setYesNoText(question, 'verify-yes-btn', 'verify-no-btn');
+            document.getElementById('verify-answer-modal').style.display = 'flex';
         }
 
         function handleTraitClick(traitKey, traitValue, event, cardId) {
             event.stopPropagation(); const c = document.getElementById(cardId); if (c.classList.contains('eliminated')) return;
             if (traitValue.includes(',')) {
+                pendingAction = { key: traitKey };
                 const container = document.getElementById('trait-btn-container'); container.innerHTML = '';
                 traitValue.split(',').forEach(opt => {
                     const btn = document.createElement('button'); btn.className = 'btn'; btn.innerText = opt;
-                    btn.onclick = () => { closeTraitModal(); executeElimination(traitKey, opt); };
+                    btn.onclick = () => { closeTraitModal(); askTraitQuestion(traitKey, opt); };
                     container.appendChild(btn);
                 });
                 document.getElementById('trait-choice-modal').style.display = 'flex';
-            } else { executeElimination(traitKey, traitValue); }
+            } else { 
+                askTraitQuestion(traitKey, traitValue); 
+            }
         }
+        
         function closeTraitModal() { document.getElementById('trait-choice-modal').style.display = 'none'; }
 
-        function executeElimination(traitKey, targetValue) {
-            guessCount++; const elim = [];
+        function askTraitQuestion(traitKey, targetValue) {
+            pendingAction = { key: traitKey, val: targetValue };
+            const qText = getQuestionText(traitKey, targetValue, currentCategory);
+            document.getElementById('trait-question-text').innerText = qText;
+            setYesNoText(qText, 'trait-yes-btn', 'trait-no-btn');
+            document.getElementById('trait-question-modal').style.display = 'flex';
+        }
+
+        function closeTraitQuestionModal() { document.getElementById('trait-question-modal').style.display = 'none'; }
+
+        function answerTraitQuestion(isYes) {
+            document.getElementById('trait-question-modal').style.display = 'none';
+            guessCount++; 
+            const elimThisTurn = [];
+            const { key, val } = pendingAction;
+            
             currentLayout.forEach(item => {
-                const c = document.getElementById('card-' + item.name);
-                if (String(item[traitKey]).includes(targetValue) && !c.classList.contains('eliminated')) { c.classList.add('eliminated'); elim.push('card-' + item.name); }
+                const cardId = 'card-' + item.name;
+                const card = document.getElementById(cardId);
+                if (card.classList.contains('eliminated')) return;
+
+                const hasTrait = String(item[key]).split(',').map(s => s.trim()).includes(String(val).trim());
+                let shouldEliminate = false;
+
+                if (isYes && !hasTrait) shouldEliminate = true; 
+                if (!isYes && hasTrait) shouldEliminate = true; 
+
+                if (shouldEliminate) {
+                    card.classList.add('eliminated'); 
+                    elimThisTurn.push(cardId);
+                }
             });
-            actionHistory.push({ type: 'trait', ids: elim });
+            
+            actionHistory.push({ type: 'trait', ids: elimThisTurn });
             document.getElementById('guess-count').innerText = guessCount;
         }
 
+        function verifySuccess() {
+            document.getElementById('verify-answer-modal').style.display = 'none';
+            guessCount++;
+            document.getElementById('guess-count').innerText = guessCount;
+            
+            const elimThisTurn = [];
+            currentLayout.forEach(item => {
+                const cardId = 'card-' + item.name;
+                const card = document.getElementById(cardId);
+                if (cardId !== pendingAction.id && !card.classList.contains('eliminated')) {
+                    card.classList.add('eliminated');
+                    elimThisTurn.push(cardId);
+                }
+            });
+            actionHistory.push({ type: 'win', ids: elimThisTurn });
+
+            if (useTimer) clearInterval(timerInterval);
+            
+            if (gameMode === 'team') {
+                const pts = guessCount <= 2 ? 100 : guessCount <= 4 ? 75 : guessCount <= 6 ? 50 : 25;
+                document.getElementById('modal-points-title').innerText = `Award ${pts} points to:`;
+                const list = document.getElementById('team-award-list'); list.innerHTML = '';
+                teams.forEach((t, i) => {
+                    const b = document.createElement('button'); b.className = 'team-award-btn'; b.innerText = t.name;
+                    b.onclick = () => { 
+                        t.score += pts; 
+                        closeVictoryModal(); 
+                        updateTeamLeaderboard(); 
+                        resetBoard();
+                    };
+                    list.appendChild(b);
+                });
+                document.getElementById('victory-modal').style.display = 'flex';
+            } else {
+                p1Score++;
+                document.getElementById('p1-score').innerText = p1Score;
+                document.getElementById('victory-stats-text').innerText = `It took you ${guessCount} guesses to find the answer!`;
+                document.getElementById('two-player-victory-modal').style.display = 'flex';
+            }
+        }
+
+        function verifyNo() {
+            document.getElementById('verify-answer-modal').style.display = 'none';
+            guessCount++;
+            document.getElementById('guess-count').innerText = guessCount;
+            
+            const card = document.getElementById(pendingAction.id);
+            card.classList.add('eliminated');
+            actionHistory.push({ type: 'single', id: pendingAction.id });
+        }
+
+        function closeVerifyModal() { document.getElementById('verify-answer-modal').style.display = 'none'; }
+        function closeTwoPlayerVictory() { document.getElementById('two-player-victory-modal').style.display = 'none'; resetBoard(); renderGrid(); executeDrawCard(); }
+        function closeVictoryModal() { document.getElementById('victory-modal').style.display = 'none'; }
+        
         function undoLastAction() {
             if (actionHistory.length === 0) return;
             const last = actionHistory.pop();
@@ -695,55 +1121,6 @@
             guessCount = Math.max(0, guessCount - 1); document.getElementById('guess-count').innerText = guessCount;
         }
 
-        function triggerVictory() {
-            if (guessCount === 0) return;
-            if (useTimer) clearInterval(timerInterval);
-            
-            if (gameMode === 'team') {
-                const pts = guessCount === 1 ? 100 : guessCount <= 3 ? 75 : guessCount <= 5 ? 50 : 25;
-                document.getElementById('modal-points-title').innerText = `Award ${pts} points to:`;
-                const list = document.getElementById('team-award-list'); list.innerHTML = '';
-                teams.forEach((t, i) => {
-                    const b = document.createElement('button'); b.className = 'team-award-btn'; b.innerText = t.name;
-                    b.onclick = () => { t.score += pts; closeVictoryModal(); updateTeamLeaderboard(); renderGrid(); };
-                    list.appendChild(b);
-                });
-                document.getElementById('victory-modal').style.display = 'flex';
-            } else {
-                const lastAction = actionHistory[actionHistory.length - 1];
-                if (!lastAction || lastAction.type !== 'single') {
-                    const modal = document.getElementById('draw-warning-modal');
-                    modal.querySelector('h2').innerText = "⚠️ WAIT! ⚠️"; modal.querySelector('#draw-warning-text').innerText = "Please click the answer on the board before clicking 'Found It!'";
-                    modal.querySelector('#draw-continue-btn').style.display = 'none'; modal.querySelector('.undo-btn').innerText = "OK"; modal.style.display = 'flex';
-                    return;
-                }
-                
-                const itemName = lastAction.name;
-                let question = "";
-                
-                // CATEGORY GRAMMAR ENGINE
-                if (currentCategory === 'animals') {
-                    const vowel = /^[aeiou]/i.test(itemName);
-                    question = `Is it ${vowel ? 'an' : 'a'} ${itemName}?`;
-                } else {
-                    // For Food & Sports, drop the article entirely
-                    question = `Is it ${itemName}?`;
-                }
-                
-                document.getElementById('verify-question-text').innerText = question;
-                document.getElementById('verify-answer-modal').style.display = 'flex';
-            }
-        }
-
-        function verifySuccess() {
-            document.getElementById('verify-answer-modal').style.display = 'none';
-            document.getElementById('victory-stats-text').innerText = `It took you ${guessCount} guesses to find the answer!`;
-            document.getElementById('two-player-victory-modal').style.display = 'flex';
-        }
-        function closeVerifyModal() { document.getElementById('verify-answer-modal').style.display = 'none'; }
-        function closeTwoPlayerVictory() { document.getElementById('two-player-victory-modal').style.display = 'none'; renderGrid(); executeDrawCard(); }
-        function closeVictoryModal() { document.getElementById('victory-modal').style.display = 'none'; }
-        
         function resetBoard() {
             document.querySelectorAll('.card').forEach(c => c.classList.remove('eliminated'));
             guessCount = 0; actionHistory = []; document.getElementById('guess-count').innerText = 0;
