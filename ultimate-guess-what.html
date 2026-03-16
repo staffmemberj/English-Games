@@ -454,10 +454,9 @@
                     { name: "Pig", emoji: "🐷", colorStyle: "background-color: pink;", colorName: "Pink", legs: 4, diet: "🌿" }
                 ],
                 examples: [
-                    "Does it have 4 legs?",
-                    "Does it eat meat 🥩?",
                     "Does it have a pattern?",
-                    "Is it brown?"
+                    "Does it have 4 legs?",
+                    "Does it eat meat 🥩?"
                 ]
             },
             food: {
@@ -486,10 +485,9 @@
                     { name: "Corn", emoji: "🌽", style: "🖐️", taste: "🍬", temp: "♨️" }
                 ],
                 examples: [
+                    "Do you eat it with your hands 🖐️?",
                     "Is it sweet 🍬?",
-                    "Is it salty 🧂?",
-                    "Do you eat it with a fork 🍴?",
-                    "Is it hot ♨️?"
+                    "Is it eaten hot ♨️?"
                 ]
             },
             sports: {
@@ -521,8 +519,7 @@
                 examples: [
                     "Is it a team sport 👥?",
                     "Do you play it outdoors 🌳?",
-                    "Do you use a ball ⚽?",
-                    "Is it an individual sport 👤?"
+                    "Do you use a ball or puck ⚽?"
                 ]
             }
         };
@@ -849,6 +846,7 @@
             document.getElementById('guess-count').innerText = guessCount;
         }
 
+        // --- NEW TRAIT SELECTION LOGIC ---
         function handleTraitClick(traitKey, traitValue, event) {
             event.stopPropagation();
             if (traitValue.includes(',')) {
