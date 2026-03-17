@@ -437,7 +437,7 @@
                             <span class="icon">☀️</span><span class="btn-text">Light Mode</span>
                         </button>
                         <button class="btn color-offwhite flex-expand-btn fullscreen-toggle-btn" onclick="toggleFullScreen()">
-                            <span class="icon">⛶</span><span class="btn-text">Windowed</span>
+                            <span class="icon">⛶</span><span class="btn-text">Fullscreen</span>
                         </button>
                         <button class="btn color-offwhite flex-expand-btn sound-toggle-btn" onclick="toggleSoundMode()">
                             <span class="icon">🔊</span><span class="btn-text">Sound On</span>
@@ -568,11 +568,7 @@
                 <div id="team-leaderboard-container"><div class="leaderboard" id="leaderboard"></div></div>
             </div>
             
-            <div id="team-controls-wrapper" style="display: none; justify-content: center; gap: 1vw; margin-top: 1vh; width: 100%;">
-                <button class="btn color-grey undo-btn" id="left-undo-btn" onclick="undoLastAction()" style="font-size:1.6vh; padding:1vh 2vw; margin: 0;">↩️ Undo</button>
-                <button class="btn color-teal" id="left-shuffle-btn" onclick="playSound('change'); renderGrid()" style="font-size:1.6vh; padding:1vh 2vw; margin: 0;">🔀 Shuffle</button>
-            </div>
-            
+                      
             <div id="grid-container"></div>
             
             <div id="mobile-drawer-btn-wrap" style="display: none; position: fixed; bottom: 3vh; left: 0; width: 100vw; justify-content: center; z-index: 2000; pointer-events: none;">
@@ -591,6 +587,11 @@
                     </div>
                     <button class="btn color-blue draw-btn" onclick="rollDice()">🎲 Roll Turn</button>
                     <button class="btn color-pink draw-btn" style="font-size: 2.2vh; margin-top: 1.5vh; padding: 1.5vh;" onclick="openGiantTimer()">⏳ 30 Sec Timer</button>
+		<div id="team-controls-wrapper" style="display: none; width: 90%; gap: 1vw; margin-top: 1.5vh; justify-content: center;">
+                        <button class="btn color-grey undo-btn" id="left-undo-btn" onclick="undoLastAction()" style="flex: 1; padding: 1.5vh; font-size: 1.8vh; margin: 0;">↩️ Undo</button>
+                        <button class="btn color-teal" id="left-shuffle-btn" onclick="playSound('change'); renderGrid()" style="flex: 1; padding: 1.5vh; font-size: 1.8vh; margin: 0;">🔀 Shuffle</button>
+                    </div>
+		<br>
                 </div>
 
                 <div id="twop-secret-card-container">
@@ -735,7 +736,7 @@
                             <span class="icon">☀️</span><span class="btn-text">Light Mode</span>
                         </button>
                         <button class="btn color-offwhite flex-expand-btn fullscreen-toggle-btn" onclick="toggleFullScreen()">
-                            <span class="icon">⛶</span><span class="btn-text">Windowed</span>
+                            <span class="icon">⛶</span><span class="btn-text">Fullscreen</span>
                         </button>
                         <button class="btn color-offwhite flex-expand-btn sound-toggle-btn" onclick="toggleSoundMode()">
                             <span class="icon">🔊</span><span class="btn-text">Sound On</span>
