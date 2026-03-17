@@ -77,7 +77,7 @@
 
         /* 🪗 Expanding Accordion Button Row (Settings & Main Menu) */
         .settings-flex-row {
-            display: flex; width: 100%; gap: 1vw; justify-content: center; align-items: stretch;
+            display: flex; width: 100%; max-width: 500px; gap: 1vw; justify-content: center; align-items: stretch; margin: 0 auto;
         }
         .flex-expand-btn {
             flex: 1; transition: all 0.4s var(--bounce);
@@ -115,7 +115,7 @@
         .menu-btn { font-size: max(2.5vh, 16px); padding: 2vh 3vw; }
         .setup-btn { font-size: 4vh; width: 9vh; height: 9vh; display: flex; align-items: center; justify-content: center; padding: 0; border-radius: 50%; }
         .btn { padding: 1vh 1.5vw; font-size: 1.8vh; }
-        .icon-only { font-size: 3.5vh !important; width: 7vh; height: 7vh; border-radius: 50%; display: flex; align-items: center; justify-content: center; padding: 0 !important; }
+        .icon-only { font-size: 3.5vh !important; width: 7vh; height: 7vh; border-radius: 50%; display: flex; align-items: center; justify-content: center; padding: 0 !important; margin: 0 !important; }
 
         /* Game Wrapper */
         #game-wrapper { display: none; flex-direction: row; height: 100vh; width: 100vw; box-sizing: border-box; }
@@ -163,8 +163,11 @@
             font-weight: bold; cursor: pointer; z-index: 10; background: white; color: var(--main-teal);
             box-shadow: 0 4px 0 rgba(0,0,0,0.1); font-family: 'Fredoka', sans-serif; outline: none;
         }
-        .settings-btn { position: absolute; top: 1.5vh; right: 1.5vw; z-index: 10; }
-        .toggle-panel-btn { position: absolute; top: 10vh; right: 1.5vw; z-index: 10; display: none; }
+        
+        /* Top Right Controls Group */
+        #top-right-controls {
+            position: absolute; top: 1.5vh; right: 1.5vw; display: flex; gap: 1vw; z-index: 10;
+        }
         
         .secret-card-display, .dice-display, .draw-btn, #sidebar-content-container, .score-row, .reset-scores-btn {
             width: 90%; box-sizing: border-box; margin-bottom: 1vh;
@@ -262,7 +265,7 @@
         body.mobile-mode #game-wrapper { flex-direction: column !important; height: auto !important; min-height: 100vh; }
         body.mobile-mode #left-panel { min-height: auto; height: auto; border-right: none !important; border-bottom: 6px dashed rgba(0,0,0,0.1); padding: 1vh 1vw; }
         body.mobile-mode #right-panel { width: 100%; border-left: none !important; height: auto; min-height: 50vh; display: flex !important; }
-        body.mobile-mode .toggle-panel-btn { display: none !important; }
+        body.mobile-mode #top-right-controls .toggle-panel-btn { display: none !important; }
         body.mobile-mode #grid-container { grid-template-columns: repeat(4, 1fr) !important; grid-template-rows: repeat(5, 1fr) !important; }
         body.mobile-mode .card { min-height: 12vh; }
         body.mobile-mode .modal-content { width: 90vw; }
@@ -308,16 +311,21 @@
             </div>
             
             <div style="margin-top: 5vh; border-top: 4px dashed rgba(0,0,0,0.1); padding-top: 3vh;">
-                <div class="settings-flex-row" style="width: 80%; margin: 0 auto;">
-                    <button class="btn color-offwhite flex-expand-btn device-toggle-btn" onclick="toggleDeviceMode()">
-                        <span class="icon">💻</span><span class="btn-text">PC Mode</span>
-                    </button>
-                    <button class="btn color-offwhite flex-expand-btn theme-toggle-btn" onclick="toggleThemeMode()">
-                        <span class="icon">☀️</span><span class="btn-text">Light Mode</span>
-                    </button>
-                    <button class="btn color-offwhite flex-expand-btn fullscreen-toggle-btn" onclick="toggleFullScreen()">
-                        <span class="icon">⛶</span><span class="btn-text">Fullscreen</span>
-                    </button>
+                <div style="width: 90%; max-width: 600px; margin: 0 auto;">
+                    <div class="settings-flex-row">
+                        <button class="btn color-offwhite flex-expand-btn device-toggle-btn" onclick="toggleDeviceMode()">
+                            <span class="icon">💻</span><span class="btn-text">PC Mode</span>
+                        </button>
+                        <button class="btn color-offwhite flex-expand-btn theme-toggle-btn" onclick="toggleThemeMode()">
+                            <span class="icon">☀️</span><span class="btn-text">Light Mode</span>
+                        </button>
+                        <button class="btn color-offwhite flex-expand-btn fullscreen-toggle-btn" onclick="toggleFullScreen()">
+                            <span class="icon">⛶</span><span class="btn-text">Fullscreen</span>
+                        </button>
+                        <button class="btn color-offwhite flex-expand-btn sound-toggle-btn" onclick="toggleSoundMode()">
+                            <span class="icon">🔊</span><span class="btn-text">Sound On</span>
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -397,9 +405,11 @@
                 <option value="sports">⚽ Sports</option>
             </select>
             
-            <button class="btn color-offwhite settings-btn icon-only" id="settings-btn" onclick="openSettingsModal()" title="Settings">⚙️</button>
-            <button class="btn color-offwhite toggle-panel-btn icon-only" id="toggle-panel-btn" onclick="toggleRightPanel()" title="Toggle Right Panel">🙈</button>
-            
+            <div id="top-right-controls">
+                <button class="btn color-offwhite icon-only" id="settings-btn" onclick="openSettingsModal()" title="Settings">⚙️</button>
+                <button class="btn color-offwhite icon-only toggle-panel-btn" id="toggle-panel-btn" style="display:none;" onclick="toggleRightPanel()" title="Toggle Right Panel">🙈</button>
+            </div>
+
             <h1 id="game-title">🐾 Guess What Animal! 🐾</h1>
             
             <div class="top-info-bar">
@@ -409,7 +419,7 @@
                         <div class="guess-text" id="guess-count">0</div>
                     </div>
                     <button class="btn color-grey undo-btn" id="left-undo-btn" onclick="undoLastAction()" style="display:none; font-size:1.6vh; padding:0.5vh 1vw; width: 100%; margin-top: 0.5vh; margin-bottom: 0.5vh;">↩️ Undo</button>
-                    <button class="btn color-teal" id="left-shuffle-btn" onclick="renderGrid()" style="display:none; font-size:1.6vh; padding:0.5vh 1vw; width: 100%; margin-top: 0.5vh; margin-bottom: 0.5vh;">🔀 Shuffle</button>
+                    <button class="btn color-teal" id="left-shuffle-btn" onclick="playSound('change'); renderGrid()" style="display:none; font-size:1.6vh; padding:0.5vh 1vw; width: 100%; margin-top: 0.5vh; margin-bottom: 0.5vh;">🔀 Shuffle</button>
                 </div>
                 <div id="team-leaderboard-container"><div class="leaderboard" id="leaderboard"></div></div>
             </div>
@@ -438,7 +448,7 @@
                     <button class="btn color-blue draw-btn" onclick="drawSecretCard(true)">🃏 Draw New Card</button>
                     <div id="right-action-btns" style="display:flex; width:90%; gap:1vw; margin-bottom: 1.5vh;">
                         <button class="btn color-grey undo-btn" onclick="undoLastAction()" style="flex:1;">↩️ Undo</button>
-                        <button class="btn color-teal" onclick="renderGrid()" style="flex:1;">🔀 Shuffle</button>
+                        <button class="btn color-teal" onclick="playSound('change'); renderGrid()" style="flex:1;">🔀 Shuffle</button>
                     </div>
                 </div>
 
@@ -549,24 +559,31 @@
     <div id="settings-modal" class="modal-overlay">
         <div class="modal-content">
             <h2 style="color: var(--main-teal); margin-top: 0; font-size: 4vh;">⚙️ Game Settings ⚙️</h2>
-            <div style="display: flex; flex-direction: column; gap: 2vh; margin-top: 4vh; align-items: center;">
+            <div style="display: flex; flex-direction: column; gap: 1.5vh; margin-top: 4vh; align-items: center; width: 100%;">
                 
-                <div class="settings-flex-row" style="width: 80%; margin: 0 auto 2vh auto;">
-                    <button class="btn color-offwhite flex-expand-btn device-toggle-btn" onclick="toggleDeviceMode()">
-                        <span class="icon">💻</span><span class="btn-text">PC Mode</span>
-                    </button>
-                    <button class="btn color-offwhite flex-expand-btn theme-toggle-btn" onclick="toggleThemeMode()">
-                        <span class="icon">☀️</span><span class="btn-text">Light Mode</span>
-                    </button>
-                    <button class="btn color-offwhite flex-expand-btn fullscreen-toggle-btn" onclick="toggleFullScreen()">
-                        <span class="icon">⛶</span><span class="btn-text">Fullscreen</span>
-                    </button>
-                </div>
+                <div style="width: 80%; max-width: 500px; display: flex; flex-direction: column; gap: 1.5vh; margin: 0 auto;">
+                    
+                    <div class="settings-flex-row" style="width: 100%; margin-bottom: 0.5vh;">
+                        <button class="btn color-offwhite flex-expand-btn device-toggle-btn" onclick="toggleDeviceMode()">
+                            <span class="icon">💻</span><span class="btn-text">PC Mode</span>
+                        </button>
+                        <button class="btn color-offwhite flex-expand-btn theme-toggle-btn" onclick="toggleThemeMode()">
+                            <span class="icon">☀️</span><span class="btn-text">Light Mode</span>
+                        </button>
+                        <button class="btn color-offwhite flex-expand-btn fullscreen-toggle-btn" onclick="toggleFullScreen()">
+                            <span class="icon">⛶</span><span class="btn-text">Fullscreen</span>
+                        </button>
+                        <button class="btn color-offwhite flex-expand-btn sound-toggle-btn" onclick="toggleSoundMode()">
+                            <span class="icon">🔊</span><span class="btn-text">Sound On</span>
+                        </button>
+                    </div>
 
-                <button class="btn color-teal" style="width: 80%; font-size: 2.2vh; padding: 1.5vh;" onclick="executeSettingsReset()">🔄 Reset Board</button>
-                <button class="btn color-orange" style="width: 80%; font-size: 2.2vh; padding: 1.5vh;" onclick="location.reload()">🏠 Setup / Menu</button>
-                <button class="btn color-pink" style="width: 80%; font-size: 2.2vh; padding: 1.5vh;" onclick="window.close()">✖️ Close Window</button>
-                <button class="btn color-grey undo-btn" style="width: 80%; font-size: 2.2vh; padding: 1.5vh; margin-top: 1vh;" onclick="closeSettingsModal()">Back</button>
+                    <button class="btn color-teal" style="width: 100%; font-size: 2.2vh; padding: 1.5vh; margin: 0;" onclick="executeSettingsReset()">🔄 Reset Board</button>
+                    <button class="btn color-orange" style="width: 100%; font-size: 2.2vh; padding: 1.5vh; margin: 0;" onclick="playSound('select'); location.reload()">🏠 Setup / Menu</button>
+                    <button class="btn color-pink" style="width: 100%; font-size: 2.2vh; padding: 1.5vh; margin: 0;" onclick="playSound('select'); window.close()">✖️ Close Window</button>
+                    <button class="btn color-grey undo-btn" style="width: 100%; font-size: 2.2vh; padding: 1.5vh; margin: 0;" onclick="closeSettingsModal()">Back</button>
+                </div>
+                
             </div>
         </div>
     </div>
@@ -574,9 +591,42 @@
     <script>
         let isMobileMode = false;
         let isDarkMode = false;
+        let isSoundOn = true;
+        
+        // --- AUDIO SYSTEM ---
+        const sfx = {
+            bonus: new Audio('sounds/bonus.mp3'),
+            dice: new Audio('sounds/dice.mp3'),
+            hover: new Audio('sounds/hover.mp3'),
+            select: new Audio('sounds/select.mp3'),
+            change: new Audio('sounds/change.mp3'),
+            win: new Audio('sounds/win.mp3'),
+            yes: new Audio('sounds/yes.mp3'),
+            no: new Audio('sounds/no.mp3')
+        };
+
+        function playSound(soundName) {
+            if (isSoundOn && sfx[soundName]) {
+                sfx[soundName].currentTime = 0;
+                sfx[soundName].play().catch(e => console.log("Audio blocked or pending user interaction: ", e));
+            }
+        }
+
+        // Global Hover Sound Listener (Strictly Tiles)
+        let lastHoveredElement = null;
+        document.addEventListener('mouseover', function(e) {
+            const hoverable = e.target.closest('.card:not(.eliminated)');
+            if (hoverable && hoverable !== lastHoveredElement) {
+                playSound('hover');
+                lastHoveredElement = hoverable;
+            } else if (!hoverable) {
+                lastHoveredElement = null;
+            }
+        });
         
         // Fullscreen Logic
         function toggleFullScreen() {
+            playSound('select');
             if (!document.fullscreenElement) {
                 if (document.documentElement.requestFullscreen) {
                     document.documentElement.requestFullscreen();
@@ -607,7 +657,7 @@
                 const textEl = btn.querySelector('.btn-text');
                 if (iconEl && textEl) {
                     iconEl.innerHTML = isFS ? '🗗' : '⛶';
-                    textEl.innerHTML = isFS ? 'Exit Fullscreen' : 'Fullscreen';
+                    textEl.innerHTML = isFS ? 'Windowed' : 'Fullscreen';
                 }
             });
         }
@@ -617,8 +667,23 @@
         document.addEventListener('mozfullscreenchange', updateFullscreenUI);
         document.addEventListener('MSFullscreenChange', updateFullscreenUI);
 
+        // Sound Toggle Logic
+        function toggleSoundMode() {
+            playSound('select');
+            isSoundOn = !isSoundOn;
+            document.querySelectorAll('.sound-toggle-btn').forEach(btn => {
+                const iconEl = btn.querySelector('.icon');
+                const textEl = btn.querySelector('.btn-text');
+                if (iconEl && textEl) {
+                    iconEl.innerHTML = isSoundOn ? '🔊' : '🔇';
+                    textEl.innerHTML = isSoundOn ? 'Sound On' : 'Sound Off';
+                }
+            });
+        }
+
         // Device and Theme Modes
         function toggleDeviceMode() {
+            playSound('select');
             isMobileMode = !isMobileMode;
             document.querySelectorAll('.device-toggle-btn').forEach(btn => {
                 const iconEl = btn.querySelector('.icon');
@@ -637,6 +702,7 @@
         }
 
         function toggleThemeMode() {
+            playSound('select');
             isDarkMode = !isDarkMode;
             document.querySelectorAll('.theme-toggle-btn').forEach(btn => {
                 const iconEl = btn.querySelector('.icon');
@@ -802,15 +868,17 @@
         }
 
         function showScreen(screenId) {
+            if (screenId) playSound('select');
             document.querySelectorAll('.full-screen-menu').forEach(el => el.style.display = 'none');
             document.getElementById('game-wrapper').style.display = 'none';
             if(screenId) document.getElementById(screenId).style.display = 'flex';
         }
 
-        function setTempTeams(num) { tempTeamCount = num; showScreen('student-setup-menu'); }
-        function setTempStudents(num) { studentsPerTeam = num; showScreen('timer-setup-menu'); }
+        function setTempTeams(num) { playSound('select'); tempTeamCount = num; showScreen('student-setup-menu'); }
+        function setTempStudents(num) { playSound('select'); studentsPerTeam = num; showScreen('timer-setup-menu'); }
 
         function initClassroom(timerEnabled) {
+            playSound('select');
             useTimer = timerEnabled; teams = []; availableTeams = []; availableStudents = {};
             for (let i = 1; i <= tempTeamCount; i++) {
                 teams.push({ name: "Team " + i, score: 0 }); availableTeams.push(i); availableStudents[i] = [];
@@ -819,7 +887,7 @@
             gameMode = 'team'; launchGame();
         }
 
-        function selectMode(mode) { gameMode = mode; launchGame(); }
+        function selectMode(mode) { playSound('select'); gameMode = mode; launchGame(); }
 
         function applyResponsiveLayout() {
             const rp = document.getElementById('right-panel'), lp = document.getElementById('left-panel');
@@ -883,6 +951,7 @@
         }
         
         function toggleRightPanel() {
+            playSound('select');
             const rp = document.getElementById('right-panel'), lp = document.getElementById('left-panel'), btn = document.getElementById('toggle-panel-btn');
             isRightPanelVisible = !isRightPanelVisible;
             rp.style.display = isRightPanelVisible ? 'flex' : 'none';
@@ -891,6 +960,7 @@
         }
 
         function rollDice() {
+            playSound('dice');
             if(useTimer) { clearInterval(timerInterval); const d = document.getElementById('timer-display'); d.innerText = "15"; d.style.color = "var(--main-teal)"; }
             if (availableTeams.length === 0) for (let i = 1; i <= teams.length; i++) availableTeams.push(i);
             const tIndex = Math.floor(Math.random() * availableTeams.length);
@@ -908,6 +978,7 @@
         }
 
         function startTimer() {
+            playSound('select');
             clearInterval(timerInterval); let timeLeft = 15; const d = document.getElementById('timer-display');
             d.innerText = timeLeft; d.style.color = 'var(--main-teal)';
             timerInterval = setInterval(() => {
@@ -937,9 +1008,10 @@
                 lb.appendChild(box);
             });
         }
-        function awardBonus(i) { teams[i].score += 10; updateTeamLeaderboard(); }
+        function awardBonus(i) { playSound('bonus'); teams[i].score += 10; updateTeamLeaderboard(); }
         
         function triggerResetScores() { 
+            playSound('select');
             const modal = document.getElementById('reset-modal'), confirmBtn = document.getElementById('reset-confirm-btn');
             confirmBtn.disabled = true; let timeLeft = 5; confirmBtn.innerText = `Yes (${timeLeft})`;
             modal.style.display = 'flex'; 
@@ -951,25 +1023,28 @@
             }, 1000);
         }
 
-        function closeResetModal() { clearInterval(resetTimerInterval); document.getElementById('reset-modal').style.display = 'none'; }
+        function closeResetModal() { playSound('select'); clearInterval(resetTimerInterval); document.getElementById('reset-modal').style.display = 'none'; }
 
         function executeResetScores() { 
+            playSound('change');
             if (gameMode === 'team') { teams.forEach(t => t.score = 0); updateTeamLeaderboard(); } 
             else { p1Score = 0; p2Score = 0; document.getElementById('p1-score').innerText = 0; document.getElementById('p2-score').innerText = 0; }
             closeResetModal(); 
         }
         
-        function openSettingsModal() { document.getElementById('settings-modal').style.display = 'flex'; }
-        function closeSettingsModal() { document.getElementById('settings-modal').style.display = 'none'; }
-        function executeSettingsReset() { resetBoard(); closeSettingsModal(); }
+        function openSettingsModal() { playSound('select'); document.getElementById('settings-modal').style.display = 'flex'; }
+        function closeSettingsModal() { playSound('select'); document.getElementById('settings-modal').style.display = 'none'; }
+        function executeSettingsReset() { playSound('change'); resetBoard(); closeSettingsModal(); }
 
         function adjScore(n, a) { 
+            playSound('select');
             if (n === 1) { p1Score = Math.max(0, p1Score + a); document.getElementById('p1-score').innerText = p1Score; } 
             else { p2Score = Math.max(0, p2Score + a); document.getElementById('p2-score').innerText = p2Score; } 
         }
 
         function drawSecretCard(manual = false) {
             if ((gameMode === '2p-student' || gameMode === '2p-inperson') && manual) { 
+                playSound('select');
                 const modal = document.getElementById('draw-warning-modal'), btn = document.getElementById('draw-continue-btn');
                 btn.style.display = 'inline-block'; btn.disabled = true; modal.style.display = 'flex'; 
                 let timeLeft = 3; btn.innerText = `Draw New Card (${timeLeft})`;
@@ -982,10 +1057,11 @@
             const items = gameData[currentCategory].items; const randomItem = items[Math.floor(Math.random() * items.length)];
             document.getElementById('sc-emoji').innerText = randomItem.emoji; document.getElementById('sc-name').innerText = randomItem.name;
         }
-        function confirmDrawCard() { document.getElementById('draw-warning-modal').style.display = 'none'; executeDrawCard(); }
-        function closeDrawWarningModal() { document.getElementById('draw-warning-modal').style.display = 'none'; }
+        function confirmDrawCard() { playSound('select'); document.getElementById('draw-warning-modal').style.display = 'none'; executeDrawCard(); }
+        function closeDrawWarningModal() { playSound('select'); document.getElementById('draw-warning-modal').style.display = 'none'; }
 
         function changeCategory() {
+            playSound('select');
             currentCategory = document.getElementById('category-selector').value;
             document.getElementById('game-title').innerText = gameData[currentCategory].title;
             renderGrid(); if(gameMode.startsWith('2p')) executeDrawCard(); updateSidebarContent();
@@ -993,6 +1069,7 @@
 
         function toggleCard(cardId) {
             const c = document.getElementById(cardId); if (c.classList.contains('eliminated')) return;
+            playSound('select');
             const itemName = c.querySelector('.item-name').innerText;
             pendingAction = { type: 'card', id: cardId, name: itemName };
             
@@ -1004,6 +1081,7 @@
 
         function handleTraitClick(traitKey, traitValue, event, cardId) {
             event.stopPropagation(); const c = document.getElementById(cardId); if (c.classList.contains('eliminated')) return;
+            playSound('select');
             if (traitValue.includes(',')) {
                 pendingAction = { key: traitKey };
                 const container = document.getElementById('trait-btn-container'); container.innerHTML = '';
@@ -1016,7 +1094,7 @@
             } else { askTraitQuestion(traitKey, traitValue); }
         }
         
-        function closeTraitModal() { document.getElementById('trait-choice-modal').style.display = 'none'; }
+        function closeTraitModal() { playSound('select'); document.getElementById('trait-choice-modal').style.display = 'none'; }
 
         function askTraitQuestion(traitKey, targetValue) {
             pendingAction = { key: traitKey, val: targetValue };
@@ -1026,9 +1104,10 @@
             document.getElementById('trait-question-modal').style.display = 'flex';
         }
 
-        function closeTraitQuestionModal() { document.getElementById('trait-question-modal').style.display = 'none'; }
+        function closeTraitQuestionModal() { playSound('select'); document.getElementById('trait-question-modal').style.display = 'none'; }
 
         function answerTraitQuestion(isYes) {
+            playSound(isYes ? 'yes' : 'no');
             document.getElementById('trait-question-modal').style.display = 'none';
             guessCount++; const elimThisTurn = []; const { key, val } = pendingAction;
             
@@ -1046,6 +1125,7 @@
         }
 
         function verifySuccess() {
+            playSound('win');
             document.getElementById('verify-answer-modal').style.display = 'none';
             guessCount++; document.getElementById('guess-count').innerText = guessCount;
             
@@ -1075,17 +1155,19 @@
         }
 
         function verifyNo() {
+            playSound('no');
             document.getElementById('verify-answer-modal').style.display = 'none';
             guessCount++; document.getElementById('guess-count').innerText = guessCount;
             const card = document.getElementById(pendingAction.id); card.classList.add('eliminated');
             actionHistory.push({ type: 'single', id: pendingAction.id });
         }
 
-        function closeVerifyModal() { document.getElementById('verify-answer-modal').style.display = 'none'; }
-        function closeTwoPlayerVictory() { document.getElementById('two-player-victory-modal').style.display = 'none'; resetBoard(); renderGrid(); executeDrawCard(); }
-        function closeVictoryModal() { document.getElementById('victory-modal').style.display = 'none'; }
+        function closeVerifyModal() { playSound('select'); document.getElementById('verify-answer-modal').style.display = 'none'; }
+        function closeTwoPlayerVictory() { playSound('select'); document.getElementById('two-player-victory-modal').style.display = 'none'; resetBoard(); renderGrid(); executeDrawCard(); }
+        function closeVictoryModal() { playSound('select'); document.getElementById('victory-modal').style.display = 'none'; }
         
         function undoLastAction() {
+            playSound('change');
             if (actionHistory.length === 0) return;
             const last = actionHistory.pop();
             if (last.type === 'single') { document.getElementById(last.id).classList.remove('eliminated'); }
@@ -1130,7 +1212,7 @@
                     else if (this.id === 'verify-answer-modal') closeVerifyModal();
                     else if (this.id === 'two-player-victory-modal') closeTwoPlayerVictory();
                     else if (this.id === 'settings-modal') closeSettingsModal();
-                    else this.style.display = 'none';
+                    else { playSound('select'); this.style.display = 'none'; }
                 }
             });
         });
