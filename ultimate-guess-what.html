@@ -77,23 +77,24 @@
 
         /* 🪗 Expanding Accordion Button Row (Settings & Main Menu) */
         .settings-flex-row {
-            display: flex; width: 100%; max-width: 500px; gap: 1vw; justify-content: center; align-items: stretch; margin: 0 auto;
+            display: flex; width: 100%; max-width: 700px; gap: 1vw; justify-content: center; align-items: stretch; margin: 0 auto;
         }
         .flex-expand-btn {
             flex: 1; transition: all 0.4s var(--bounce);
             overflow: hidden; white-space: nowrap;
             display: flex; align-items: center; justify-content: center;
             padding: 1.5vh; margin: 0; border-radius: 40px;
+            min-width: 50px;
         }
-        .settings-flex-row:hover .flex-expand-btn { flex: 0.3; }
-        .settings-flex-row .flex-expand-btn:hover { flex: 3; }
+        .settings-flex-row:hover .flex-expand-btn { flex: 0.5; }
+        .settings-flex-row .flex-expand-btn:hover { flex: 8; }
         
-        .flex-expand-btn .icon { font-size: 2.5vh; display: inline-block; }
+        .flex-expand-btn .icon { font-size: 2.5vh; display: inline-block; flex-shrink: 0; }
         .flex-expand-btn .btn-text {
-            max-width: 0; opacity: 0; transition: all 0.4s ease; display: inline-block; vertical-align: middle;
+            max-width: 0; opacity: 0; transition: all 0.4s ease; display: inline-block; vertical-align: middle; overflow: hidden;
         }
         .settings-flex-row .flex-expand-btn:hover .btn-text {
-            max-width: 200px; opacity: 1; margin-left: 0.5vw;
+            max-width: 350px; opacity: 1; margin-left: 0.8vw; overflow: visible;
         }
 
         /* Menus */
@@ -254,7 +255,7 @@
         .color-circle { width: 3vh; height: 3vh; border-radius: 50%; border: 3px solid rgba(0,0,0,0.1); pointer-events: none;}
 
         /* Sidebar Elements */
-        .sidebar-title { font-size: 2vh; color: var(--main-teal); font-weight: bold; margin-bottom: 1vh; text-transform: uppercase; text-align: center;}
+        .sidebar-title { font-size: 2.5vh; color: var(--main-teal); font-weight: bold; margin-bottom: 1vh; text-transform: uppercase; text-align: center;}
         
         #twop-secret-card-container { display: flex; flex-direction: column; align-items: center; width: 100%; }
         
@@ -301,6 +302,21 @@
         .dice-value { font-size: 3.5vh; font-weight: bold; color: var(--main-teal); }
         .draw-btn { font-size: 1.8vh; padding: 1vh; flex-shrink: 0; width: 90%; margin-top: 0;}
         
+        /* Solo Mode Chat Bubbles & Animations */
+        @keyframes slideInRight {
+            0% { transform: translateX(50px); opacity: 0; }
+            100% { transform: translateX(0); opacity: 1; }
+        }
+        @keyframes slideInLeft {
+            0% { transform: translateX(-50px); opacity: 0; }
+            100% { transform: translateX(0); opacity: 1; }
+        }
+        .chat-bubble { padding: 1vh 1vw; border-radius: 15px; font-weight: bold; font-size: 1.6vh; text-align: left; width: fit-content; max-width: 85%; box-sizing: border-box; margin-bottom: 0.5vh; }
+        .chat-player { animation: slideInRight 0.4s var(--bounce) forwards; background-color: #f8f9fa; border: 2px solid #a4b0be; color: #2f3542; align-self: flex-end; }
+        .chat-bot-yes { animation: slideInLeft 0.4s var(--bounce) forwards; background-color: #e8f8f5; border: 2px solid #2ed573; color: #218c53; align-self: flex-start; }
+        .chat-bot-no { animation: slideInLeft 0.4s var(--bounce) forwards; background-color: #ffefea; border: 2px solid #ff4757; color: #d81b60; align-self: flex-start; }
+        .chat-sys { animation: slideInLeft 0.4s var(--bounce) forwards; background-color: #f1f2f6; border: 2px dashed #a4b0be; color: #2f3542; text-align: center; font-size: 1.4vh; align-self: center; width: 100%;}
+
         /* Two Player Score Controls */
         .score-controls { display: flex; gap: 0.5vw; margin-top: 1vh; margin-bottom: 0.5vh; justify-content: center; }
         .score-btn { 
@@ -415,6 +431,8 @@
         body.dark-mode #giant-examples-container { color: #f1f2f6 !important; }
         body.dark-mode .sc-name { color: white; }
         body.dark-mode .mobile-drawer { background: #2f3542 !important; border-color: #111418 !important; }
+        body.dark-mode .chat-player { background-color: #2f3542; color: #f1f2f6; border-color: #576574; }
+        body.dark-mode .chat-sys { background-color: #1e272e; color: #a4b0be; border-color: #576574; }
     </style>
 </head>
 <body>
@@ -423,12 +441,13 @@
         <div class="menu-box">
             <h1 class="menu-title">🎲 How are we playing today? 🎲</h1>
             <div class="menu-btn-container">
+                <button class="btn color-green menu-btn" onclick="showScreen('solo-setup-menu')">👤 Solo Practice</button>
                 <button class="btn color-blue menu-btn" onclick="showScreen('twop-menu')">🤝 1-on-1 (2-Player)</button>
                 <button class="btn color-orange menu-btn" onclick="showScreen('team-setup-menu')">🏫 Classroom Teams</button>
             </div>
             
             <div style="margin-top: 5vh; border-top: 4px dashed rgba(0,0,0,0.1); padding-top: 3vh;">
-                <div style="width: 90%; max-width: 600px; margin: 0 auto;">
+                <div style="width: 90%; max-width: 700px; margin: 0 auto;">
                     <div class="settings-flex-row">
                         <button class="btn color-offwhite flex-expand-btn device-toggle-btn" onclick="toggleDeviceMode()">
                             <span class="icon">💻</span><span class="btn-text">PC Mode</span>
@@ -445,6 +464,24 @@
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <div id="solo-setup-menu" class="full-screen-menu" style="display: none;">
+        <div class="menu-box">
+            <h1 class="menu-title">Pick your character!</h1>
+            <div class="menu-btn-container" style="gap: 1vw;">
+                <button class="btn color-offwhite setup-btn" onclick="setSoloAvatar('👦')">👦</button>
+                <button class="btn color-offwhite setup-btn" onclick="setSoloAvatar('👦🏽')">👦🏽</button>
+                <button class="btn color-offwhite setup-btn" onclick="setSoloAvatar('👦🏿')">👦🏿</button>
+                <button class="btn color-offwhite setup-btn" onclick="setSoloAvatar('👧')">👧</button>
+                <button class="btn color-offwhite setup-btn" onclick="setSoloAvatar('👧🏽')">👧🏽</button>
+                <button class="btn color-offwhite setup-btn" onclick="setSoloAvatar('👧🏿')">👧🏿</button>
+                <button class="btn color-offwhite setup-btn" onclick="setSoloAvatar('🧑')">🧑</button>
+                <button class="btn color-offwhite setup-btn" onclick="setSoloAvatar('🧑🏽')">🧑🏽</button>
+                <button class="btn color-offwhite setup-btn" onclick="setSoloAvatar('🧑🏿')">🧑🏿</button>
+            </div>
+            <button class="btn color-grey undo-btn menu-btn" style="margin-top: 4vh;" onclick="showScreen('main-menu')">Back</button>
         </div>
     </div>
 
@@ -534,7 +571,7 @@
             
             <div class="top-info-bar">
                 
-                <div class="stat-wrapper">
+                <div class="stat-wrapper" id="main-guess-wrapper">
                     <div class="info-box guess-box top-stat-box">
                         <div class="label-text">🎯 Guesses</div>
                         <div class="guess-text" id="guess-count">0</div>
@@ -568,7 +605,6 @@
                 <div id="team-leaderboard-container"><div class="leaderboard" id="leaderboard"></div></div>
             </div>
             
-                      
             <div id="grid-container"></div>
             
             <div id="mobile-drawer-btn-wrap" style="display: none; position: fixed; bottom: 3vh; left: 0; width: 100vw; justify-content: center; z-index: 2000; pointer-events: none;">
@@ -579,6 +615,23 @@
 
         <div id="right-panel">
             <div id="right-panel-top-content">
+                
+                <div id="solo-chat-container" style="display: none; width: 100%; flex-direction: column; align-items: center;">
+                    <div class="sidebar-title">💬 Chat</div>
+                    <div style="display: flex; gap: 1vw; width: 90%; justify-content: center; margin-bottom: 1.5vh;">
+                        <div class="info-box top-stat-box" style="border-color: #ffa502; width: 50%; min-height: 70px; padding: 0.5vh 0 !important;">
+                            <div class="label-text">🔥 Streak</div>
+                            <div class="guess-text" id="solo-streak" style="color: #ffa502;">0</div>
+                        </div>
+                        <div class="info-box top-stat-box" style="border-color: #1e90ff; width: 50%; min-height: 70px; padding: 0.5vh 0 !important;">
+                            <div class="label-text">🎯 Guesses</div>
+                            <div class="guess-text" id="solo-guesses-left" style="color: #1e90ff;">7</div>
+                        </div>
+                    </div>
+                    <div id="solo-chat-log" style="display: flex; flex-direction: column; gap: 1vh; width: 90%; max-height: 50vh; overflow-y: auto; padding-right: 1vw; padding-bottom: 1vh;">
+                    </div>
+                </div>
+
                 <div id="team-dice-container">
                     <div class="sidebar-title">Who's Turn?</div>
                     <div style="display:flex; gap:1vw; width:90%; justify-content:center; margin-bottom: 1vh;">
@@ -587,26 +640,26 @@
                     </div>
                     <button class="btn color-blue draw-btn" onclick="rollDice()">🎲 Roll Turn</button>
                     <button class="btn color-pink draw-btn" style="font-size: 2.2vh; margin-top: 1.5vh; padding: 1.5vh;" onclick="openGiantTimer()">⏳ 30 Sec Timer</button>
-		<div id="team-controls-wrapper" style="display: none; width: 90%; gap: 1vw; margin-top: 1.5vh; justify-content: center;">
+                    
+                    <div id="team-controls-wrapper" style="display: none; width: 90%; gap: 1vw; margin-top: 1.5vh; justify-content: center;">
                         <button class="btn color-grey undo-btn" id="left-undo-btn" onclick="undoLastAction()" style="flex: 1; padding: 1.5vh; font-size: 1.8vh; margin: 0;">↩️ Undo</button>
                         <button class="btn color-teal" id="left-shuffle-btn" onclick="playSound('change'); renderGrid()" style="flex: 1; padding: 1.5vh; font-size: 1.8vh; margin: 0;">🔀 Shuffle</button>
-                    </div>
-		<br>
+                    </div><br>
                 </div>
 
                 <div id="twop-secret-card-container">
                     <div class="sidebar-title">Your Secret Card</div>
                     
-                    <div class="secret-card-display" id="secret-card" onclick="wiggleSecretCard(); if(isMobileMode) toggleDrawer('close');">
+                    <div class="secret-card-display" id="secret-card" onclick="wiggleSecretCard(); if(isMobileMode && gameMode !== 'solo') toggleDrawer('close');">
                         <div class="sc-emoji" id="sc-emoji">❓</div>
                         <div class="sc-name normal-case" id="sc-name">???</div>
                     </div>
                     
-                    <button class="btn color-blue draw-btn" onclick="drawSecretCard(true); if(isMobileMode) toggleDrawer('close');">🃏 Draw New Card</button>
+                    <button class="btn color-blue draw-btn" onclick="drawSecretCard(true); if(isMobileMode && gameMode !== 'solo') toggleDrawer('close');">🃏 Draw New Card</button>
                     
                     <div id="right-action-btns" style="display:flex; width:90%; gap:1vw; margin-bottom: 0; margin-top: 1.5vh;">
-                        <button class="btn color-grey undo-btn" onclick="undoLastAction(); if(isMobileMode) toggleDrawer('close');" style="flex:1;">↩️ Undo</button>
-                        <button class="btn color-teal" onclick="playSound('change'); renderGrid(); if(isMobileMode) toggleDrawer('close');" style="flex:1;">🔀 Shuffle</button>
+                        <button class="btn color-grey undo-btn" onclick="undoLastAction(); if(isMobileMode && gameMode !== 'solo') toggleDrawer('close');" style="flex:1;">↩️ Undo</button>
+                        <button class="btn color-teal" onclick="playSound('change'); renderGrid(); if(isMobileMode && gameMode !== 'solo') toggleDrawer('close');" style="flex:1;">🔀 Shuffle</button>
                     </div>
                     
                     <button id="close-drawer-btn" class="btn color-grey" onclick="toggleDrawer('close')" style="display: none; width: 90%; margin-top: 1.5vh; font-size: 2.2vh; padding: 1.5vh;">👇 Close</button>
@@ -720,13 +773,21 @@
             <button class="btn color-blue draw-btn" style="width: auto; padding: 2vh 4vw; font-size: 2.5vh;" onclick="closeTwoPlayerVictory()">Next Round</button>
         </div>
     </div>
+
+    <div id="solo-loss-modal" class="modal-overlay">
+        <div class="modal-content">
+            <h2 style="color: #ff4757; font-size: 5vh; margin-top:0;">😢 GAME OVER 😢</h2>
+            <p id="loss-stats-text" style="font-size: 3vh; font-weight: bold; margin: 3vh 0;"></p>
+            <button class="btn color-blue draw-btn" style="width: auto; padding: 2vh 4vw; font-size: 2.5vh;" onclick="closeSoloLoss()">Try Again</button>
+        </div>
+    </div>
     
     <div id="settings-modal" class="modal-overlay">
         <div class="modal-content">
             <h2 style="color: var(--main-teal); margin-top: 0; font-size: 4vh;">⚙️ Game Settings ⚙️</h2>
             <div style="display: flex; flex-direction: column; gap: 1.5vh; margin-top: 4vh; align-items: center; width: 100%;">
                 
-                <div style="width: 80%; max-width: 500px; display: flex; flex-direction: column; gap: 1.5vh; margin: 0 auto;">
+                <div style="width: 80%; max-width: 700px; display: flex; flex-direction: column; gap: 1.5vh; margin: 0 auto;">
                     
                     <div class="settings-flex-row" style="width: 100%; margin-bottom: 0.5vh;">
                         <button class="btn color-offwhite flex-expand-btn device-toggle-btn" onclick="toggleDeviceMode()">
@@ -870,7 +931,7 @@
                 applyResponsiveLayout();
                 
                 // Automatically open drawer if switching TO mobile mode during a 2p game
-                if (isMobileMode && gameMode !== 'team') {
+                if (isMobileMode && gameMode !== 'team' && gameMode !== 'solo') {
                     setTimeout(() => toggleDrawer('open'), 100);
                 }
             }
@@ -891,7 +952,7 @@
             else document.body.classList.remove('dark-mode');
         }
 
-        // 📱 Mobile Drawer Logic (Refactored for explicit Open/Close)
+        // 📱 Mobile Drawer Logic
         function toggleDrawer(action) {
             playSound('select');
             const drawer = document.getElementById('twop-secret-card-container');
@@ -1020,6 +1081,14 @@
         let giantTimerInterval = null;
         let giantTimeLeft = 30;
         let isTimerPaused = false;
+        
+        // Solo variables
+        let soloMaxGuesses = 7;
+        let soloGuessesUsed = 0;
+        let soloSecretItem = null;
+        let soloPlayerAvatar = '🧑';
+        let soloStreak = 0;
+        let isBotThinking = false;
 
         function getTooltip(traitKey, value) {
             const tooltips = {"🥩": "meat-eater", "🌿": "plant-eater", "🖐️": "use hands", "🍴": "use fork/spoon", "🍬": "sweet", "🧂": "salty", "❄️": "cold", "♨️": "hot", "👤": "individual sport", "👥": "team sport", "🏠": "indoor", "🌳": "outdoor", "🚫": "no ball/puck", "⚽": "uses ball/puck"};
@@ -1050,6 +1119,13 @@
             return `Is it ${cleanVal}?`;
         }
 
+        function getBotSentence(qText, isYes) {
+            if (qText.startsWith("Is")) return isYes ? "Yes, it is." : "No, it isn't.";
+            if (qText.startsWith("Does")) return isYes ? "Yes, it does." : "No, it doesn't.";
+            if (qText.startsWith("Do")) return isYes ? "Yes, I do." : "No, I don't.";
+            return isYes ? "Yes." : "No.";
+        }
+
         function setYesNoText(question, yesId, noId) {
             const yesBtn = document.getElementById(yesId);
             const noBtn = document.getElementById(noId);
@@ -1077,11 +1153,17 @@
 
         function setTempTeams(num) { playSound('select'); tempTeamCount = num; showScreen('student-setup-menu'); }
         
-        // Timer Menu Bypassed
         function setTempStudents(num) { 
             playSound('select'); 
             studentsPerTeam = num; 
-            initClassroom(true); // Default to True
+            initClassroom(true);
+        }
+
+        function setSoloAvatar(emoji) {
+            playSound('select');
+            soloPlayerAvatar = emoji;
+            gameMode = 'solo';
+            launchGame();
         }
 
         function initClassroom(timerEnabled) {
@@ -1093,7 +1175,11 @@
             gameMode = 'team'; launchGame();
         }
 
-        function selectMode(mode) { playSound('select'); gameMode = mode; launchGame(); }
+        function selectMode(mode) { 
+            playSound('select'); 
+            gameMode = mode; 
+            launchGame(); 
+        }
 
         function applyResponsiveLayout() {
             const rp = document.getElementById('right-panel'), lp = document.getElementById('left-panel');
@@ -1107,8 +1193,13 @@
                 lp.style.borderRight = 'none'; 
                 
                 if (gameMode === 'team') {
-                    teamControls.style.display = 'flex'; // Show controls under guesses
+                    teamControls.style.display = 'flex'; 
                     drawerBtnWrap.style.display = 'none';
+                    document.getElementById('twop-secret-card-container').classList.remove('mobile-drawer');
+                    document.getElementById('close-drawer-btn').style.display = 'none';
+                } else if (gameMode === 'solo') {
+                    teamControls.style.display = 'none';
+                    drawerBtnWrap.style.display = 'none'; 
                     document.getElementById('twop-secret-card-container').classList.remove('mobile-drawer');
                     document.getElementById('close-drawer-btn').style.display = 'none';
                 } else {
@@ -1129,10 +1220,13 @@
                 document.getElementById('close-drawer-btn').style.display = 'none';
                 document.getElementById('mobile-drawer-overlay').style.display = 'none';
                 
-                if (gameMode !== 'team') { 
+                if (gameMode !== 'team' && gameMode !== 'solo') { 
                     document.getElementById('toggle-panel-btn').style.display = 'flex'; 
                     teamControls.style.display = 'none';
                     if (rightActionBtns) rightActionBtns.style.display = 'flex'; 
+                } else if (gameMode === 'solo') {
+                    document.getElementById('toggle-panel-btn').style.display = 'flex'; 
+                    teamControls.style.display = 'none';
                 } else { 
                     document.getElementById('toggle-panel-btn').style.display = 'none'; 
                     teamControls.style.display = 'flex';
@@ -1145,39 +1239,55 @@
             
             const teamBoard = document.getElementById('team-leaderboard-container'), teamDice = document.getElementById('team-dice-container');
             const p2Card = document.getElementById('twop-secret-card-container');
+            const soloChat = document.getElementById('solo-chat-container');
             const resetBtn = document.getElementById('settings-reset-scores-btn');
             const sidebarContent = document.getElementById('sidebar-content-container');
             const exampleQList = document.getElementById('example-questions-list'), exampleQHeader = document.getElementById('example-q-header');
             const vocabHeader = document.getElementById('vocab-header');
             const traitHeader = document.getElementById('trait-question-header'), verifyHeader = document.getElementById('verify-question-header');
+            const mainGuessWrapper = document.getElementById('main-guess-wrapper');
 
             teamBoard.style.display = 'none'; teamDice.style.display = 'none';
-            p2Card.style.display = 'none'; 
+            p2Card.style.display = 'none'; soloChat.style.display = 'none';
             isRightPanelVisible = true;
             document.getElementById('toggle-panel-btn').innerText = '🙈';
             document.getElementById('twop-top-scoreboard').style.display = 'none';
+            mainGuessWrapper.style.display = 'flex';
 
             const p1Label = document.getElementById('p1-label'), p2Label = document.getElementById('p2-label');
             const p1Controls = document.getElementById('p1-controls'), p2Controls = document.getElementById('p2-controls');
             const p2Wrapper = document.getElementById('p2-score-wrapper');
+            
+            // Force PC Mode for Classroom
+            if (gameMode === 'team' && isMobileMode) {
+                isMobileMode = false;
+                document.body.classList.remove('mobile-mode');
+                document.querySelectorAll('.device-toggle-btn').forEach(btn => {
+                    btn.querySelector('.icon').innerHTML = '💻';
+                    btn.querySelector('.btn-text').innerHTML = 'PC Mode';
+                });
+            }
 
             if (gameMode === 'team') {
                 traitHeader.innerText = "Ask the teacher:"; verifyHeader.innerText = "Ask the teacher:";
                 teamBoard.style.display = 'flex'; teamDice.style.display = 'flex';
-                sidebarContent.style.display = 'block'; document.getElementById('left-undo-btn').style.display = 'block'; 
+                sidebarContent.style.display = 'block'; 
                 exampleQList.style.display = 'block'; exampleQHeader.style.display = 'block';
                 vocabHeader.style.marginTop = '1.5vh';
                 if(resetBtn) resetBtn.innerText = '🗑️ Reset Scores';
                 updateTeamLeaderboard();
+            } else if (gameMode === 'solo') {
+                soloChat.style.display = 'flex';
+                sidebarContent.style.display = 'none'; 
+                mainGuessWrapper.style.display = 'none';
             } else {
                 traitHeader.innerText = "Ask your opponent:"; verifyHeader.innerText = "Ask your opponent:";
                 p2Card.style.display = 'flex'; sidebarContent.style.display = (gameMode === '2p-student') ? 'block' : 'none';
                 exampleQList.style.display = 'none'; exampleQHeader.style.display = 'none';
-                vocabHeader.style.marginTop = '0'; // Tightens vocabulary spacing
+                vocabHeader.style.marginTop = '0';
                 
                 if(resetBtn) resetBtn.innerText = '🗑️ Reset Score'; 
                 drawSecretCard();
-                
                 document.getElementById('twop-top-scoreboard').style.display = 'flex';
 
                 if (gameMode === '2p-teacher') {
@@ -1192,19 +1302,10 @@
                     if(resetBtn) resetBtn.innerText = '🗑️ Reset Score';
                 }
             }
-
-	// Grey out PC/Mobile toggle in Classroom Mode
+            
+            // Grey out PC toggle in Classroom Mode
             document.querySelectorAll('.device-toggle-btn').forEach(btn => {
                 if (gameMode === 'team') {
-// Force PC Mode for Classroom
-                if (isMobileMode) {
-                    isMobileMode = false;
-                    document.body.classList.remove('mobile-mode');
-                    document.querySelectorAll('.device-toggle-btn').forEach(btn => {
-                        btn.querySelector('.icon').innerHTML = '💻';
-                        btn.querySelector('.btn-text').innerHTML = 'PC Mode';
-                    });
-                }
                     btn.disabled = true;
                     btn.style.opacity = '0.5';
                     btn.style.cursor = 'not-allowed';
@@ -1220,7 +1321,7 @@
             renderGrid();
             
             // Auto open drawer on launch if in Mobile 1-on-1 mode
-            if (isMobileMode && gameMode !== 'team') {
+            if (isMobileMode && gameMode !== 'team' && gameMode !== 'solo') {
                 setTimeout(() => toggleDrawer('open'), 100);
             }
         }
@@ -1334,15 +1435,13 @@
             const container = document.getElementById('giant-examples-container');
             container.innerHTML = '';
             
-            // Pick 3 random traits 
             let shuffledTraits = shuffleArray([...cat.traits]);
             let selectedTraits = shuffledTraits.slice(0, Math.min(3, shuffledTraits.length));
             
             selectedTraits.forEach(trait => {
-                // Pick a random value for this trait
                 const randomItem = cat.items[Math.floor(Math.random() * cat.items.length)];
                 let val = randomItem[trait.key];
-                val = String(val).split(',')[0].trim(); // Handle comma-separated lists
+                val = String(val).split(',')[0].trim(); 
                 
                 const qText = getQuestionText(trait.key, val, currentCategory);
                 const div = document.createElement('div');
@@ -1377,7 +1476,7 @@
         
         function triggerResetScores() { 
             playSound('select');
-            document.getElementById('settings-modal').style.display = 'none'; // Close settings
+            document.getElementById('settings-modal').style.display = 'none'; 
             const modal = document.getElementById('reset-modal'), confirmBtn = document.getElementById('reset-confirm-btn');
             confirmBtn.disabled = true; let timeLeft = 5; confirmBtn.innerText = `Yes (${timeLeft})`;
             modal.style.display = 'flex'; 
@@ -1394,6 +1493,7 @@
         function executeResetScores() { 
             playSound('change');
             if (gameMode === 'team') { teams.forEach(t => t.score = 0); updateTeamLeaderboard(); } 
+            else if (gameMode === 'solo') { soloStreak = 0; document.getElementById('solo-streak').innerText = soloStreak; }
             else { p1Score = 0; p2Score = 0; document.getElementById('p1-score').innerText = 0; document.getElementById('p2-score').innerText = 0; }
             closeResetModal(); 
         }
@@ -1429,11 +1529,79 @@
             playSound('select');
             currentCategory = document.getElementById('category-selector').value;
             document.getElementById('game-title').innerText = gameData[currentCategory].title;
-            renderGrid(); if(gameMode.startsWith('2p')) executeDrawCard(); updateSidebarContent();
+            renderGrid(); 
+            if(gameMode.startsWith('2p')) executeDrawCard(); 
+            updateSidebarContent();
+        }
+
+        // --- SOLO MODE UI LOGIC ---
+        function updateSoloUI() {
+            let left = soloMaxGuesses - soloGuessesUsed;
+            document.getElementById('solo-guesses-left').innerText = left;
+            document.getElementById('guess-count').innerText = soloGuessesUsed;
+            document.getElementById('solo-streak').innerText = soloStreak;
+            if (left === 1 && !isBotThinking) {
+                addSoloChat("⚠️ LAST GUESS! Pick the final card!", 'chat-sys');
+            }
+        }
+
+        function addSoloChat(text, className) {
+            const log = document.getElementById('solo-chat-log');
+            const b = document.createElement('div');
+            b.className = `chat-bubble ${className}`;
+            b.innerText = text;
+            log.appendChild(b);
+            // Auto scroll to bottom smoothly
+            log.scrollTo({ top: log.scrollHeight, behavior: 'smooth' });
+        }
+
+        function closeSoloLoss() {
+            playSound('select');
+            document.getElementById('solo-loss-modal').style.display = 'none';
+            soloStreak = 0;
+            resetBoard();
+            launchGame();
         }
 
         function toggleCard(cardId) {
             const c = document.getElementById(cardId); if (c.classList.contains('eliminated')) return;
+            
+            if (gameMode === 'solo') {
+                if (isBotThinking) return;
+                
+                const itemName = cardId.replace('card-', '');
+                const question = (currentCategory === 'animals') ? `Is it ${/^[aeiou]/i.test(itemName) ? 'an' : 'a'} ${itemName}?` : `Is it ${itemName}?`;
+                
+                isBotThinking = true;
+                addSoloChat(`${soloPlayerAvatar}: ${question}`, 'chat-player');
+                
+                setTimeout(() => {
+                    isBotThinking = false;
+                    if (itemName === soloSecretItem.name) {
+                        playSound('win');
+                        soloStreak++;
+                        document.getElementById('victory-stats-text').innerText = `You won in ${soloGuessesUsed + 1} guesses!`;
+                        document.getElementById('two-player-victory-modal').style.display = 'flex';
+                    } else {
+                        playSound('no');
+                        document.getElementById(cardId).classList.add('eliminated');
+                        soloGuessesUsed++;
+                        
+                        const botReply = getBotSentence(question, false);
+                        addSoloChat(`🤖: ${botReply}`, 'chat-bot-no');
+                        updateSoloUI();
+                        
+                        if (soloGuessesUsed >= soloMaxGuesses) {
+                            setTimeout(() => {
+                                document.getElementById('loss-stats-text').innerText = `The correct answer was ${soloSecretItem.emoji} ${soloSecretItem.name}.`;
+                                document.getElementById('solo-loss-modal').style.display = 'flex';
+                            }, 800);
+                        }
+                    }
+                }, 800);
+                return;
+            }
+
             playSound('select');
             const itemName = c.querySelector('.item-name').innerText;
             pendingAction = { type: 'card', id: cardId, name: itemName };
@@ -1445,7 +1613,7 @@
         }
 
         function handleTraitClick(traitKey, traitValue, event, cardId) {
-            event.stopPropagation(); const c = document.getElementById(cardId); if (c.classList.contains('eliminated')) return;
+            event.stopPropagation(); const c = document.getElementById(cardId); if (c.classList.contains('eliminated') || isBotThinking) return;
             playSound('select');
             if (traitValue.includes(',')) {
                 pendingAction = { key: traitKey };
@@ -1462,6 +1630,42 @@
         function closeTraitModal() { playSound('select'); document.getElementById('trait-choice-modal').style.display = 'none'; }
 
         function askTraitQuestion(traitKey, targetValue) {
+            if (gameMode === 'solo') {
+                if (soloGuessesUsed >= soloMaxGuesses - 1) {
+                    playSound('no');
+                    addSoloChat("⚠️ Last guess! You must pick a card!", 'chat-sys');
+                    return;
+                }
+                
+                const qText = getQuestionText(traitKey, targetValue, currentCategory);
+                const hasTrait = String(soloSecretItem[traitKey]).split(',').map(s=>s.trim()).includes(String(targetValue).trim());
+                
+                isBotThinking = true;
+                addSoloChat(`${soloPlayerAvatar}: ${qText}`, 'chat-player');
+                
+                setTimeout(() => {
+                    isBotThinking = false;
+                    const botReply = getBotSentence(qText, hasTrait);
+                    addSoloChat(`🤖: ${botReply}`, hasTrait ? 'chat-bot-yes' : 'chat-bot-no');
+                    playSound(hasTrait ? 'yes' : 'no');
+                    
+                    currentLayout.forEach(item => {
+                        const cId = 'card-' + item.name;
+                        const card = document.getElementById(cId);
+                        if(card.classList.contains('eliminated')) return;
+                        const itemHasTrait = String(item[traitKey]).split(',').map(s=>s.trim()).includes(String(targetValue).trim());
+                        if ((hasTrait && !itemHasTrait) || (!hasTrait && itemHasTrait)) {
+                            card.classList.add('eliminated');
+                        }
+                    });
+                    
+                    soloGuessesUsed++;
+                    updateSoloUI();
+                }, 800);
+                
+                return;
+            }
+
             pendingAction = { key: traitKey, val: targetValue };
             const qText = getQuestionText(traitKey, targetValue, currentCategory);
             document.getElementById('trait-question-text').innerText = qText;
@@ -1490,7 +1694,7 @@
         }
 
         function verifySuccess() {
-            playSound('win'); // Plays win, not yes
+            playSound('win'); 
             document.getElementById('verify-answer-modal').style.display = 'none';
             guessCount++; document.getElementById('guess-count').innerText = guessCount;
             
@@ -1528,13 +1732,25 @@
         }
 
         function closeVerifyModal() { playSound('select'); document.getElementById('verify-answer-modal').style.display = 'none'; }
-        function closeTwoPlayerVictory() { playSound('select'); document.getElementById('two-player-victory-modal').style.display = 'none'; resetBoard(); renderGrid(); executeDrawCard(); }
+        
+        function closeTwoPlayerVictory() { 
+            playSound('select'); 
+            document.getElementById('two-player-victory-modal').style.display = 'none'; 
+            resetBoard(); 
+            if (gameMode === 'solo') {
+                launchGame();
+            } else {
+                renderGrid(); 
+                executeDrawCard(); 
+            }
+        }
+        
         function closeVictoryModal() { playSound('select'); document.getElementById('victory-modal').style.display = 'none'; }
         
         function wiggleSecretCard() {
             const sc = document.getElementById('secret-card');
             sc.classList.remove('wiggle');
-            void sc.offsetWidth; // trigger reflow to restart animation
+            void sc.offsetWidth; 
             sc.classList.add('wiggle');
         }
         
@@ -1589,6 +1805,20 @@
         function renderGrid() {
             const container = document.getElementById('grid-container'); container.innerHTML = ''; 
             guessCount = 0; actionHistory = []; document.getElementById('guess-count').innerText = 0;
+            
+            if (gameMode === 'solo') {
+                document.getElementById('solo-chat-log').innerHTML = '';
+                soloGuessesUsed = 0;
+                isBotThinking = false;
+                
+                // CRITICAL FIX: The bot must pick a secret item from the CURRENT category every time the board is re-rendered!
+                const catItems = gameData[currentCategory].items;
+                soloSecretItem = catItems[Math.floor(Math.random() * catItems.length)];
+                
+                addSoloChat("Let's practice! Ask me about the traits.", 'chat-sys');
+                updateSoloUI();
+            }
+            
             const cat = gameData[currentCategory]; currentLayout = shuffleArray(cat.items);
             currentLayout.forEach(item => {
                 const card = document.createElement('div'); card.className = 'card'; card.id = 'card-' + item.name;
@@ -1624,6 +1854,7 @@
                     else if (this.id === 'giant-timer-modal') closeTimerModal();
                     else if (this.id === 'mobile-card-modal') closeMobileCardModal();
                     else if (this.id === 'mobile-drawer-overlay') toggleDrawer('close');
+                    else if (this.id === 'solo-loss-modal') closeSoloLoss();
                     else { playSound('select'); this.style.display = 'none'; }
                 }
             });
