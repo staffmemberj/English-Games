@@ -320,7 +320,7 @@
                             <span class="icon">☀️</span><span class="btn-text">Light Mode</span>
                         </button>
                         <button class="btn color-offwhite flex-expand-btn fullscreen-toggle-btn" onclick="toggleFullScreen()">
-                            <span class="icon">⛶</span><span class="btn-text">Fullscreen</span>
+                            <span class="icon">⛶</span><span class="btn-text">Windowed</span>
                         </button>
                         <button class="btn color-offwhite flex-expand-btn sound-toggle-btn" onclick="toggleSoundMode()">
                             <span class="icon">🔊</span><span class="btn-text">Sound On</span>
@@ -571,7 +571,7 @@
                             <span class="icon">☀️</span><span class="btn-text">Light Mode</span>
                         </button>
                         <button class="btn color-offwhite flex-expand-btn fullscreen-toggle-btn" onclick="toggleFullScreen()">
-                            <span class="icon">⛶</span><span class="btn-text">Fullscreen</span>
+                            <span class="icon">⛶</span><span class="btn-text">Windowed</span>
                         </button>
                         <button class="btn color-offwhite flex-expand-btn sound-toggle-btn" onclick="toggleSoundMode()">
                             <span class="icon">🔊</span><span class="btn-text">Sound On</span>
@@ -580,7 +580,7 @@
 
                     <button class="btn color-teal" style="width: 100%; font-size: 2.2vh; padding: 1.5vh; margin: 0;" onclick="executeSettingsReset()">🔄 Reset Board</button>
                     <button class="btn color-orange" style="width: 100%; font-size: 2.2vh; padding: 1.5vh; margin: 0;" onclick="playSound('select'); setTimeout(() => location.reload(), 150)">🏠 Setup / Menu</button>
-                    <button class="btn color-pink" style="width: 100%; font-size: 2.2vh; padding: 1.5vh; margin: 0;" onclick="playSound('select'); setTimeout(() => window.close(), 150)">✖️ Close Window</button>
+                    <button class="btn color-pink" style="width: 100%; font-size: 2.2vh; padding: 1.5vh; margin: 0;" onclick="window.close()">✖️ Close Window</button>
                     <button class="btn color-grey undo-btn" style="width: 100%; font-size: 2.2vh; padding: 1.5vh; margin: 0;" onclick="closeSettingsModal()">Back</button>
                 </div>
                 
