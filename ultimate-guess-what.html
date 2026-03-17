@@ -85,8 +85,8 @@
             display: flex; align-items: center; justify-content: center;
             padding: 1.5vh; margin: 0; border-radius: 40px;
         }
-        .settings-flex-row:hover .flex-expand-btn { flex: 0.3; } /* Shrink non-hovered */
-        .settings-flex-row .flex-expand-btn:hover { flex: 3; } /* Expand hovered */
+        .settings-flex-row:hover .flex-expand-btn { flex: 0.3; }
+        .settings-flex-row .flex-expand-btn:hover { flex: 3; }
         
         .flex-expand-btn .icon { font-size: 2.5vh; display: inline-block; }
         .flex-expand-btn .btn-text {
@@ -115,18 +115,20 @@
         .menu-btn { font-size: max(2.5vh, 16px); padding: 2vh 3vw; }
         .setup-btn { font-size: 4vh; width: 9vh; height: 9vh; display: flex; align-items: center; justify-content: center; padding: 0; border-radius: 50%; }
         .btn { padding: 1vh 1.5vw; font-size: 1.8vh; }
+        
         .icon-only { 
-            font-size: 3.5vh !important; 
-            width: 7vh; 
-            height: 7vh; 
+            height: max(6vh, 45px) !important;
+            width: max(6vh, 45px) !important;
+            font-size: max(3vh, 20px) !important; 
             border-radius: 50%; 
             display: flex; 
             align-items: center; 
             justify-content: center; 
             padding: 0 !important; 
             margin: 0 !important; 
-            letter-spacing: 0 !important; /* Removes rightward shift for single characters */
+            letter-spacing: 0 !important; 
             line-height: 1;
+            box-sizing: border-box;
         }
 
         /* Game Wrapper */
@@ -147,9 +149,48 @@
         #right-panel-top-content { width: 100%; display: flex; flex-direction: column; align-items: center; flex-grow: 1; }
         h1 { font-size: 3.5vh; color: var(--main-teal); margin: 0.5vh 0; text-transform: uppercase; letter-spacing: 2px; }
         
-        /* 🏆 Top Stats (Guesses & My Points symmetrically identical) */
-        .top-info-bar { display: flex; justify-content: center; align-items: stretch; gap: 2vw; margin-bottom: 0; width: 100%; }
-        .top-stat-box { width: 14vw; min-width: 120px; height: 9vh; display: flex; flex-direction: column; align-items: center; justify-content: center; margin: 0; }
+        /* 🕹️ Unified Top Navigation Bar */
+        .top-nav-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            padding: 0 1vw;
+            margin-top: 0.5vh;
+            margin-bottom: 1.5vh;
+            z-index: 10;
+            box-sizing: border-box;
+        }
+
+        .category-select { 
+            height: max(6vh, 45px);
+            font-size: max(2vh, 16px); 
+            padding: 0 1.5vw; 
+            border-radius: 50px; 
+            border: 4px solid var(--main-teal); 
+            font-weight: bold; 
+            cursor: pointer; 
+            background: white; color: var(--main-teal);
+            box-shadow: 0 4px 0 rgba(0,0,0,0.1); 
+            font-family: 'Fredoka', sans-serif; 
+            outline: none;
+            box-sizing: border-box;
+        }
+        
+        #top-right-controls {
+            display: flex; gap: 1vw;
+        }
+
+        /* 🏆 Top Stats (Symmetrical Alignment) */
+        .top-info-bar { display: flex; justify-content: center; align-items: flex-start; gap: 4vw; margin-bottom: 0; width: 100%; }
+        
+        .stat-wrapper { display: flex; flex-direction: column; align-items: center; width: 16vw; min-width: 140px; }
+        
+        .top-stat-box { 
+            width: 100%; height: 9.5vh; min-height: 80px; 
+            display: flex; flex-direction: column; align-items: center; justify-content: center; 
+            margin: 0; padding: 1vh 0 !important; box-sizing: border-box;
+        }
         
         #team-leaderboard-container { display: none; flex-direction: row; align-items: flex-start; }
         .leaderboard { display: flex; justify-content: center; gap: 1vw; flex-wrap: wrap; }
@@ -161,9 +202,9 @@
         
         .info-box { padding: 0.5vh 1vw; }
         .guess-box { border-color: #70a1ff; }
-        .label-text { font-weight: bold; color: var(--main-teal); font-size: 1.4vh; text-transform: uppercase; line-height: 1; }
+        .label-text { font-weight: bold; color: var(--main-teal); font-size: 1.5vh; text-transform: uppercase; line-height: 1; margin-bottom: 0.5vh; }
         .point-text { font-size: 2.8vh; color: #ff4757; font-weight: bold; margin: 0.2vh 0; line-height: 1; }
-        .guess-text { font-size: 3.8vh; color: #1e90ff; font-weight: bold; line-height: 1; margin-top: 0.5vh;}
+        .guess-text { font-size: 4vh; color: #1e90ff; font-weight: bold; line-height: 1;}
         
         .bonus-btn {
             background-color: #fff200; color: #e58e26; border: 3px solid #fbc531; box-shadow: 0 4px 0 #e1b12c;
@@ -172,23 +213,9 @@
         }
         .bonus-btn:active { transform: translateY(4px); box-shadow: 0 0 0 #e1b12c; }
 
-        .category-select { 
-            position: absolute; top: 1.5vh; left: 1.5vw;
-            font-size: 2vh; padding: 0.5vh 1vw; border-radius: 20px; border: 4px solid var(--main-teal); 
-            font-weight: bold; cursor: pointer; z-index: 10; background: white; color: var(--main-teal);
-            box-shadow: 0 4px 0 rgba(0,0,0,0.1); font-family: 'Fredoka', sans-serif; outline: none;
-        }
-        
-        /* Top Right Controls Group */
-        #top-right-controls {
-            position: absolute; top: 1.5vh; right: 1.5vw; display: flex; gap: 1vw; z-index: 10;
-        }
-        
         .dice-display, .draw-btn, #sidebar-content-container, .score-row, .reset-scores-btn {
             width: 90%; box-sizing: border-box; margin-bottom: 1vh;
         }
-
-        .reset-scores-btn { font-size: 1.8vh; padding: 1.5vh; margin-top: auto; flex-shrink: 0; }
         
         /* 🃏 Bouncy Cards */
         #grid-container {
@@ -243,7 +270,7 @@
             justify-content: center; 
             width: 14vw; 
             min-width: 120px;
-            aspect-ratio: 4 / 4.5; /* Matches typical taller proportion of the grid tiles */
+            aspect-ratio: 4 / 4.5;
             margin: 0.5vh auto 1.5vh auto; 
             transition: all 0.3s var(--bounce);
             cursor: pointer;
@@ -266,7 +293,7 @@
         }
 
         .sc-emoji { font-size: 7vh; line-height: 1; pointer-events: none; margin-bottom: 1vh; }
-        .sc-name { font-size: 2.2vh; font-weight: bold; margin: 0; pointer-events: none; color: #2f3542; text-transform: capitalize; }
+        .sc-name { font-size: 2.2vh; font-weight: bold; margin: 0; pointer-events: none; color: #2f3542; text-transform: lowercase; }
 
         #team-dice-container { display: flex; flex-direction: column; align-items: center; width: 100%; }
         .dice-display { padding: 0.8vh; display: flex; flex-direction: column; align-items: center; justify-content: center; border-color: #ffa502;}
@@ -275,7 +302,7 @@
         .draw-btn { font-size: 1.8vh; padding: 1vh; flex-shrink: 0; width: 90%; margin-top: 0;}
         
         /* Two Player Score Controls */
-        .score-controls { display: flex; gap: 0.5vw; margin-top: 0.5vh; margin-bottom: 0.5vh; }
+        .score-controls { display: flex; gap: 0.5vw; margin-top: 1vh; margin-bottom: 0.5vh; justify-content: center; }
         .score-btn { 
             font-size: 2vh; font-weight: bold; width: 3.5vh; height: 3.5vh; border-radius: 50%; 
             display: flex; align-items: center; justify-content: center; padding: 0; margin: 0;
@@ -321,12 +348,40 @@
         /* 📱 Mobile Mode Overrides */
         body.mobile-mode { overflow-y: auto !important; overflow-x: hidden; height: auto; }
         body.mobile-mode #game-wrapper { flex-direction: column !important; height: auto !important; min-height: 100vh; }
-        body.mobile-mode #left-panel { min-height: auto; height: auto; border-right: none !important; border-bottom: 6px dashed rgba(0,0,0,0.1); padding: 1vh 1vw; }
+        body.mobile-mode #game-title { display: none !important; } /* Hides title on mobile only */
+        body.mobile-mode #left-panel { min-height: auto; height: auto; border-right: none !important; border-bottom: 6px dashed rgba(0,0,0,0.1); padding: 1vh 1vw 6vh 1vw; } 
         body.mobile-mode #right-panel { width: 100%; border-left: none !important; height: auto; min-height: 50vh; display: flex !important; }
         body.mobile-mode #top-right-controls .toggle-panel-btn { display: none !important; }
         body.mobile-mode #grid-container { grid-template-columns: repeat(4, 1fr) !important; grid-template-rows: repeat(5, 1fr) !important; }
         body.mobile-mode .card { min-height: 12vh; }
         body.mobile-mode .modal-content { width: 90vw; }
+        
+        /* 🔥 Mobile Mode Specific Grid Rules */
+        body.mobile-mode #grid-container .card .item-name,
+        body.mobile-mode #grid-container .card .traits-row { display: none !important; }
+        body.mobile-mode #grid-container .card { justify-content: center; padding: 0; }
+        body.mobile-mode #grid-container .card .emoji { font-size: 6vh; margin-bottom: 0; }
+
+        /* 🗄️ Mobile Drawer Styles */
+        .mobile-drawer {
+            position: fixed !important;
+            bottom: -100% !important;
+            left: 0 !important;
+            width: 100vw !important;
+            background: white !important;
+            border: 6px solid var(--card-border) !important;
+            border-bottom: none !important;
+            border-radius: 40px 40px 0 0 !important;
+            padding: 4vh 5vw 6vh 5vw !important;
+            margin: 0 !important;
+            box-shadow: 0 -10px 20px rgba(0,0,0,0.15) !important;
+            transition: bottom 0.4s var(--bounce) !important;
+            z-index: 3000 !important;
+            box-sizing: border-box !important;
+        }
+        .mobile-drawer.open {
+            bottom: 0 !important;
+        }
 
         /* 🌙 Dark Mode Overrides */
         body.dark-mode {
@@ -359,6 +414,7 @@
         body.dark-mode #giant-timer-box { background-color: #2f3542 !important; }
         body.dark-mode #giant-examples-container { color: #f1f2f6 !important; }
         body.dark-mode .sc-name { color: white; }
+        body.dark-mode .mobile-drawer { background: #2f3542 !important; border-color: #111418 !important; }
     </style>
 </head>
 <body>
@@ -460,45 +516,49 @@
 
     <div id="game-wrapper">
         <div id="left-panel">
-            <select class="category-select" id="category-selector" onchange="changeCategory()">
-                <option value="animals">🐾 Animals</option>
-                <option value="food">🍕 Food</option>
-                <option value="sports">⚽ Sports</option>
-            </select>
             
-            <div id="top-right-controls">
-                <button class="btn color-offwhite icon-only" id="settings-btn" onclick="openSettingsModal()" title="Settings">⚙️</button>
-                <button class="btn color-offwhite icon-only toggle-panel-btn" id="toggle-panel-btn" style="display:none;" onclick="toggleRightPanel()" title="Toggle Right Panel">🙈</button>
+            <div class="top-nav-bar">
+                <select class="category-select" id="category-selector" onchange="changeCategory()">
+                    <option value="animals">🐾 Animals</option>
+                    <option value="food">🍕 Food</option>
+                    <option value="sports">⚽ Sports</option>
+                </select>
+                
+                <div id="top-right-controls">
+                    <button class="btn color-offwhite icon-only" id="settings-btn" onclick="openSettingsModal()" title="Settings">⚙️</button>
+                    <button class="btn color-offwhite icon-only toggle-panel-btn" id="toggle-panel-btn" style="display:none;" onclick="toggleRightPanel()" title="Toggle Right Panel">🙈</button>
+                </div>
             </div>
-
+            
             <h1 id="game-title">🐾 Guess What Animal! 🐾</h1>
             
             <div class="top-info-bar">
                 
-                <div style="display: flex; flex-direction: column; align-items: center; width: 15vw; min-width: 120px;">
-                    <div class="info-box guess-box top-stat-box" style="width: 100%;">
+                <div class="stat-wrapper">
+                    <div class="info-box guess-box top-stat-box">
                         <div class="label-text">🎯 Guesses</div>
                         <div class="guess-text" id="guess-count">0</div>
                     </div>
-                    <div style="display: flex; width: 100%; gap: 0.5vw; justify-content: space-between;">
-                        <button class="btn color-grey undo-btn" id="left-undo-btn" onclick="undoLastAction()" style="display:none; font-size:1.6vh; padding:0.5vh 1vw; flex: 1; margin-top: 1vh; margin-bottom: 0;">↩️ Undo</button>
-                        <button class="btn color-teal" id="left-shuffle-btn" onclick="playSound('change'); renderGrid()" style="display:none; font-size:1.6vh; padding:0.5vh 1vw; flex: 1; margin-top: 1vh; margin-bottom: 0;">🔀 Shuffle</button>
-                    </div>
                 </div>
                 
-                <div id="twop-top-scoreboard" style="display: none; gap: 2vw; justify-content: center;">
-                    <div class="info-box top-stat-box" style="border-color: #ff4757; width: 15vw; min-width: 120px;" id="p1-score-container">
-                        <div class="label-text" id="p1-label">My Points</div>
-                        <div class="guess-text" style="color: #ff4757;" id="p1-score">0</div>
-                        <div class="score-controls" id="p1-controls" style="display:none;">
+                <div id="twop-top-scoreboard" style="display: none; gap: 4vw; justify-content: center;">
+                    <div class="stat-wrapper" id="p1-score-wrapper">
+                        <div class="info-box top-stat-box" style="border-color: #ff4757;" id="p1-score-container">
+                            <div class="label-text" id="p1-label">My Points</div>
+                            <div class="guess-text" style="color: #ff4757;" id="p1-score">0</div>
+                        </div>
+                        <div class="score-controls" id="p1-controls" style="display:none; width: 100%;">
                             <button class="btn color-pink score-btn sub" onclick="adjScore(1, -1)">-</button>
                             <button class="btn color-green score-btn add" onclick="adjScore(1, 1)">+</button>
                         </div>
                     </div>
-                    <div class="info-box top-stat-box" style="border-color: #ffa502; width: 15vw; min-width: 120px;" id="p2-score-container">
-                        <div class="label-text" id="p2-label">Student</div>
-                        <div class="guess-text" style="color: #ffa502;" id="p2-score">0</div>
-                        <div class="score-controls" id="p2-controls" style="display:none;">
+                    
+                    <div class="stat-wrapper" id="p2-score-wrapper" style="display:none;">
+                        <div class="info-box top-stat-box" style="border-color: #ffa502;" id="p2-score-container">
+                            <div class="label-text" id="p2-label">Student</div>
+                            <div class="guess-text" style="color: #ffa502;" id="p2-score">0</div>
+                        </div>
+                        <div class="score-controls" id="p2-controls" style="display:none; width: 100%;">
                             <button class="btn color-pink score-btn sub" onclick="adjScore(2, -1)">-</button>
                             <button class="btn color-green score-btn add" onclick="adjScore(2, 1)">+</button>
                         </div>
@@ -508,7 +568,17 @@
                 <div id="team-leaderboard-container"><div class="leaderboard" id="leaderboard"></div></div>
             </div>
             
+            <div id="team-controls-wrapper" style="display: none; justify-content: center; gap: 1vw; margin-top: 1vh; width: 100%;">
+                <button class="btn color-grey undo-btn" id="left-undo-btn" onclick="undoLastAction()" style="font-size:1.6vh; padding:1vh 2vw; margin: 0;">↩️ Undo</button>
+                <button class="btn color-teal" id="left-shuffle-btn" onclick="playSound('change'); renderGrid()" style="font-size:1.6vh; padding:1vh 2vw; margin: 0;">🔀 Shuffle</button>
+            </div>
+            
             <div id="grid-container"></div>
+            
+            <div id="mobile-drawer-btn-wrap" style="display: none; position: fixed; bottom: 3vh; left: 0; width: 100vw; justify-content: center; z-index: 2000; pointer-events: none;">
+                <button id="mobile-drawer-btn" class="btn color-blue" onclick="toggleDrawer('open')" style="pointer-events: auto; font-size: 2.5vh; padding: 1.5vh 6vw; margin: 0; white-space: nowrap;">🃏 Show My Card</button>
+            </div>
+            
         </div>
 
         <div id="right-panel">
@@ -525,25 +595,40 @@
 
                 <div id="twop-secret-card-container">
                     <div class="sidebar-title">Your Secret Card</div>
-                    <div class="secret-card-display" id="secret-card" onclick="wiggleSecretCard()">
+                    
+                    <div class="secret-card-display" id="secret-card" onclick="wiggleSecretCard(); if(isMobileMode) toggleDrawer('close');">
                         <div class="sc-emoji" id="sc-emoji">❓</div>
-                        <div class="sc-name" id="sc-name">???</div>
+                        <div class="sc-name normal-case" id="sc-name">???</div>
                     </div>
-                    <button class="btn color-blue draw-btn" onclick="drawSecretCard(true)">🃏 Draw New Card</button>
-                    <div id="right-action-btns" style="display:flex; width:90%; gap:1vw; margin-bottom: 1.5vh;">
-                        <button class="btn color-grey undo-btn" onclick="undoLastAction()" style="flex:1;">↩️ Undo</button>
-                        <button class="btn color-teal" onclick="playSound('change'); renderGrid()" style="flex:1;">🔀 Shuffle</button>
+                    
+                    <button class="btn color-blue draw-btn" onclick="drawSecretCard(true); if(isMobileMode) toggleDrawer('close');">🃏 Draw New Card</button>
+                    
+                    <div id="right-action-btns" style="display:flex; width:90%; gap:1vw; margin-bottom: 0; margin-top: 1.5vh;">
+                        <button class="btn color-grey undo-btn" onclick="undoLastAction(); if(isMobileMode) toggleDrawer('close');" style="flex:1;">↩️ Undo</button>
+                        <button class="btn color-teal" onclick="playSound('change'); renderGrid(); if(isMobileMode) toggleDrawer('close');" style="flex:1;">🔀 Shuffle</button>
                     </div>
+                    
+                    <button id="close-drawer-btn" class="btn color-grey" onclick="toggleDrawer('close')" style="display: none; width: 90%; margin-top: 1.5vh; font-size: 2.2vh; padding: 1.5vh;">👇 Close</button>
                 </div>
 
                 <div id="sidebar-content-container">
-                    <div class="sidebar-subtitle" style="color:#ff4757;" id="example-q-header">💡 Example Questions</div>
-                    <ul id="example-questions-list"></ul>
-                    <div class="sidebar-subtitle" style="color:#ffa502; margin-top: 1.5vh;">📚 Key Vocabulary</div>
+                    <div class="sidebar-subtitle" id="vocab-header" style="color:#ffa502;">📚 Key Vocabulary</div>
                     <div id="vocab-container"></div>
+                    
+                    <div class="sidebar-subtitle" style="color:#ff4757; margin-top: 2vh;" id="example-q-header">💡 Example Questions</div>
+                    <ul id="example-questions-list"></ul>
                 </div>
             </div>
-            <button class="btn color-pink reset-scores-btn" id="classroom-reset-btn" onclick="triggerResetScores()">🗑️ Reset Score</button>
+        </div>
+    </div>
+
+    <div id="mobile-drawer-overlay" class="modal-overlay" style="z-index: 2999; background: rgba(0,0,0,0.5);" onclick="toggleDrawer('close')"></div>
+    
+    <div id="mobile-card-modal" class="modal-overlay">
+        <div id="mobile-card-wrap" style="display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%; height: 100%;">
+            <div id="mobile-modal-card-container" style="width: 70vw; max-width: 350px; margin-bottom: 3vh;">
+                </div>
+            <button class="btn color-grey icon-only" onclick="closeMobileCardModal()">✖️</button>
         </div>
     </div>
 
@@ -658,8 +743,10 @@
                     </div>
 
                     <button class="btn color-teal" style="width: 100%; font-size: 2.2vh; padding: 1.5vh; margin: 0;" onclick="executeSettingsReset()">🔄 Reset Board</button>
+                    <button class="btn color-pink" id="settings-reset-scores-btn" style="width: 100%; font-size: 2.2vh; padding: 1.5vh; margin: 0;" onclick="triggerResetScores()">🗑️ Reset Scores</button>
                     <button class="btn color-orange" style="width: 100%; font-size: 2.2vh; padding: 1.5vh; margin: 0;" onclick="playSound('select'); location.reload()">🏠 Setup / Menu</button>
-                    <button class="btn color-grey undo-btn" style="width: 100%; font-size: 2.2vh; padding: 1.5vh; margin: 0;" onclick="closeSettingsModal()">Back</button>
+                    
+                    <button class="btn color-grey undo-btn" style="width: 100%; font-size: 2.2vh; padding: 1.5vh; margin: 0;" onclick="closeSettingsModal()">🔙 Back</button>
                 </div>
                 
             </div>
@@ -776,8 +863,15 @@
             if (isMobileMode) document.body.classList.add('mobile-mode');
             else document.body.classList.remove('mobile-mode');
             
+            document.getElementById('settings-modal').style.display = 'none';
+            
             if (document.getElementById('game-wrapper').style.display === 'flex') {
                 applyResponsiveLayout();
+                
+                // Automatically open drawer if switching TO mobile mode during a 2p game
+                if (isMobileMode && gameMode !== 'team') {
+                    setTimeout(() => toggleDrawer('open'), 100);
+                }
             }
         }
 
@@ -794,6 +888,27 @@
             });
             if (isDarkMode) document.body.classList.add('dark-mode');
             else document.body.classList.remove('dark-mode');
+        }
+
+        // 📱 Mobile Drawer Logic (Refactored for explicit Open/Close)
+        function toggleDrawer(action) {
+            playSound('select');
+            const drawer = document.getElementById('twop-secret-card-container');
+            const overlay = document.getElementById('mobile-drawer-overlay');
+            const triggerBtnWrap = document.getElementById('mobile-drawer-btn-wrap');
+            
+            const isOpen = drawer.classList.contains('open');
+            let shouldOpen = action === 'open' ? true : (action === 'close' ? false : !isOpen);
+            
+            if (shouldOpen) {
+                drawer.classList.add('open');
+                overlay.style.display = 'block';
+                triggerBtnWrap.style.display = 'none';
+            } else {
+                drawer.classList.remove('open');
+                overlay.style.display = 'none';
+                triggerBtnWrap.style.display = 'flex';
+            }
         }
 
         const gameData = {
@@ -981,16 +1096,46 @@
 
         function applyResponsiveLayout() {
             const rp = document.getElementById('right-panel'), lp = document.getElementById('left-panel');
-            const leftUndo = document.getElementById('left-undo-btn'), leftShuffle = document.getElementById('left-shuffle-btn');
+            const teamControls = document.getElementById('team-controls-wrapper');
+            const drawerBtnWrap = document.getElementById('mobile-drawer-btn-wrap');
             const rightActionBtns = document.getElementById('right-action-btns');
             
             if (isMobileMode) {
-                rp.style.display = 'flex'; document.getElementById('toggle-panel-btn').style.display = 'none'; lp.style.borderRight = 'none'; 
-                if (gameMode !== 'team') { leftUndo.style.display = 'block'; leftShuffle.style.display = 'block'; if (rightActionBtns) rightActionBtns.style.display = 'none'; }
+                rp.style.display = 'flex'; 
+                document.getElementById('toggle-panel-btn').style.display = 'none'; 
+                lp.style.borderRight = 'none'; 
+                
+                if (gameMode === 'team') {
+                    teamControls.style.display = 'flex'; // Show controls under guesses
+                    drawerBtnWrap.style.display = 'none';
+                    document.getElementById('twop-secret-card-container').classList.remove('mobile-drawer');
+                    document.getElementById('close-drawer-btn').style.display = 'none';
+                } else {
+                    teamControls.style.display = 'none';
+                    drawerBtnWrap.style.display = 'flex';
+                    document.getElementById('twop-secret-card-container').classList.add('mobile-drawer');
+                    document.getElementById('close-drawer-btn').style.display = 'block';
+                    if (rightActionBtns) rightActionBtns.style.display = 'flex';
+                }
             } else {
-                rp.style.display = 'flex'; lp.style.borderRight = '6px dashed rgba(0,0,0,0.1)';
-                if (gameMode !== 'team') { document.getElementById('toggle-panel-btn').style.display = 'flex'; leftUndo.style.display = 'none'; leftShuffle.style.display = 'none'; if (rightActionBtns) rightActionBtns.style.display = 'flex'; } 
-                else { document.getElementById('toggle-panel-btn').style.display = 'none'; }
+                rp.style.display = 'flex'; 
+                lp.style.borderRight = '6px dashed rgba(0,0,0,0.1)';
+                drawerBtnWrap.style.display = 'none';
+                teamControls.style.display = 'none';
+                
+                document.getElementById('twop-secret-card-container').classList.remove('mobile-drawer');
+                document.getElementById('twop-secret-card-container').classList.remove('open');
+                document.getElementById('close-drawer-btn').style.display = 'none';
+                document.getElementById('mobile-drawer-overlay').style.display = 'none';
+                
+                if (gameMode !== 'team') { 
+                    document.getElementById('toggle-panel-btn').style.display = 'flex'; 
+                    teamControls.style.display = 'none';
+                    if (rightActionBtns) rightActionBtns.style.display = 'flex'; 
+                } else { 
+                    document.getElementById('toggle-panel-btn').style.display = 'none'; 
+                    teamControls.style.display = 'flex';
+                }
             }
         }
 
@@ -999,48 +1144,61 @@
             
             const teamBoard = document.getElementById('team-leaderboard-container'), teamDice = document.getElementById('team-dice-container');
             const p2Card = document.getElementById('twop-secret-card-container');
-            const resetBtn = document.getElementById('classroom-reset-btn'), sidebarContent = document.getElementById('sidebar-content-container');
-            const leftUndo = document.getElementById('left-undo-btn'), leftShuffle = document.getElementById('left-shuffle-btn');
+            const resetBtn = document.getElementById('settings-reset-scores-btn');
+            const sidebarContent = document.getElementById('sidebar-content-container');
             const exampleQList = document.getElementById('example-questions-list'), exampleQHeader = document.getElementById('example-q-header');
+            const vocabHeader = document.getElementById('vocab-header');
             const traitHeader = document.getElementById('trait-question-header'), verifyHeader = document.getElementById('verify-question-header');
 
             teamBoard.style.display = 'none'; teamDice.style.display = 'none';
             p2Card.style.display = 'none'; 
-            leftUndo.style.display = 'none'; leftShuffle.style.display = 'none';
-            resetBtn.style.display = 'block'; 
             isRightPanelVisible = true;
             document.getElementById('toggle-panel-btn').innerText = '🙈';
             document.getElementById('twop-top-scoreboard').style.display = 'none';
 
             const p1Label = document.getElementById('p1-label'), p2Label = document.getElementById('p2-label');
-            const p1Controls = document.getElementById('p1-controls'), p2Controls = document.getElementById('p2-controls'), p2Row = document.getElementById('p2-score-container');
+            const p1Controls = document.getElementById('p1-controls'), p2Controls = document.getElementById('p2-controls');
+            const p2Wrapper = document.getElementById('p2-score-wrapper');
 
             if (gameMode === 'team') {
                 traitHeader.innerText = "Ask the teacher:"; verifyHeader.innerText = "Ask the teacher:";
                 teamBoard.style.display = 'flex'; teamDice.style.display = 'flex';
-                sidebarContent.style.display = 'block'; leftUndo.style.display = 'block'; 
+                sidebarContent.style.display = 'block'; document.getElementById('left-undo-btn').style.display = 'block'; 
                 exampleQList.style.display = 'block'; exampleQHeader.style.display = 'block';
-                resetBtn.innerText = '🗑️ Reset Scores';
+                vocabHeader.style.marginTop = '1.5vh';
+                if(resetBtn) resetBtn.innerText = '🗑️ Reset Scores';
                 updateTeamLeaderboard();
             } else {
                 traitHeader.innerText = "Ask your opponent:"; verifyHeader.innerText = "Ask your opponent:";
                 p2Card.style.display = 'flex'; sidebarContent.style.display = (gameMode === '2p-student') ? 'block' : 'none';
                 exampleQList.style.display = 'none'; exampleQHeader.style.display = 'none';
-                resetBtn.innerText = '🗑️ Reset Score'; drawSecretCard();
+                vocabHeader.style.marginTop = '0'; // Tightens vocabulary spacing
+                
+                if(resetBtn) resetBtn.innerText = '🗑️ Reset Score'; 
+                drawSecretCard();
                 
                 document.getElementById('twop-top-scoreboard').style.display = 'flex';
 
                 if (gameMode === '2p-teacher') {
                     p1Label.innerText = 'Teacher'; p2Label.innerText = 'Student';
-                    p1Controls.style.display = 'flex'; p2Controls.style.display = 'flex'; p2Row.style.display = 'flex';
-                    resetBtn.innerText = '🗑️ Reset Scores'; 
+                    p1Controls.style.display = 'flex'; p2Controls.style.display = 'flex'; 
+                    p2Wrapper.style.display = 'flex';
+                    if(resetBtn) resetBtn.innerText = '🗑️ Reset Scores'; 
                 } else {
                     p1Label.innerText = 'My Points';
-                    p1Controls.style.display = 'none'; p2Controls.style.display = 'none'; p2Row.style.display = 'none';
-                    resetBtn.innerText = '🗑️ Reset Score';
+                    p1Controls.style.display = 'none'; p2Controls.style.display = 'none'; 
+                    p2Wrapper.style.display = 'none';
+                    if(resetBtn) resetBtn.innerText = '🗑️ Reset Score';
                 }
             }
-            applyResponsiveLayout(); updateSidebarContent(); renderGrid();
+            applyResponsiveLayout(); 
+            updateSidebarContent(); 
+            renderGrid();
+            
+            // Auto open drawer on launch if in Mobile 1-on-1 mode
+            if (isMobileMode && gameMode !== 'team') {
+                setTimeout(() => toggleDrawer('open'), 100);
+            }
         }
         
         function toggleRightPanel() {
@@ -1195,6 +1353,7 @@
         
         function triggerResetScores() { 
             playSound('select');
+            document.getElementById('settings-modal').style.display = 'none'; // Close settings
             const modal = document.getElementById('reset-modal'), confirmBtn = document.getElementById('reset-confirm-btn');
             confirmBtn.disabled = true; let timeLeft = 5; confirmBtn.innerText = `Yes (${timeLeft})`;
             modal.style.display = 'flex'; 
@@ -1217,7 +1376,6 @@
         
         function openSettingsModal() { playSound('select'); document.getElementById('settings-modal').style.display = 'flex'; }
         function closeSettingsModal() { playSound('select'); document.getElementById('settings-modal').style.display = 'none'; }
-        function executeSettingsReset() { playSound('change'); resetBoard(); closeSettingsModal(); }
 
         function adjScore(n, a) { 
             playSound('select');
@@ -1372,6 +1530,37 @@
         }
 
         function shuffleArray(arr) { let s = [...arr]; for (let i = s.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [s[i], s[j]] = [s[j], s[i]]; } return s; }
+        
+        function openMobileCardModal(itemName) {
+            const gridCard = document.getElementById('card-' + itemName);
+            if (gridCard && gridCard.classList.contains('eliminated')) return;
+            playSound('select');
+            
+            const cat = gameData[currentCategory];
+            const item = cat.items.find(i => i.name === itemName);
+            const container = document.getElementById('mobile-modal-card-container');
+            
+            let traitsHTML = '';
+            cat.traits.forEach(trait => {
+                let val = item[trait.key], display = trait.type === 'color' ? `<div class="color-circle" style="${item.colorStyle}"></div>` : val;
+                traitsHTML += `<div class="trait-col" title="${getTooltip(trait.key, val)}" onclick="event.stopPropagation(); closeMobileCardModal(false); handleTraitClick('${trait.key}', '${val}', event, 'card-${item.name}')"><div class="trait-value">${display}</div></div>`;
+            });
+            
+            container.innerHTML = `
+                <div class="card" style="pointer-events: auto; width: 100%; height: 100%; aspect-ratio: 4/4.5; cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: space-evenly; margin: 0 auto;" onclick="closeMobileCardModal(false); toggleCard('card-${item.name}')">
+                    <div class="emoji" style="font-size: 8vh; line-height: 1; display: block !important;">${item.emoji}</div>
+                    <div class="item-name" style="font-size: 3vh; font-weight: bold; display: block !important;">${item.name}</div>
+                    <div class="traits-row" style="display: flex !important; width: 100%; justify-content: space-around;">${traitsHTML}</div>
+                </div>
+            `;
+            
+            document.getElementById('mobile-card-modal').style.display = 'flex';
+        }
+
+        function closeMobileCardModal(playSnd = true) {
+            if (playSnd) playSound('select');
+            document.getElementById('mobile-card-modal').style.display = 'none';
+        }
 
         function renderGrid() {
             const container = document.getElementById('grid-container'); container.innerHTML = ''; 
@@ -1379,7 +1568,13 @@
             const cat = gameData[currentCategory]; currentLayout = shuffleArray(cat.items);
             currentLayout.forEach(item => {
                 const card = document.createElement('div'); card.className = 'card'; card.id = 'card-' + item.name;
-                card.onclick = () => toggleCard(card.id);
+                card.onclick = (e) => {
+                    if(isMobileMode && !e.currentTarget.closest('#mobile-card-modal')) {
+                        openMobileCardModal(item.name);
+                    } else {
+                        toggleCard(card.id);
+                    }
+                };
                 let traitsHTML = '';
                 cat.traits.forEach(trait => {
                     let val = item[trait.key], display = trait.type === 'color' ? `<div class="color-circle" style="${item.colorStyle}"></div>` : val;
@@ -1393,7 +1588,7 @@
         // Close modals when clicking outside the content box
         document.querySelectorAll('.modal-overlay').forEach(modal => {
             modal.addEventListener('click', function(e) {
-                if (e.target === this) {
+                if (e.target === this || e.target.id === 'mobile-card-wrap') {
                     if (this.id === 'reset-modal') closeResetModal();
                     else if (this.id === 'victory-modal') closeVictoryModal();
                     else if (this.id === 'draw-warning-modal') closeDrawWarningModal();
@@ -1403,6 +1598,8 @@
                     else if (this.id === 'two-player-victory-modal') closeTwoPlayerVictory();
                     else if (this.id === 'settings-modal') closeSettingsModal();
                     else if (this.id === 'giant-timer-modal') closeTimerModal();
+                    else if (this.id === 'mobile-card-modal') closeMobileCardModal();
+                    else if (this.id === 'mobile-drawer-overlay') toggleDrawer('close');
                     else { playSound('select'); this.style.display = 'none'; }
                 }
             });
