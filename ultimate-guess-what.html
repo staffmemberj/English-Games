@@ -579,8 +579,8 @@
                     </div>
 
                     <button class="btn color-teal" style="width: 100%; font-size: 2.2vh; padding: 1.5vh; margin: 0;" onclick="executeSettingsReset()">🔄 Reset Board</button>
-                    <button class="btn color-orange" style="width: 100%; font-size: 2.2vh; padding: 1.5vh; margin: 0;" onclick="playSound('select'); location.reload()">🏠 Setup / Menu</button>
-                    <button class="btn color-pink" style="width: 100%; font-size: 2.2vh; padding: 1.5vh; margin: 0;" onclick="playSound('select'); window.close()">✖️ Close Window</button>
+                    <button class="btn color-orange" style="width: 100%; font-size: 2.2vh; padding: 1.5vh; margin: 0;" onclick="playSound('select'); setTimeout(() => location.reload(), 150)">🏠 Setup / Menu</button>
+                    <button class="btn color-pink" style="width: 100%; font-size: 2.2vh; padding: 1.5vh; margin: 0;" onclick="playSound('select'); setTimeout(() => window.close(), 150)">✖️ Close Window</button>
                     <button class="btn color-grey undo-btn" style="width: 100%; font-size: 2.2vh; padding: 1.5vh; margin: 0;" onclick="closeSettingsModal()">Back</button>
                 </div>
                 
@@ -1125,7 +1125,7 @@
         }
 
         function verifySuccess() {
-            playSound('win');
+            playSound('win'); // Plays win, not yes
             document.getElementById('verify-answer-modal').style.display = 'none';
             guessCount++; document.getElementById('guess-count').innerText = guessCount;
             
