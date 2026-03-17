@@ -1192,6 +1192,29 @@
                     if(resetBtn) resetBtn.innerText = '🗑️ Reset Score';
                 }
             }
+
+	// Grey out PC/Mobile toggle in Classroom Mode
+            document.querySelectorAll('.device-toggle-btn').forEach(btn => {
+                if (gameMode === 'team') {
+// Force PC Mode for Classroom
+                if (isMobileMode) {
+                    isMobileMode = false;
+                    document.body.classList.remove('mobile-mode');
+                    document.querySelectorAll('.device-toggle-btn').forEach(btn => {
+                        btn.querySelector('.icon').innerHTML = '💻';
+                        btn.querySelector('.btn-text').innerHTML = 'PC Mode';
+                    });
+                }
+                    btn.disabled = true;
+                    btn.style.opacity = '0.5';
+                    btn.style.cursor = 'not-allowed';
+                } else {
+                    btn.disabled = false;
+                    btn.style.opacity = '1';
+                    btn.style.cursor = 'pointer';
+                }
+            });
+
             applyResponsiveLayout(); 
             updateSidebarContent(); 
             renderGrid();
