@@ -342,9 +342,10 @@
                 <button class="menu-btn" onclick="showScreen('team-setup-menu')">🏫 Classroom Teams</button>
             </div>
             
-            <div style="display: flex; justify-content: center; gap: 2vw; margin-top: 4vh; border-top: 2px dashed #b2ebf2; padding-top: 3vh;">
+            <div style="display: flex; justify-content: center; flex-wrap: wrap; gap: 2vw; margin-top: 4vh; border-top: 2px dashed #b2ebf2; padding-top: 3vh;">
                 <button class="btn device-toggle-btn" style="background-color: #607d8b; font-size: 1.8vh;" onclick="toggleDeviceMode()">💻 PC Mode</button>
                 <button class="btn theme-toggle-btn" style="background-color: #607d8b; font-size: 1.8vh;" onclick="toggleThemeMode()">☀️ Light Mode</button>
+                <button class="btn fullscreen-toggle-btn" style="background-color: #607d8b; font-size: 1.8vh;" onclick="toggleFullScreen()">⛶ Fullscreen</button>
             </div>
         </div>
     </div>
@@ -555,9 +556,10 @@
         <div class="modal-content">
             <h2 style="color: var(--main-teal); margin-top: 0;">⚙️ Game Settings ⚙️</h2>
             <div style="display: flex; flex-direction: column; gap: 2vh; margin-top: 3vh; align-items: center;">
-                <div style="display: flex; gap: 2vw; width: 80%;">
-                    <button class="btn device-toggle-btn" style="background-color: #607d8b; flex: 1; font-size: 1.8vh; padding: 1.5vh;" onclick="toggleDeviceMode()">💻 PC Mode</button>
-                    <button class="btn theme-toggle-btn" style="background-color: #607d8b; flex: 1; font-size: 1.8vh; padding: 1.5vh;" onclick="toggleThemeMode()">☀️ Light Mode</button>
+                <div style="display: flex; gap: 2vw; width: 80%; justify-content: space-between;">
+                    <button class="btn device-toggle-btn icon-only" style="background-color: #607d8b; flex: 1; font-size: 3vh; padding: 1.5vh;" onclick="toggleDeviceMode()" title="Toggle PC/Mobile Mode">💻</button>
+                    <button class="btn theme-toggle-btn icon-only" style="background-color: #607d8b; flex: 1; font-size: 3vh; padding: 1.5vh;" onclick="toggleThemeMode()" title="Toggle Light/Dark Mode">☀️</button>
+                    <button class="btn fullscreen-toggle-btn icon-only" style="background-color: #607d8b; flex: 1; font-size: 3vh; padding: 1.5vh;" onclick="toggleFullScreen()" title="Toggle Fullscreen">⛶</button>
                 </div>
                 <button class="btn" style="background-color: var(--guess-blue); width: 80%; font-size: 2.2vh; padding: 1.5vh;" onclick="executeSettingsReset()">🔄 Reset Board</button>
                 <button class="btn" style="background-color: var(--accent-orange); width: 80%; font-size: 2.2vh; padding: 1.5vh;" onclick="location.reload()">🏠 Setup / Menu</button>
@@ -571,10 +573,57 @@
         let isMobileMode = false;
         let isDarkMode = false;
         
+        // Fullscreen Logic
+        function toggleFullScreen() {
+            if (!document.fullscreenElement) {
+                if (document.documentElement.requestFullscreen) {
+                    document.documentElement.requestFullscreen();
+                } else if (document.documentElement.mozRequestFullScreen) { /* Firefox */
+                    document.documentElement.mozRequestFullScreen();
+                } else if (document.documentElement.webkitRequestFullscreen) { /* Chrome, Safari & Opera */
+                    document.documentElement.webkitRequestFullscreen();
+                } else if (document.documentElement.msRequestFullscreen) { /* IE/Edge */
+                    document.documentElement.msRequestFullscreen();
+                }
+            } else {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                } else if (document.mozCancelFullScreen) { /* Firefox */
+                    document.mozCancelFullScreen();
+                } else if (document.webkitExitFullscreen) { /* Chrome, Safari & Opera */
+                    document.webkitExitFullscreen();
+                } else if (document.msExitFullscreen) { /* IE/Edge */
+                    document.msExitFullscreen();
+                }
+            }
+        }
+
+        function updateFullscreenUI() {
+            const isFS = document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement || document.msFullscreenElement;
+            document.querySelectorAll('.fullscreen-toggle-btn').forEach(btn => {
+                if (btn.classList.contains('icon-only')) {
+                    btn.innerHTML = isFS ? '🗗' : '⛶';
+                } else {
+                    btn.innerHTML = isFS ? '🗗 Exit Fullscreen' : '⛶ Fullscreen';
+                }
+            });
+        }
+
+        // Listen for fullscreen changes (like pressing ESC to exit)
+        document.addEventListener('fullscreenchange', updateFullscreenUI);
+        document.addEventListener('webkitfullscreenchange', updateFullscreenUI);
+        document.addEventListener('mozfullscreenchange', updateFullscreenUI);
+        document.addEventListener('MSFullscreenChange', updateFullscreenUI);
+
+        // Device and Theme Modes
         function toggleDeviceMode() {
             isMobileMode = !isMobileMode;
             document.querySelectorAll('.device-toggle-btn').forEach(btn => {
-                btn.innerHTML = isMobileMode ? '📱 Mobile Mode' : '💻 PC Mode';
+                if (btn.classList.contains('icon-only')) {
+                    btn.innerHTML = isMobileMode ? '📱' : '💻';
+                } else {
+                    btn.innerHTML = isMobileMode ? '📱 Mobile Mode' : '💻 PC Mode';
+                }
             });
             if (isMobileMode) document.body.classList.add('mobile-mode');
             else document.body.classList.remove('mobile-mode');
@@ -587,7 +636,11 @@
         function toggleThemeMode() {
             isDarkMode = !isDarkMode;
             document.querySelectorAll('.theme-toggle-btn').forEach(btn => {
-                btn.innerHTML = isDarkMode ? '🌙 Dark Mode' : '☀️ Light Mode';
+                if (btn.classList.contains('icon-only')) {
+                    btn.innerHTML = isDarkMode ? '🌙' : '☀️';
+                } else {
+                    btn.innerHTML = isDarkMode ? '🌙 Dark Mode' : '☀️ Light Mode';
+                }
             });
             if (isDarkMode) document.body.classList.add('dark-mode');
             else document.body.classList.remove('dark-mode');
