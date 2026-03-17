@@ -77,7 +77,7 @@
 
         /* 🪗 Expanding Accordion Button Row (Settings & Main Menu) */
         .settings-flex-row {
-            display: flex; width: 100%; max-width: 500px; gap: 1vw; justify-content: center; align-items: stretch; margin: 0 auto;
+            display: flex; width: 100%; gap: 1vw; justify-content: center; align-items: stretch; margin: 0 auto;
         }
         .flex-expand-btn {
             flex: 1; transition: all 0.4s var(--bounce);
@@ -320,7 +320,7 @@
                             <span class="icon">☀️</span><span class="btn-text">Light Mode</span>
                         </button>
                         <button class="btn color-offwhite flex-expand-btn fullscreen-toggle-btn" onclick="toggleFullScreen()">
-                            <span class="icon">⛶</span><span class="btn-text">Windowed</span>
+                            <span class="icon">⛶</span><span class="btn-text">Fullscreen</span>
                         </button>
                         <button class="btn color-offwhite flex-expand-btn sound-toggle-btn" onclick="toggleSoundMode()">
                             <span class="icon">🔊</span><span class="btn-text">Sound On</span>
@@ -369,7 +369,7 @@
             <p style="font-size: 3vh; font-weight: bold;">Countdown timer for guesses?</p>
             <div class="menu-btn-container">
                 <button class="btn color-grey menu-btn" onclick="initClassroom(false)">🚫 No Timer</button>
-                <button class="btn color-pink menu-btn" onclick="initClassroom(true)">⏳ 15 Second Timer</button>
+                <button class="btn color-pink menu-btn" onclick="initClassroom(true)">⏳ 30 Second Timer</button>
             </div>
             <button class="btn color-grey undo-btn menu-btn" style="margin-top: 4vh;" onclick="showScreen('student-setup-menu')">Back</button>
         </div>
@@ -437,7 +437,7 @@
                     </div>
                     <button class="btn color-blue draw-btn" onclick="rollDice()">🎲 Roll Turn</button>
                     <div id="timer-ui" style="display:none; width:90%; flex-direction:row; justify-content:space-between; gap:1vw; margin-bottom:1vh;">
-                        <div class="dice-display" style="width:75%; margin-bottom:0;"><div class="dice-label">Timer</div><div class="dice-value" id="timer-display">15</div></div>
+                        <div class="dice-display" style="width:75%; margin-bottom:0;"><div class="dice-label">Timer</div><div class="dice-value" id="timer-display">30</div></div>
                         <button class="btn color-pink timer-btn" onclick="startTimer()">⏳</button>
                     </div>
                 </div>
@@ -571,7 +571,7 @@
                             <span class="icon">☀️</span><span class="btn-text">Light Mode</span>
                         </button>
                         <button class="btn color-offwhite flex-expand-btn fullscreen-toggle-btn" onclick="toggleFullScreen()">
-                            <span class="icon">⛶</span><span class="btn-text">Windowed</span>
+                            <span class="icon">⛶</span><span class="btn-text">Fullscreen</span>
                         </button>
                         <button class="btn color-offwhite flex-expand-btn sound-toggle-btn" onclick="toggleSoundMode()">
                             <span class="icon">🔊</span><span class="btn-text">Sound On</span>
@@ -580,7 +580,6 @@
 
                     <button class="btn color-teal" style="width: 100%; font-size: 2.2vh; padding: 1.5vh; margin: 0;" onclick="executeSettingsReset()">🔄 Reset Board</button>
                     <button class="btn color-orange" style="width: 100%; font-size: 2.2vh; padding: 1.5vh; margin: 0;" onclick="playSound('select'); setTimeout(() => location.reload(), 150)">🏠 Setup / Menu</button>
-                    <button class="btn color-pink" style="width: 100%; font-size: 2.2vh; padding: 1.5vh; margin: 0;" onclick="window.close()">✖️ Close Window</button>
                     <button class="btn color-grey undo-btn" style="width: 100%; font-size: 2.2vh; padding: 1.5vh; margin: 0;" onclick="closeSettingsModal()">Back</button>
                 </div>
                 
@@ -602,7 +601,9 @@
             change: new Audio('sounds/change.mp3'),
             win: new Audio('sounds/win.mp3'),
             yes: new Audio('sounds/yes.mp3'),
-            no: new Audio('sounds/no.mp3')
+            no: new Audio('sounds/no.mp3'),
+            timer: new Audio('sounds/timer.mp3'),
+            timeup: new Audio('sounds/timeup.mp3')
         };
 
         function playSound(soundName) {
@@ -961,7 +962,7 @@
 
         function rollDice() {
             playSound('dice');
-            if(useTimer) { clearInterval(timerInterval); const d = document.getElementById('timer-display'); d.innerText = "15"; d.style.color = "var(--main-teal)"; }
+            if(useTimer) { clearInterval(timerInterval); const d = document.getElementById('timer-display'); d.innerText = "30"; d.style.color = "var(--main-teal)"; }
             if (availableTeams.length === 0) for (let i = 1; i <= teams.length; i++) availableTeams.push(i);
             const tIndex = Math.floor(Math.random() * availableTeams.length);
             const selectedTeam = availableTeams[tIndex]; availableTeams.splice(tIndex, 1);
@@ -978,13 +979,17 @@
         }
 
         function startTimer() {
-            playSound('select');
-            clearInterval(timerInterval); let timeLeft = 15; const d = document.getElementById('timer-display');
+            playSound('timer');
+            clearInterval(timerInterval); let timeLeft = 30; const d = document.getElementById('timer-display');
             d.innerText = timeLeft; d.style.color = 'var(--main-teal)';
             timerInterval = setInterval(() => {
                 d.innerText = --timeLeft;
                 if (timeLeft <= 5) d.style.color = '#ff4757';
-                if (timeLeft <= 0) { clearInterval(timerInterval); d.innerText = "TIME'S UP!"; }
+                if (timeLeft <= 0) { 
+                    clearInterval(timerInterval); 
+                    d.innerText = "TIME'S UP!"; 
+                    playSound('timeup');
+                }
             }, 1000);
         }
 
@@ -1164,7 +1169,7 @@
 
         function closeVerifyModal() { playSound('select'); document.getElementById('verify-answer-modal').style.display = 'none'; }
         function closeTwoPlayerVictory() { playSound('select'); document.getElementById('two-player-victory-modal').style.display = 'none'; resetBoard(); renderGrid(); executeDrawCard(); }
-        function closeVictoryModal() { playSound('select'); document.getElementById('victory-modal').style.display = 'none'; }
+        function closeVictoryModal() { document.getElementById('victory-modal').style.display = 'none'; }
         
         function undoLastAction() {
             playSound('change');
@@ -1178,7 +1183,11 @@
         function resetBoard() {
             document.querySelectorAll('.card').forEach(c => c.classList.remove('eliminated'));
             guessCount = 0; actionHistory = []; document.getElementById('guess-count').innerText = 0;
-            if(useTimer) { clearInterval(timerInterval); document.getElementById('timer-display').innerText = "15"; }
+            if(useTimer) { 
+                clearInterval(timerInterval); 
+                document.getElementById('timer-display').innerText = "30"; 
+                document.getElementById('timer-display').style.color = "var(--main-teal)";
+            }
         }
 
         function shuffleArray(arr) { let s = [...arr]; for (let i = s.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [s[i], s[j]] = [s[j], s[i]]; } return s; }
