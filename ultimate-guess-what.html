@@ -12,6 +12,7 @@
             --bg-color: #e0f7fa;
             --main-teal: #00838F;
             --bounce: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            --rubberband: cubic-bezier(0.5, 3.5, 0.2, 0.8);
             --card-border: #dfe4ea;
             --card-shadow: #ced6e0;
         }
@@ -71,10 +72,6 @@
             box-sizing: border-box;
         }
 
-        .btn:hover, .menu-btn:hover, .setup-btn:hover, .draw-btn:hover, .reset-scores-btn:hover {
-            transform: scale(1.05) rotate(1deg);
-        }
-
         .normal-case { text-transform: none !important; letter-spacing: normal !important; }
 
         /* 🪗 Expanding Accordion Button Row */
@@ -87,15 +84,27 @@
             display: flex; align-items: center; justify-content: center;
             padding: 1.5vh; margin: 0; border-radius: 40px; min-width: 50px;
         }
-        .settings-flex-row:hover .flex-expand-btn { flex: 0.5; }
-        .settings-flex-row .flex-expand-btn:hover { flex: 8; }
         
         .flex-expand-btn .icon { font-size: 2.5vh; display: inline-block; flex-shrink: 0; }
         .flex-expand-btn .btn-text {
             max-width: 0; opacity: 0; transition: all 0.4s ease; display: inline-block; vertical-align: middle; overflow: hidden;
         }
-        .settings-flex-row .flex-expand-btn:hover .btn-text {
-            max-width: 350px; opacity: 1; margin-left: 0.8vw; overflow: visible;
+        
+        /* 🔥 Safe Hover Effects (Only active on devices with a mouse to prevent mobile double-taps!) */
+        @media (hover: hover) {
+            .btn:hover, .menu-btn:hover, .setup-btn:hover, .draw-btn:hover, .reset-scores-btn:hover {
+                transform: scale(1.05) rotate(1deg);
+            }
+            .settings-flex-row:hover .flex-expand-btn { flex: 0.5; }
+            .settings-flex-row .flex-expand-btn:hover { flex: 8; }
+            .settings-flex-row .flex-expand-btn:hover .btn-text {
+                max-width: 350px; opacity: 1; margin-left: 0.8vw; overflow: visible;
+            }
+            .card:not(.eliminated):hover { transform: scale(1.05) translateY(-4px) rotate(1deg); box-shadow: 0 12px 0 var(--card-shadow); border-color: var(--main-teal); }
+            .card:not(.eliminated) .trait-col:not(.asked-trait):hover .trait-value { background-color: #f1f2f6; transform: scale(1.1); }
+            .secret-card-display:hover { transform: scale(1.05) translateY(-4px) rotate(1deg); box-shadow: 0 12px 0 var(--card-shadow); border-color: var(--main-teal); }
+            
+            body.dark-mode .card:not(.eliminated) .trait-col:not(.asked-trait):hover .trait-value { background-color: #1e272e; }
         }
 
         /* 📱 Mobile Toggle Button Adjustments & Bounce Animation */
@@ -242,7 +251,7 @@
             box-shadow: 0 8px 0 var(--card-shadow); display: flex; flex-direction: column; align-items: center; justify-content: space-evenly; 
             cursor: pointer; height: 100%; transition: all 0.3s var(--bounce);
         }
-        .card:not(.eliminated):hover { transform: scale(1.05) translateY(-4px) rotate(1deg); box-shadow: 0 12px 0 var(--card-shadow); border-color: var(--main-teal); }
+        
         .card:not(.eliminated):active { transform: scale(0.95) translateY(4px); box-shadow: 0 2px 0 var(--card-shadow); }
         .card.eliminated { 
             opacity: 0.35; filter: grayscale(100%); transform: scale(0.92) translateY(6px); 
@@ -251,10 +260,32 @@
         
         .emoji { font-size: 5vh; line-height: 1; pointer-events: none; }
         .item-name { font-size: 2vh; font-weight: bold; margin: 0; pointer-events: none; }
-        .traits-row { display: flex; width: 100%; justify-content: space-around; }
-        .trait-col { display: flex; flex-direction: column; align-items: center; padding: 0.5vh; border-radius: 15px; cursor: pointer; transition: background-color 0.2s;}
-        .card:not(.eliminated) .trait-col:hover { background-color: #f1f2f6; transform: scale(1.1); }
-        .trait-value { font-size: 2.5vh; font-weight: bold; pointer-events: none; }
+        .traits-row { display: flex; width: 100%; justify-content: space-around; align-items: center; }
+        
+        .trait-col { 
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            padding: 0; cursor: pointer; 
+            transition: flex 0.7s var(--rubberband), max-width 0.7s var(--rubberband), transform 0.4s ease, opacity 0.3s ease; 
+            flex: 1 1 0%; 
+            min-width: 0; 
+            margin: 0;
+            max-width: 100%; max-height: 100px; overflow: visible;
+        }
+        
+        .asked-trait { 
+            flex: 0.001 1 0% !important; 
+            max-width: 0 !important; max-height: 0 !important; 
+            padding: 0 !important; 
+            margin: 0 !important;
+            opacity: 0 !important; transform: scale(0) !important; 
+            pointer-events: none !important; border-width: 0 !important; 
+        }
+        
+        .trait-value { 
+            font-size: 2.5vh; font-weight: bold; pointer-events: none; 
+            padding: 0.8vh; border-radius: 15px; transition: all 0.2s var(--bounce);
+            display: flex; align-items: center; justify-content: center;
+        }
         .color-circle { width: 3vh; height: 3vh; border-radius: 50%; border: 3px solid rgba(0,0,0,0.1); pointer-events: none;}
 
         /* Sidebar Elements */
@@ -267,8 +298,7 @@
             width: 14vw; min-width: 120px; aspect-ratio: 4 / 4.5; margin: 0.5vh auto 1.5vh auto; 
             transition: all 0.3s var(--bounce); cursor: pointer;
         }
-        .secret-card-display:hover { transform: scale(1.05) translateY(-4px) rotate(1deg); box-shadow: 0 12px 0 var(--card-shadow); border-color: var(--main-teal); }
-
+        
         @keyframes wiggleCard {
             0%, 100% { transform: scale(1.05) translateY(-4px) rotate(1deg); }
             25% { transform: scale(1.05) translateY(-4px) rotate(-6deg); }
@@ -289,6 +319,8 @@
         /* Solo Mode Chat Bubbles & Animations */
         @keyframes slideInRight { 0% { transform: translateX(50px); opacity: 0; } 100% { transform: translateX(0); opacity: 1; } }
         @keyframes slideInLeft { 0% { transform: translateX(-50px); opacity: 0; } 100% { transform: translateX(0); opacity: 1; } }
+        @keyframes popOut { 0% { transform: scale(1); opacity: 1; } 100% { transform: scale(0); opacity: 0; margin: 0; padding: 0; max-height: 0; } }
+        
         .chat-bubble { padding: 1vh 1vw; border-radius: 15px; font-weight: bold; font-size: 1.6vh; text-align: left; width: fit-content; max-width: 85%; box-sizing: border-box; margin-bottom: 0.5vh; }
         .chat-player { animation: slideInRight 0.4s var(--bounce) forwards; background-color: #f8f9fa; border: 2px solid #a4b0be; color: #2f3542; align-self: flex-end; }
         .chat-bot-yes { animation: slideInLeft 0.4s var(--bounce) forwards; background-color: #e8f8f5; border: 2px solid #2ed573; color: #218c53; align-self: flex-start; }
@@ -428,7 +460,6 @@
         body.dark-mode .vocab-group-title { color: #f1f2f6; }
         body.dark-mode p[style*="color: #333"] { color: #f1f2f6 !important; }
         body.dark-mode .category-select { background-color: #2f3542; color: var(--main-teal); border-color: var(--main-teal); box-shadow: 0 4px 0 #111418;}
-        body.dark-mode .card:not(.eliminated) .trait-col:hover { background-color: #1e272e; }
         
         body.dark-mode .color-blue { box-shadow: 0 6px 0 #111418; border-color: #111418; }
         body.dark-mode .color-orange { box-shadow: 0 6px 0 #111418; border-color: #111418; }
@@ -737,6 +768,7 @@
                     </div>
                     <div id="solo-chat-log" style="display: flex; flex-direction: column; gap: 1vh; width: 90%; max-height: 50vh; overflow-y: auto; padding-right: 1vw; padding-bottom: 1vh;">
                     </div>
+                    <button id="solo-undo-btn" class="btn color-grey undo-btn" onclick="undoLastAction()" style="width: 90%; margin-top: 1vh; font-size: 2.2vh; padding: 1.5vh; flex-shrink: 0;">↩️ Undo</button>
                     <button id="close-solo-chat-btn" class="btn color-grey" onclick="toggleDrawer('close')" style="display: none; width: 90%; margin-top: 1vh; font-size: 2.2vh; padding: 1.5vh; flex-shrink: 0;">✖️ Close</button>
                 </div>
 
@@ -913,7 +945,7 @@
                         <button class="btn color-offwhite flex-expand-btn fullscreen-toggle-btn" onclick="toggleFullScreen()"><span class="icon">⛶</span><span class="btn-text">Fullscreen</span></button>
                         <button class="btn color-offwhite flex-expand-btn sound-toggle-btn" onclick="toggleSoundMode()"><span class="icon">🔊</span><span class="btn-text">Sound On</span></button>
                     </div>
-                    <button class="btn color-teal" style="width: 100%; padding: 1.5vh; margin: 0;" onclick="executeSettingsReset()">🔄 Reset Board</button>
+                    <button class="btn color-teal" id="settings-reset-board-btn" style="width: 100%; padding: 1.5vh; margin: 0;" onclick="executeSettingsReset()">🔄 Reset Board</button>
                     <button class="btn color-pink" id="settings-reset-scores-btn" style="width: 100%; padding: 1.5vh; margin: 0;" onclick="triggerResetScores()">🗑️ Reset Scores</button>
                     <button class="btn color-orange" style="width: 100%; padding: 1.5vh; margin: 0;" onclick="returnToMainMenu()">🏠 Main Menu</button>
                     <button class="btn color-grey undo-btn" style="width: 100%; padding: 1.5vh; margin: 0;" onclick="closeSettingsModal()">🔙 Back</button>
@@ -937,7 +969,7 @@
             else if (!hoverable) { lastHoveredElement = null; }
         });
         
-        // Universal Button Bounce Animation (Loco Roco Style)
+        // Universal Button Bounce Animation
         document.addEventListener('click', function(e) {
             const btn = e.target.closest('.btn, .setup-btn, .category-select, .icon-only');
             if (btn && !btn.closest('#grid-container') && !btn.classList.contains('score-btn')) {
@@ -1040,6 +1072,19 @@
                 btn.classList.add('toggle-bounce');
             });
             if (isDarkMode) document.body.classList.add('dark-mode'); else document.body.classList.remove('dark-mode');
+        }
+
+        // Timer Pause Helper to prevent menu exploits!
+        function pauseGameTimers() {
+            if (gameMode === 'solo' && soloModeType === 'time') {
+                isTimerPaused = true;
+            }
+        }
+        
+        function resumeGameTimers() {
+            if (gameMode === 'solo' && soloModeType === 'time' && !isBotThinking) {
+                isTimerPaused = false;
+            }
         }
 
         function closeAllDrawers() {
@@ -1155,6 +1200,7 @@
         // Standard Game State
         let currentCategory = 'animals', currentLayout = [], guessCount = 0, actionHistory = [], gameMode = '';
         let pendingAction = {}; 
+        let askedTraits = []; // Tracks which specific traits have already been asked
         let tempTeamCount = 0, teams = [], studentsPerTeam = 0, availableTeams = [], availableStudents = {};
         let useTimer = false, p1Score = 0, p2Score = 0, isRightPanelVisible = true;
         
@@ -1299,7 +1345,7 @@
                 document.getElementById('sidebar-content-container').classList.remove('mobile-drawer-right'); document.getElementById('sidebar-content-container').classList.remove('open'); document.getElementById('mobile-vocab-btn').style.display = 'none'; document.getElementById('close-vocab-drawer-btn').style.display = 'none';
                 
                 if (gameMode !== 'team' && gameMode !== 'solo') { document.getElementById('toggle-panel-btn').style.display = 'flex'; teamControls.style.display = 'none'; if (rightActionBtns) rightActionBtns.style.display = 'flex'; } 
-                else if (gameMode === 'solo') { document.getElementById('toggle-panel-btn').style.display = 'flex'; teamControls.style.display = 'none'; } 
+                else if (gameMode === 'solo') { document.getElementById('toggle-panel-btn').style.display = 'none'; teamControls.style.display = 'none'; } 
                 else { document.getElementById('toggle-panel-btn').style.display = 'none'; teamControls.style.display = 'flex'; }
             }
         }
@@ -1402,6 +1448,46 @@
             });
 
             applyResponsiveLayout(); updateSidebarContent(); renderGrid();
+        }
+
+        // --- TRAIT GREYING HELPERS ---
+        function isTraitFullyAsked(val) {
+            const parts = String(val).split(',').map(s => s.trim());
+            return parts.every(p => askedTraits.includes(p));
+        }
+        
+        // Smarter resolution logic that automatically handles 2-choice eliminations!
+        function isTraitResolved(traitKey, val) {
+            if (isTraitFullyAsked(val)) return true;
+            
+            const cat = gameData[currentCategory];
+            const uniqueVals = new Set();
+            cat.items.forEach(item => {
+                String(item[traitKey]).split(',').forEach(v => uniqueVals.add(v.trim()));
+            });
+            
+            // If the category only has exactly 2 options (like 🥩/🌿 or 🏠/🌳), and ANY of them have been asked...
+            if (uniqueVals.size === 2) {
+                return Array.from(uniqueVals).some(v => askedTraits.includes(v));
+            }
+            return false;
+        }
+
+        function updateAskedTraitsUI() {
+            document.querySelectorAll('#grid-container .card').forEach(card => {
+                const itemName = card.id.replace('card-', '');
+                const item = gameData[currentCategory].items.find(i => i.name === itemName);
+                if (!item) return;
+                const traitCols = card.querySelectorAll('.trait-col');
+                gameData[currentCategory].traits.forEach((trait, index) => {
+                    const val = item[trait.key];
+                    if (isTraitResolved(trait.key, val) && traitCols[index]) {
+                        traitCols[index].classList.add('asked-trait');
+                    } else if (traitCols[index]) {
+                        traitCols[index].classList.remove('asked-trait');
+                    }
+                });
+            });
         }
 
         // --- SOLO MODE SYSTEMS ---
@@ -1519,7 +1605,7 @@
             const saveBtn = document.getElementById('solo-save-img-btn');
 
             sScore.innerText = soloScore;
-            rContainer.style.display = 'none';
+            rContainer.style.display = 'none'; // Hide by default unless it's a win
             saveBtn.style.display = 'inline-block';
 
             if (reason === 'loss') {
@@ -1600,22 +1686,145 @@
 
         function downloadSoloScreenshot() {
             playSound('select');
-            const card = document.getElementById('solo-results-card');
+            const canvas = document.createElement('canvas');
+            canvas.width = 800;
+            canvas.height = 800;
+            const ctx = canvas.getContext('2d');
+
+            // Main Background
+            ctx.fillStyle = isDarkMode ? '#1e272e' : '#e0f7fa';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // Decorative background elements
+            ctx.fillStyle = isDarkMode ? 'rgba(255,255,255,0.02)' : 'rgba(255,255,255,0.4)';
+            ctx.beginPath(); ctx.arc(100, 100, 200, 0, Math.PI*2); ctx.fill();
+            ctx.beginPath(); ctx.arc(700, 700, 300, 0, Math.PI*2); ctx.fill();
+            ctx.beginPath(); ctx.arc(400, 800, 150, 0, Math.PI*2); ctx.fill();
+
+            // Card Background
+            ctx.fillStyle = isDarkMode ? '#2f3542' : '#ffffff';
+            ctx.shadowColor = 'rgba(0,0,0,0.15)';
+            ctx.shadowBlur = 25;
+            ctx.shadowOffsetY = 15;
+            if(ctx.roundRect) {
+                ctx.beginPath(); ctx.roundRect(100, 100, 600, 600, 40); ctx.fill();
+            } else {
+                ctx.fillRect(100, 100, 600, 600); // Fallback
+            }
+            ctx.shadowColor = 'transparent';
+
+            // Inner Border
+            ctx.strokeStyle = isDarkMode ? '#111418' : '#ffffff';
+            ctx.lineWidth = 8;
+            if(ctx.roundRect) {
+                ctx.beginPath(); ctx.roundRect(100, 100, 600, 600, 40); ctx.stroke();
+            }
+
+            // Dynamically grab the exact title and color!
+            const titleEl = document.getElementById('solo-results-title');
+            const titleText = titleEl.innerText;
+            const titleColor = titleEl.style.color || (isDarkMode ? '#00cec9' : '#00838F');
+
+            ctx.fillStyle = titleColor;
+            ctx.font = 'bold 55px "Fredoka", sans-serif';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(titleText, 400, 180);
+
+            // Player & Mode
+            ctx.fillStyle = isDarkMode ? '#a4b0be' : '#747d8c';
+            ctx.font = 'bold 28px "Fredoka", sans-serif';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            const modeName = soloModeType.charAt(0).toUpperCase() + soloModeType.slice(1);
+            ctx.fillText(`${soloPlayerAvatar} Solo Mode: ${modeName}`, 400, 240);
+
+            // Grade Badge Logic (Only show if UI container is visible)
+            let currentY = 290;
+            const ratingContainer = document.getElementById('solo-rating-container');
+            const showGrade = soloModeType !== 'endless' && ratingContainer.style.display !== 'none';
             
-            // Temporary hide buttons so they don't appear in screenshot
-            const btns = card.querySelectorAll('button');
-            btns.forEach(b => b.style.display = 'none');
-            
-            html2canvas(card, {backgroundColor: '#ffffff'}).then(canvas => {
-                const link = document.createElement('a');
-                const modeName = soloModeType.charAt(0).toUpperCase() + soloModeType.slice(1);
-                link.download = `GuessWhat-${modeName}Result.jpg`;
-                link.href = canvas.toDataURL('image/jpeg');
-                link.click();
+            if (showGrade) {
+                const grade = document.getElementById('solo-rating-badge').innerText;
                 
-                // Restore buttons
-                btns.forEach(b => b.style.display = 'inline-block');
-            });
+                let bg, border;
+                if (grade === 'S+') { 
+                    bg = ctx.createLinearGradient(300, currentY, 500, currentY + 120);
+                    bg.addColorStop(0, '#ff9a9e'); bg.addColorStop(1, '#fecfef');
+                    border = '#ff7eb3'; 
+                }
+                else if (grade === 'S') { bg = '#fbc531'; border = '#e1b12c'; }
+                else if (grade === 'A') { bg = '#2ed573'; border = '#218c53'; }
+                else if (grade === 'B') { bg = '#1e90ff'; border = '#0984e3'; }
+                else { bg = '#a4b0be'; border = '#747d8c'; }
+
+                ctx.fillStyle = bg;
+                if (ctx.roundRect) {
+                    ctx.beginPath(); ctx.roundRect(300, currentY, 200, 120, 25); ctx.fill();
+                } else {
+                    ctx.fillRect(300, currentY, 200, 120);
+                }
+                
+                ctx.strokeStyle = border;
+                ctx.lineWidth = 6;
+                if(ctx.roundRect) {
+                    ctx.beginPath(); ctx.roundRect(300, currentY, 200, 120, 25); ctx.stroke();
+                }
+
+                ctx.fillStyle = '#ffffff';
+                ctx.font = 'bold 80px "Fredoka", sans-serif';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText(grade, 400, currentY + 65);
+
+                currentY += 160;
+            } else {
+                currentY += 70; // Shift down slightly for Endless mode or if the player lost!
+            }
+
+            // Stats Boxes (Score & Rounds)
+            const drawStatBox = (x, y, title, value, color) => {
+                ctx.fillStyle = isDarkMode ? '#2f3542' : '#ffffff';
+                if(ctx.roundRect) {
+                    ctx.beginPath(); ctx.roundRect(x, y, 220, 120, 20); ctx.fill();
+                } else {
+                    ctx.fillRect(x, y, 220, 120);
+                }
+                ctx.strokeStyle = color;
+                ctx.lineWidth = 4;
+                if(ctx.roundRect) {
+                    ctx.beginPath(); ctx.roundRect(x, y, 220, 120, 20); ctx.stroke();
+                }
+
+                // Explicit alignments for optical center inside the stat boxes!
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+
+                ctx.fillStyle = isDarkMode ? '#00cec9' : '#00838F';
+                ctx.font = 'bold 20px "Fredoka", sans-serif';
+                ctx.fillText(title, x + 110, y + 40);
+                
+                ctx.fillStyle = color;
+                ctx.font = 'bold 50px "Fredoka", sans-serif';
+                ctx.fillText(value, x + 110, y + 85);
+            };
+
+            const roundsCleared = document.getElementById('solo-results-rounds').innerText;
+            drawStatBox(160, currentY, "FINAL SCORE", soloScore.toString(), "#ffa502");
+            drawStatBox(420, currentY, "ROUNDS CLEARED", roundsCleared, "#2ed573");
+
+            // Footer Context
+            ctx.fillStyle = isDarkMode ? '#576574' : '#ced6e0';
+            ctx.font = 'bold 24px "Fredoka", sans-serif';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(gameData[currentCategory].title, 400, 660);
+
+            // Generate Download
+            const link = document.createElement('a');
+            link.download = `GuessWhat-${modeName}Result.jpg`;
+            link.href = canvas.toDataURL('image/jpeg', 0.95);
+            link.click();
         }
         
         function toggleRightPanel() {
@@ -1644,12 +1853,31 @@
         function updateTeamLeaderboard() { const lb = document.getElementById('leaderboard'); lb.innerHTML = ''; teams.forEach((t, i) => { const box = document.createElement('div'); box.className = 'info-box'; box.innerHTML = `<div class="label-text">${t.name}</div><div class="point-text">${t.score}</div><button class="bonus-btn" onclick="awardBonus(${i})">⭐ +10</button>`; lb.appendChild(box); }); }
         function awardBonus(i) { playSound('bonus'); teams[i].score += 10; updateTeamLeaderboard(); }
         
-        function triggerResetScores() { playSound('select'); document.getElementById('settings-modal').style.display = 'none'; const modal = document.getElementById('reset-modal'), confirmBtn = document.getElementById('reset-confirm-btn'); confirmBtn.disabled = true; let timeLeft = 5; confirmBtn.innerText = `Yes (${timeLeft})`; modal.style.display = 'flex'; clearInterval(resetTimerInterval); resetTimerInterval = setInterval(() => { timeLeft--; if (timeLeft > 0) confirmBtn.innerText = `Yes (${timeLeft})`; else { clearInterval(resetTimerInterval); confirmBtn.disabled = false; confirmBtn.innerText = "Yes"; } }, 1000); }
-        function closeResetModal() { playSound('select'); clearInterval(resetTimerInterval); document.getElementById('reset-modal').style.display = 'none'; }
+        function triggerResetScores() { 
+            playSound('select'); 
+            pauseGameTimers(); 
+            document.getElementById('settings-modal').style.display = 'none'; 
+            const modal = document.getElementById('reset-modal'), confirmBtn = document.getElementById('reset-confirm-btn'); confirmBtn.disabled = true; let timeLeft = 5; confirmBtn.innerText = `Yes (${timeLeft})`; modal.style.display = 'flex'; clearInterval(resetTimerInterval); resetTimerInterval = setInterval(() => { timeLeft--; if (timeLeft > 0) confirmBtn.innerText = `Yes (${timeLeft})`; else { clearInterval(resetTimerInterval); confirmBtn.disabled = false; confirmBtn.innerText = "Yes"; } }, 1000); 
+        }
+        function closeResetModal() { 
+            playSound('select'); 
+            clearInterval(resetTimerInterval); 
+            document.getElementById('reset-modal').style.display = 'none'; 
+            resumeGameTimers(); 
+        }
         function executeResetScores() { playSound('change'); if (gameMode === 'team') { teams.forEach(t => t.score = 0); updateTeamLeaderboard(); } else if (gameMode === 'solo') { soloScore = 0; document.getElementById('top-solo-score').innerText = soloScore; } else { p1Score = 0; p2Score = 0; document.getElementById('p1-score').innerText = 0; document.getElementById('p2-score').innerText = 0; } closeResetModal(); }
         
-        function openSettingsModal() { playSound('select'); document.getElementById('settings-modal').style.display = 'flex'; }
-        function closeSettingsModal() { playSound('select'); document.getElementById('settings-modal').style.display = 'none'; }
+        function openSettingsModal() { 
+            playSound('select'); 
+            document.getElementById('settings-modal').style.display = 'flex'; 
+            document.getElementById('settings-reset-board-btn').style.display = (gameMode === 'solo') ? 'none' : 'block';
+            pauseGameTimers();
+        }
+        function closeSettingsModal() { 
+            playSound('select'); 
+            document.getElementById('settings-modal').style.display = 'none'; 
+            resumeGameTimers();
+        }
         function adjScore(n, a) { playSound('select'); if (n === 1) { p1Score = Math.max(0, p1Score + a); document.getElementById('p1-score').innerText = p1Score; } else { p2Score = Math.max(0, p2Score + a); document.getElementById('p2-score').innerText = p2Score; } }
 
         function executeSettingsReset() {
@@ -1716,7 +1944,12 @@
                             handleSoloWin();
                         }, 1500);
                     } else {
-                        playSound('no'); document.getElementById(cardId).classList.add('eliminated'); soloGuessesUsed++;
+                        playSound('no'); document.getElementById(cardId).classList.add('eliminated'); 
+                        
+                        // Push single guess to history so Undo knows to restore it!
+                        actionHistory.push({ type: 'single', id: cardId });
+                        
+                        soloGuessesUsed++;
                         const botReply = getBotSentence(question, false); 
                         addSoloChat(`🤖: ${botReply}`, 'chat-bot-no');
                         if (isMobileMode) appendChatOverlay(`🤖: ${botReply}`, 'chat-bot-no');
@@ -1730,27 +1963,21 @@
                                 endSoloGame('loss'); 
                             }, 1500); 
                         } else {
-                            setTimeout(() => {
-                                let left = soloMaxGuesses - soloGuessesUsed;
-                                if (left === 1) {
-                                    document.body.classList.add('last-guess-active');
-                                    addSoloChat("⚠️ LAST GUESS! Pick the final card!", 'chat-sys');
-                                    if (isMobileMode) {
-                                        showChatOverlay("⚠️ LAST GUESS! Pick the final card!", 'chat-sys');
-                                        setTimeout(() => {
-                                            hideChatOverlay();
-                                            isBotThinking = false;
-                                            if (isMobileMode && soloModeType === 'time') isTimerPaused = false;
-                                        }, 2000);
-                                    } else {
-                                        isBotThinking = false;
-                                    }
-                                } else {
-                                    if (isMobileMode) hideChatOverlay();
-                                    isBotThinking = false;
-                                    if (isMobileMode && soloModeType === 'time') isTimerPaused = false;
+                            let left = soloMaxGuesses - soloGuessesUsed;
+                            if (left === 1) {
+                                document.body.classList.add('last-guess-active');
+                                addSoloChat("⚠️ LAST GUESS! Pick the final card!", 'chat-sys');
+                                if (isMobileMode) {
+                                    showChatOverlay("⚠️ LAST GUESS! Pick the final card!", 'chat-sys');
+                                    setTimeout(() => hideChatOverlay(), 2000);
                                 }
-                            }, 1500);
+                            } else {
+                                if (isMobileMode) setTimeout(() => hideChatOverlay(), 1500);
+                            }
+                            
+                            // Unlock the board immediately for the next rapid-fire question!
+                            isBotThinking = false;
+                            if (isMobileMode && soloModeType === 'time') isTimerPaused = false;
                         }
                     }
                 }, 800);
@@ -1777,12 +2004,31 @@
             playSound('select');
             if (traitValue.includes(',')) {
                 pendingAction = { key: traitKey }; const container = document.getElementById('trait-btn-container'); container.innerHTML = '';
-                traitValue.split(',').forEach(opt => { const btn = document.createElement('button'); btn.className = 'btn color-teal normal-case'; btn.innerText = opt; btn.onclick = () => { closeTraitModal(); askTraitQuestion(traitKey, opt); }; container.appendChild(btn); }); document.getElementById('trait-choice-modal').style.display = 'flex';
+                traitValue.split(',').forEach(opt => { 
+                    const optTrimmed = opt.trim();
+                    const btn = document.createElement('button'); 
+                    btn.className = 'btn color-teal normal-case'; 
+                    btn.innerText = opt; 
+                    
+                    // Grey out already asked traits in the choice modal
+                    if (askedTraits.includes(optTrimmed)) {
+                        btn.classList.remove('color-teal');
+                        btn.classList.add('color-grey');
+                        btn.style.opacity = '0.5';
+                        btn.style.pointerEvents = 'none';
+                    }
+                    
+                    btn.onclick = () => { closeTraitModal(); askTraitQuestion(traitKey, optTrimmed); }; 
+                    container.appendChild(btn); 
+                }); 
+                document.getElementById('trait-choice-modal').style.display = 'flex';
             } else { askTraitQuestion(traitKey, traitValue); }
         }
         function closeTraitModal() { playSound('select'); document.getElementById('trait-choice-modal').style.display = 'none'; }
 
         function askTraitQuestion(traitKey, targetValue) {
+            const valStr = String(targetValue).trim();
+            
             if (gameMode === 'solo') {
                 if (soloMaxGuesses - soloGuessesUsed <= 1) { 
                     playSound('no'); addSoloChat("⚠️ Last guess! You must pick a card!", 'chat-sys'); 
@@ -1790,7 +2036,11 @@
                     return; 
                 }
                 
-                const qText = getQuestionText(traitKey, targetValue, currentCategory); const hasTrait = String(soloSecretItem[traitKey]).split(',').map(s=>s.trim()).includes(String(targetValue).trim());
+                // Add to asked traits instantly so it greys out
+                if (!askedTraits.includes(valStr)) askedTraits.push(valStr);
+                updateAskedTraitsUI();
+                
+                const qText = getQuestionText(traitKey, targetValue, currentCategory); const hasTrait = String(soloSecretItem[traitKey]).split(',').map(s=>s.trim()).includes(valStr);
                 
                 isBotThinking = true;
                 if (isMobileMode && soloModeType === 'time') isTimerPaused = true;
@@ -1804,50 +2054,67 @@
                     if (isMobileMode) appendChatOverlay(`🤖: ${botReply}`, hasTrait ? 'chat-bot-yes' : 'chat-bot-no');
                     playSound(hasTrait ? 'yes' : 'no');
                     
+                    const elimThisTurn = [];
                     currentLayout.forEach(item => {
                         const cId = 'card-' + item.name; const card = document.getElementById(cId); if(card.classList.contains('eliminated')) return;
-                        const itemHasTrait = String(item[traitKey]).split(',').map(s=>s.trim()).includes(String(targetValue).trim());
-                        if ((hasTrait && !itemHasTrait) || (!hasTrait && itemHasTrait)) card.classList.add('eliminated');
+                        const itemHasTrait = String(item[traitKey]).split(',').map(s=>s.trim()).includes(valStr);
+                        if ((hasTrait && !itemHasTrait) || (!hasTrait && itemHasTrait)) {
+                            card.classList.add('eliminated');
+                            elimThisTurn.push(cId);
+                        }
                     });
+                    
+                    // Push trait question to history so Undo knows what to restore!
+                    actionHistory.push({ type: 'trait', ids: elimThisTurn, traitVal: valStr });
+                    
                     soloGuessesUsed++; updateSoloUI();
                     
-                    setTimeout(() => {
+                    if (soloGuessesUsed >= soloMaxGuesses) {
+                        setTimeout(() => { 
+                            if (isMobileMode) hideChatOverlay();
+                            // Keep isBotThinking true to prevent clicks during transition!
+                            if (isMobileMode && soloModeType === 'time') isTimerPaused = false;
+                            endSoloGame('loss'); 
+                        }, 1500);
+                    } else {
                         let left = soloMaxGuesses - soloGuessesUsed;
                         if (left === 1) {
                             document.body.classList.add('last-guess-active');
                             addSoloChat("⚠️ LAST GUESS! Pick the final card!", 'chat-sys');
                             if (isMobileMode) {
                                 showChatOverlay("⚠️ LAST GUESS! Pick the final card!", 'chat-sys');
-                                setTimeout(() => {
-                                    hideChatOverlay();
-                                    isBotThinking = false;
-                                    if (isMobileMode && soloModeType === 'time') isTimerPaused = false;
-                                }, 2000);
-                            } else {
-                                isBotThinking = false;
+                                setTimeout(() => hideChatOverlay(), 2000);
                             }
                         } else {
-                            if (isMobileMode) hideChatOverlay();
-                            isBotThinking = false;
-                            if (isMobileMode && soloModeType === 'time') isTimerPaused = false;
+                            if (isMobileMode) setTimeout(() => hideChatOverlay(), 1500);
                         }
-                    }, 1500);
+                        
+                        // Unlock the board immediately for the next rapid-fire question!
+                        isBotThinking = false;
+                        if (isMobileMode && soloModeType === 'time') isTimerPaused = false;
+                    }
                 }, 800);
                 return;
             }
 
-            pendingAction = { key: traitKey, val: targetValue }; const qText = getQuestionText(traitKey, targetValue, currentCategory); document.getElementById('trait-question-text').innerText = qText; setYesNoText(qText, 'trait-yes-btn', 'trait-no-btn'); document.getElementById('trait-question-modal').style.display = 'flex';
+            pendingAction = { key: traitKey, val: valStr }; const qText = getQuestionText(traitKey, targetValue, currentCategory); document.getElementById('trait-question-text').innerText = qText; setYesNoText(qText, 'trait-yes-btn', 'trait-no-btn'); document.getElementById('trait-question-modal').style.display = 'flex';
         }
         function closeTraitQuestionModal() { playSound('select'); document.getElementById('trait-question-modal').style.display = 'none'; }
 
         function answerTraitQuestion(isYes) {
             playSound(isYes ? 'yes' : 'no'); document.getElementById('trait-question-modal').style.display = 'none'; guessCount++; const elimThisTurn = []; const { key, val } = pendingAction;
+            
+            // Register trait as asked and grey it out immediately
+            const valStr = String(val).trim();
+            if (!askedTraits.includes(valStr)) askedTraits.push(valStr);
+            updateAskedTraitsUI();
+            
             currentLayout.forEach(item => {
                 const cardId = 'card-' + item.name; const card = document.getElementById(cardId); if (card.classList.contains('eliminated')) return;
-                const hasTrait = String(item[key]).split(',').map(s => s.trim()).includes(String(val).trim()); let shouldEliminate = (isYes && !hasTrait) || (!isYes && hasTrait);
+                const hasTrait = String(item[key]).split(',').map(s => s.trim()).includes(valStr); let shouldEliminate = (isYes && !hasTrait) || (!isYes && hasTrait);
                 if (shouldEliminate) { card.classList.add('eliminated'); elimThisTurn.push(cardId); }
             });
-            actionHistory.push({ type: 'trait', ids: elimThisTurn }); document.getElementById('guess-count').innerText = guessCount;
+            actionHistory.push({ type: 'trait', ids: elimThisTurn, traitVal: valStr }); document.getElementById('guess-count').innerText = guessCount;
         }
 
         function verifySuccess() {
@@ -1871,16 +2138,70 @@
         function wiggleSecretCard() { const sc = document.getElementById('secret-card'); sc.classList.remove('wiggle'); void sc.offsetWidth; sc.classList.add('wiggle'); }
         
         function undoLastAction() {
-            playSound('change'); if (actionHistory.length === 0) return; const last = actionHistory.pop();
-            if (last.type === 'single') { document.getElementById(last.id).classList.remove('eliminated'); } else { last.ids.forEach(id => document.getElementById(id).classList.remove('eliminated')); }
-            guessCount = Math.max(0, guessCount - 1); document.getElementById('guess-count').innerText = guessCount;
+            if (gameMode === 'solo' && isBotThinking) return; // Prevent corrupting states during bot replies!
+            playSound('change'); 
+            if (actionHistory.length === 0) return; 
+            const last = actionHistory.pop();
+            
+            // 1) Restore board visuals
+            if (last.type === 'single') { 
+                document.getElementById(last.id).classList.remove('eliminated'); 
+            } else if (last.type === 'trait' || last.type === 'win') { 
+                last.ids.forEach(id => document.getElementById(id).classList.remove('eliminated')); 
+            }
+            
+            // 2) Restore requested trait availability
+            if (last.type === 'trait' && last.traitVal) {
+                askedTraits = askedTraits.filter(t => t !== last.traitVal);
+                document.querySelectorAll('.asked-trait').forEach(el => el.classList.remove('asked-trait'));
+                updateAskedTraitsUI();
+            }
+            
+            // 3) Sync Solo Engine specifically
+            if (gameMode === 'solo') {
+                document.body.classList.remove('last-guess-active');
+                if (isMobileMode) hideChatOverlay();
+
+                const log = document.getElementById('solo-chat-log');
+                const elsToRemove = [];
+                
+                // Sweep up all chat elements linked to the last turn!
+                for (let i = log.children.length - 1; i >= 0; i--) {
+                    const bubble = log.children[i];
+                    if (bubble.classList.contains('removing')) continue; // Ignore items already vacuumed
+                    
+                    elsToRemove.push(bubble);
+                    bubble.classList.add('removing');
+                    if (bubble.classList.contains('chat-player')) break; // The player's question marks the start of the turn
+                }
+
+                // Smoothly animate their removal
+                elsToRemove.forEach(el => {
+                    el.style.animation = 'popOut 0.3s forwards';
+                    setTimeout(() => { if (log.contains(el)) el.remove(); }, 300);
+                });
+
+                soloGuessesUsed = Math.max(0, soloGuessesUsed - 1);
+                updateSoloUI();
+
+                // Re-apply last guess warning dynamically if they undid back to it
+                if (soloMaxGuesses - soloGuessesUsed === 1) {
+                    document.body.classList.add('last-guess-active');
+                }
+            } 
+            // 4) Or just sync Multiplayer
+            else {
+                guessCount = Math.max(0, guessCount - 1); 
+                document.getElementById('guess-count').innerText = guessCount;
+            }
         }
 
         function resetBoard() { 
             document.querySelectorAll('.card').forEach(c => c.classList.remove('eliminated')); 
             document.body.classList.remove('last-guess-active');
-            guessCount = 0; actionHistory = []; document.getElementById('guess-count').innerText = 0; 
+            guessCount = 0; actionHistory = []; askedTraits = []; document.getElementById('guess-count').innerText = 0; 
             clearInterval(giantTimerInterval); 
+            updateAskedTraitsUI(); // Clears any greyed out traits if resetting mid-round
         }
         function shuffleArray(arr) { let s = [...arr]; for (let i = s.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [s[i], s[j]] = [s[j], s[i]]; } return s; }
         
@@ -1897,7 +2218,8 @@
             const shouldSnapToTrait = (!isMobileMode || isModalCard) && !isLastGuess;
 
             if (shouldSnapToTrait && (e.clientY - rect.top) > rect.height * 0.55) {
-                const traits = card.querySelectorAll('.trait-col');
+                // Ensure we only snap to traits that haven't been asked yet!
+                const traits = card.querySelectorAll('.trait-col:not(.asked-trait)');
                 if (traits.length > 0) {
                     let closest = null, minDist = Infinity;
                     traits.forEach(t => {
@@ -1907,6 +2229,8 @@
                     });
                     if (closest) {
                         closest.click();
+                        e.stopPropagation();
+                        e.preventDefault();
                         return; // Stop the card from triggering a guess
                     }
                 }
@@ -1928,7 +2252,11 @@
             const isLastGuess = gameMode === 'solo' && (soloMaxGuesses - soloGuessesUsed) <= 1;
             
             if (!isLastGuess) {
-                cat.traits.forEach(trait => { let val = item[trait.key], display = trait.type === 'color' ? `<div class="color-circle" style="${item.colorStyle}"></div>` : val; traitsHTML += `<div class="trait-col" title="${getTooltip(trait.key, val)}" onclick="event.stopPropagation(); closeMobileCardModal(false); handleTraitClick('${trait.key}', '${val}', event, 'card-${item.name}')"><div class="trait-value">${display}</div></div>`; });
+                cat.traits.forEach(trait => { 
+                    let val = item[trait.key], display = trait.type === 'color' ? `<div class="color-circle" style="${item.colorStyle}"></div>` : val; 
+                    const tClass = isTraitResolved(trait.key, val) ? 'trait-col asked-trait' : 'trait-col';
+                    traitsHTML += `<div class="${tClass}" title="${getTooltip(trait.key, val)}" onclick="event.stopPropagation(); closeMobileCardModal(false); handleTraitClick('${trait.key}', '${val}', event, 'card-${item.name}')"><div class="trait-value">${display}</div></div>`; 
+                });
             } else {
                 traitsHTML = `<div style="color:#ff4757; font-weight:bold; font-size:2.5vh; padding: 1.5vh; text-align: center; width: 100%;">⚠️ Last Guess! Pick this card?</div>`;
             }
@@ -1947,7 +2275,11 @@
                 const card = document.createElement('div'); card.className = 'card'; card.id = 'card-' + item.name;
                 card.onclick = (e) => handleCardClickEvent(e, item.name, card.id, false);
                 let traitsHTML = '';
-                cat.traits.forEach(trait => { let val = item[trait.key], display = trait.type === 'color' ? `<div class="color-circle" style="${item.colorStyle}"></div>` : val; traitsHTML += `<div class="trait-col" title="${getTooltip(trait.key, val)}" onclick="handleTraitClick('${trait.key}', '${val}', event, 'card-${item.name}')"><div class="trait-value">${display}</div></div>`; });
+                cat.traits.forEach(trait => { 
+                    let val = item[trait.key], display = trait.type === 'color' ? `<div class="color-circle" style="${item.colorStyle}"></div>` : val; 
+                    const tClass = isTraitResolved(trait.key, val) ? 'trait-col asked-trait' : 'trait-col';
+                    traitsHTML += `<div class="${tClass}" title="${getTooltip(trait.key, val)}" onclick="handleTraitClick('${trait.key}', '${val}', event, 'card-${item.name}')"><div class="trait-value">${display}</div></div>`; 
+                });
                 card.innerHTML = `<div class="emoji">${item.emoji}</div><div class="item-name">${item.name}</div><div class="traits-row">${traitsHTML}</div>`;
                 container.appendChild(card);
             });
