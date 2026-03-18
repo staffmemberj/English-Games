@@ -905,10 +905,15 @@
         function toggleSoundMode() { playSound('select'); isSoundOn = !isSoundOn; document.querySelectorAll('.sound-toggle-btn').forEach(btn => { const i = btn.querySelector('.icon'), t = btn.querySelector('.btn-text'); if (i && t) { i.innerHTML = isSoundOn ? '🔊' : '🔇'; t.innerHTML = isSoundOn ? 'Sound On' : 'Sound Off'; } }); }
 
         function selectInitialDevice(device) {
-            playSound('select');
             const classroomBtn = document.getElementById('classroom-mode-btn');
             if (device === 'mobile') { isMobileMode = true; document.body.classList.add('mobile-mode'); if (classroomBtn) classroomBtn.classList.add('hide-animated'); }
             else { isMobileMode = false; document.body.classList.remove('mobile-mode'); if (classroomBtn) classroomBtn.classList.remove('hide-animated'); }
+            
+            document.querySelectorAll('.device-toggle-btn').forEach(btn => { 
+                const i = btn.querySelector('.icon'), t = btn.querySelector('.btn-text'); 
+                if (i && t) { i.innerHTML = isMobileMode ? '📱' : '💻'; t.innerHTML = isMobileMode ? 'Mobile Mode' : 'PC Mode'; } 
+            });
+            
             showScreen('main-menu');
         }
 
@@ -917,6 +922,12 @@
             const classroomBtn = document.getElementById('classroom-mode-btn');
             if (classroomBtn) isMobileMode ? classroomBtn.classList.add('hide-animated') : classroomBtn.classList.remove('hide-animated');
             isMobileMode ? document.body.classList.add('mobile-mode') : document.body.classList.remove('mobile-mode');
+            
+            document.querySelectorAll('.device-toggle-btn').forEach(btn => { 
+                const i = btn.querySelector('.icon'), t = btn.querySelector('.btn-text'); 
+                if (i && t) { i.innerHTML = isMobileMode ? '📱' : '💻'; t.innerHTML = isMobileMode ? 'Mobile Mode' : 'PC Mode'; } 
+            });
+            
             document.getElementById('settings-modal').style.display = 'none';
             if (document.getElementById('game-wrapper').style.display === 'flex') { applyResponsiveLayout(); }
         }
@@ -1092,6 +1103,24 @@
             document.getElementById('solo-top-stats').style.display = (gameMode === 'solo') ? 'flex' : 'none';
             document.getElementById('twop-top-scoreboard').style.display = (gameMode.startsWith('2p')) ? 'flex' : 'none';
             
+            // Force PC Mode for Classroom
+            if (gameMode === 'team' && isMobileMode) {
+                isMobileMode = false; document.body.classList.remove('mobile-mode');
+                document.querySelectorAll('.device-toggle-btn').forEach(btn => { 
+                    const i = btn.querySelector('.icon'), t = btn.querySelector('.btn-text'); 
+                    if (i && t) { i.innerHTML = '💻'; t.innerHTML = 'PC Mode'; } 
+                });
+            }
+
+            // Disable Device Toggle during restricted modes to prevent layout breaking
+            document.querySelectorAll('.device-toggle-btn').forEach(btn => {
+                if (gameMode === 'team' || isMobileMode) { 
+                    btn.disabled = true; btn.style.opacity = '0.5'; btn.style.cursor = 'not-allowed'; btn.style.pointerEvents = 'none';
+                } else { 
+                    btn.disabled = false; btn.style.opacity = '1'; btn.style.cursor = 'pointer'; btn.style.pointerEvents = 'auto';
+                }
+            });
+
             if (gameMode === 'solo') { initSoloRound(); }
             else { resetBoard(); } // Ensure fresh start for multiplayer modes
             
