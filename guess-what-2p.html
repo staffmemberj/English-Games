@@ -237,10 +237,12 @@
         #example-questions-list { margin: 0; padding-left: 20px; font-size: 1.5vh; text-align: left; list-style-type: disc; }
         #example-questions-list li { margin-bottom: 0.5vh; font-weight: 500;}
         
-        #vocab-container { font-size: 1.5vh; text-align: left; font-weight: 500;}
-        .vocab-group-title { font-weight: bold; margin-top: 1.5vh; margin-bottom: 0.2vh; color: #2f3542; font-size: 1.6vh;}
-        .vocab-group-list { margin: 0; padding-left: 20px; list-style-type: disc; }
-        .vocab-group-list li { margin-bottom: 0.5vh; }
+        #vocab-container { font-size: 1.5vh; text-align: left; font-weight: 500; width: 100%; }
+        .vocab-group-title { font-weight: bold; margin-top: 1.5vh; margin-bottom: 0.5vh; color: #2f3542; font-size: 1.6vh;}
+        
+        /* Flex-Wrap Pill Design for Vocab to completely prevent scrolling */
+        .vocab-group-list { margin: 0; padding-left: 0; list-style-type: none; display: flex; flex-wrap: wrap; gap: 0.5vw 1vw; }
+        .vocab-group-list li { margin: 0; font-weight: 500; background: #f1f2f6; padding: 0.4vh 1vw; border-radius: 12px; }
 
         /* PC Notes Drawer (Vocab) */
         #pc-notes-overlay {
@@ -250,14 +252,15 @@
         }
         #pc-notes-overlay.show { opacity: 1; }
         #sidebar-content-container {
-            position: absolute; bottom: -100%; left: 0; width: 100%; height: auto;
+            position: absolute; bottom: -100%; left: 0; width: 100%; height: 85vh;
             background: white; z-index: 11; transition: all 0.4s var(--bounce);
-            border-radius: 30px 30px 0 0; padding: 3vh 2vw 2vh 2vw; box-sizing: border-box;
+            border-radius: 30px 30px 0 0; padding: 2vh 2vw; box-sizing: border-box;
             box-shadow: 0 -10px 20px rgba(0,0,0,0.2); display: flex; flex-direction: column;
             border: 6px solid var(--card-border); border-bottom: none; margin: 0;
-            text-align: left;
+            text-align: left; overflow: hidden;
         }
         #sidebar-content-container.open { bottom: 0; }
+        #vocab-scroll-wrap { width: 100%; flex: 1; display: flex; flex-direction: column; justify-content: space-evenly; overflow: hidden; }
         #close-vocab-drawer-btn { display: block !important; }
 
         /* Modals */
@@ -320,7 +323,7 @@
             border-radius: 40px 0 0 40px !important; border-left: 6px solid var(--card-border) !important;
             border-right: none !important; border-top: none !important; border-bottom: none !important;
             box-shadow: -10px 0 20px rgba(0,0,0,0.15) !important; padding: 4vh 5vw !important; 
-            overflow-y: auto !important; display: flex !important; flex-direction: column !important;
+            overflow: hidden !important; display: flex !important; flex-direction: column !important;
         }
         body.mobile-mode #sidebar-content-container.open { right: 0 !important; }
 
@@ -337,11 +340,11 @@
         /* 🌙 Dark Mode Overrides */
         body.dark-mode { --bg-color: #1e272e; --main-teal: #00cec9; --card-border: #2f3542; --card-shadow: #111418; color: #f1f2f6; }
         body.dark-mode .full-screen-menu { background-color: #2f3542; }
-        body.dark-mode .menu-box, body.dark-mode .modal-content { background-color: #2f3542; border-color: #111418; color: white;}
-        body.dark-mode .card, body.dark-mode .secret-card-display { background-color: #2f3542; color: white; }
+        body.dark-mode .card { background-color: #2f3542; color: white; }
         body.dark-mode .card.eliminated { background-color: #1e272e; border-color: #111418; }
         body.dark-mode .info-box, body.dark-mode .score-row { background: #2f3542; border-color: #111418; box-shadow: 0 6px 0 #111418; }
         body.dark-mode .vocab-group-title { color: #f1f2f6; }
+        body.dark-mode .vocab-group-list li { background: #1e272e; color: #f1f2f6; }
         body.dark-mode .category-select { background-color: #2f3542; color: var(--main-teal); border-color: var(--main-teal); box-shadow: 0 4px 0 #111418;}
         body.dark-mode .card:not(.eliminated) .trait-col:hover { background-color: #1e272e; }
         
@@ -493,14 +496,17 @@
 
             <!-- Vocabulary Sidebar Container (Acts as Bottom Drawer on PC, Right Drawer on Mobile) -->
             <div id="sidebar-content-container">
-                <div id="vocab-scroll-wrap" style="width: 100%;">
-                    <h3 style="margin-top:0; color: var(--main-teal); font-size: 2.5vh; text-transform: uppercase; text-align: center;">📝 My Notes</h3>
-                    <div class="sidebar-subtitle" id="vocab-header" style="color:#ffa502;">📚 Key Vocabulary</div>
-                    <div id="vocab-container"></div>
-                    <div class="sidebar-subtitle" style="color:#ff4757; margin-top: 2vh;" id="example-q-header">💡 Example Questions</div>
-                    <ul id="example-questions-list"></ul>
+                <div id="vocab-scroll-wrap">
+                    <h3 style="margin-top:0; color: var(--main-teal); font-size: 2.5vh; text-transform: uppercase; text-align: center; flex-shrink: 0;">📝 My Notes</h3>
+                    <div style="flex: 1; display: flex; flex-direction: column; justify-content: center; min-height: 0;">
+                        <div class="sidebar-subtitle" id="vocab-header" style="color:#ffa502;">📚 Key Vocabulary</div>
+                        <div id="vocab-container" style="margin-bottom: 2vh;"></div>
+                        
+                        <div class="sidebar-subtitle" style="color:#ff4757;" id="example-q-header">💡 Example Questions</div>
+                        <ul id="example-questions-list"></ul>
+                    </div>
                 </div>
-                <button id="close-vocab-drawer-btn" class="btn color-grey" onclick="toggleVocabDrawer('close')" style="width: 100%; margin-top: 2vh; font-size: 2.2vh; padding: 1.5vh; flex-shrink: 0;">✖️ Close</button>
+                <button id="close-vocab-drawer-btn" class="btn color-grey" onclick="toggleVocabDrawer('close')" style="width: 100%; margin-top: 1vh; font-size: 2.2vh; padding: 1.5vh; flex-shrink: 0;">✖️ Close</button>
             </div>
         </div>
     </div>
