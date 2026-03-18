@@ -90,7 +90,7 @@
             max-width: 0; opacity: 0; transition: all 0.4s ease; display: inline-block; vertical-align: middle; overflow: hidden;
         }
         
-        /* 🔥 Safe Hover Effects */
+        /* 🔥 Safe Hover Effects (Only active on devices with a mouse to prevent mobile double-taps!) */
         @media (hover: hover) {
             .btn:hover, .menu-btn:hover, .setup-btn:hover, .draw-btn:hover, .reset-scores-btn:hover {
                 transform: scale(1.05) rotate(1deg);
@@ -107,7 +107,7 @@
             body.dark-mode .card:not(.eliminated) .trait-col:not(.asked-trait):hover .trait-value { background-color: #1e272e; }
         }
 
-        /* 📱 Mobile Toggle Button Adjustments */
+        /* 📱 Mobile Toggle Button Adjustments & Bounce Animation */
         body.mobile-mode .settings-flex-row .flex-expand-btn {
             flex: 0 1 auto !important;
             width: max(6vh, 45px);
@@ -316,7 +316,7 @@
         .dice-label { font-size: 1.3vh; font-weight: bold; color: #a4b0be; text-transform: uppercase; margin-bottom: 0.2vh; }
         .dice-value { font-size: 3.5vh; font-weight: bold; color: var(--main-teal); line-height: 1; height: 4vh; display: flex; align-items: center; justify-content: center; }
         
-        /* Solo Mode Chat bubbles */
+        /* Solo Mode Chat Bubbles & Animations */
         @keyframes slideInRight { 0% { transform: translateX(50px); opacity: 0; } 100% { transform: translateX(0); opacity: 1; } }
         @keyframes slideInLeft { 0% { transform: translateX(-50px); opacity: 0; } 100% { transform: translateX(0); opacity: 1; } }
         @keyframes popOut { 0% { transform: scale(1); opacity: 1; } 100% { transform: scale(0); opacity: 0; margin: 0; padding: 0; max-height: 0; } }
@@ -331,7 +331,10 @@
         .chat-win { animation: slideInLeft 0.4s var(--bounce) forwards, rainbowPulse 2s infinite; color: #2f3542; text-align: center; font-size: 2vh; font-weight: 800; border: 4px dashed white; align-self: center; width: 100%; margin-bottom: 0.5vh; }
         @keyframes rainbowPulse { 0% { background-color: #ff9a9e; } 25% { background-color: #fbc531; } 50% { background-color: #2ed573; } 75% { background-color: #1e90ff; } 100% { background-color: #ff9a9e; } }
 
-        /* Sidebar Elements */
+        /* Two Player Score Controls */
+        .score-controls { display: flex; gap: 0.5vw; margin-top: 1vh; margin-bottom: 0.5vh; justify-content: center; }
+        .score-btn { font-size: 2vh; font-weight: bold; width: 3.5vh; height: 3.5vh; border-radius: 50%; display: flex; align-items: center; justify-content: center; padding: 0; margin: 0; transition: all 0.2s var(--bounce); }
+
         #sidebar-content-container { padding: 1.2vh 1.5vw; margin-top: 0.5vh; text-align: left; border-color: #70a1ff;}
         .sidebar-subtitle { font-weight: bold; color: var(--main-teal); font-size: 1.5vh; text-align: left; margin-bottom: 0.5vh; margin-top: 0.5vh; text-transform: uppercase;}
         #example-questions-list { margin: 0; padding-left: 20px; font-size: 1.4vh; text-align: left; list-style-type: disc; }
@@ -345,6 +348,7 @@
         /* Modals */
         .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); backdrop-filter: blur(5px); z-index: 2000; justify-content: center; align-items: center; }
         .modal-content { background: white; padding: 4vh; width: 45vw; max-height: 85vh; overflow-y: auto; text-align: center; border-radius: 40px; border: 6px solid #ffffff; box-shadow: 0 15px 0 rgba(0,0,0,0.15); }
+        .team-award-btn { display: block; width: 100%; margin: 1.5vh 0; padding: 2vh; font-size: 2.5vh; }
 
         /* ⏱️ Giant Timer */
         @keyframes flashRedBlack { 0%, 100% { border-color: #ff4757; } 50% { border-color: #2f3542; } }
@@ -356,8 +360,10 @@
         /* 📱 Mobile Mode Overrides */
         body.mobile-mode { overflow: hidden !important; height: 100vh !important; position: fixed; width: 100vw; touch-action: none; }
         body.mobile-mode #game-wrapper { flex-direction: column !important; height: 100% !important; min-height: 0 !important; overflow: hidden !important; }
+        body.mobile-mode #game-title { display: none !important; } 
         body.mobile-mode #left-panel { min-height: 0 !important; height: 100% !important; border-right: none !important; border-bottom: none !important; padding: 1vh 1vw 14vh 1vw !important; display: flex; flex-direction: column; overflow: hidden !important; box-sizing: border-box !important;} 
         body.mobile-mode #right-panel { width: 100%; border-left: none !important; height: 0 !important; min-height: 0 !important; padding: 0 !important; margin: 0 !important; flex: 0 !important; overflow: visible !important; }
+        body.mobile-mode #top-right-controls .toggle-panel-btn { display: none !important; }
         
         /* 🔥 Mobile Mode Specific Grid Rules */
         body.mobile-mode #grid-container { 
@@ -394,8 +400,12 @@
             justify-content: center; 
             height: 100%; 
         }
+        body.mobile-mode #drawer-guess-container { display: none !important; }
+        
+        body.mobile-mode .avatar-grid { grid-template-columns: repeat(3, 1fr) !important; gap: 2vh 4vw !important; }
+        @media (max-width: 600px) { .avatar-grid { grid-template-columns: repeat(3, 1fr) !important; gap: 2vh 4vw !important; } }
 
-        /* Mobile Top Stats */
+        /* Mobile Top Stats Shrink */
         .mobile-only-stat { display: none !important; }
         body.mobile-mode .mobile-only-stat { display: flex !important; }
         body.mobile-mode .stat-wrapper { min-width: 0 !important; width: auto !important; flex: 1 1 0 !important; padding: 0 !important; margin: 0 !important; }
@@ -403,8 +413,11 @@
         body.mobile-mode .label-text { font-size: clamp(10px, 3vw, 1.6vh) !important; letter-spacing: 0 !important; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 100%; margin-bottom: 0.2vh; }
         body.mobile-mode .guess-text { font-size: clamp(14px, 5vw, 3vh) !important; }
         body.mobile-mode .top-info-bar { gap: 2vw !important; padding: 0 4vw !important; box-sizing: border-box; width: 100%; justify-content: space-between !important; }
+        body.mobile-mode #solo-top-stats { gap: 2vw !important; width: 100%; justify-content: space-between !important; }
+        body.mobile-mode .info-box { min-width: 0 !important; }
 
         /* Two Player Mode Mobile Stat Ratios */
+        body.mobile-mode #twop-top-scoreboard { flex: 1 1 0 !important; gap: 2vw !important; width: 100% !important; margin: 0 !important; }
         body.mobile-mode[data-mode="2p-student"] #main-guess-wrapper { flex: 2 1 0 !important; }
         body.mobile-mode[data-mode="2p-student"] #twop-top-scoreboard { flex: 1 1 0 !important; }
         body.mobile-mode[data-mode="2p-teacher"] #main-guess-wrapper { flex: 0.9 1 0 !important; }
@@ -415,13 +428,16 @@
             position: fixed !important; bottom: -100% !important; left: 0 !important; width: 100vw !important; background: white !important;
             border: 6px solid var(--card-border) !important; border-bottom: none !important; border-radius: 40px 40px 0 0 !important;
             padding: 4vh 5vw 6vh 5vw !important; margin: 0 !important; box-shadow: 0 -10px 20px rgba(0,0,0,0.15) !important;
-            transition: bottom 0.4s var(--bounce) !important; z-index: 3000 !important; box-sizing: border-box;
+            transition: bottom 0.4s var(--bounce) !important; z-index: 3000 !important; box-sizing: border-box !important;
         }
         .mobile-drawer.open { bottom: 0 !important; }
+
+        /* 🗄️ Mobile Right Drawer (Vocab) Styles */
         .mobile-drawer-right {
             position: fixed !important; right: -100% !important; top: 0 !important; width: 85vw !important; max-width: 400px;
             height: 100vh !important; background: white !important;
-            border-left: 6px solid var(--card-border) !important; border-radius: 40px 0 0 40px !important; padding: 4vh 5vw !important; margin: 0 !important; box-shadow: -10px 0 20px rgba(0,0,0,0.15) !important;
+            border-left: 6px solid var(--card-border) !important; border-right: none !important; border-top: none !important; border-bottom: none !important;
+            border-radius: 40px 0 0 40px !important; padding: 4vh 5vw !important; margin: 0 !important; box-shadow: -10px 0 20px rgba(0,0,0,0.15) !important;
             transition: right 0.4s var(--bounce) !important; z-index: 3000 !important; box-sizing: border-box !important; display: flex !important; flex-direction: column !important; overflow: hidden !important;
         }
         .mobile-drawer-right.open { right: 0 !important; }
@@ -441,6 +457,21 @@
         body.dark-mode .card, body.dark-mode .secret-card-display { background-color: #2f3542; color: white; }
         body.dark-mode .card.eliminated { background-color: #1e272e; border-color: #111418; }
         body.dark-mode .info-box, body.dark-mode .dice-display, body.dark-mode #sidebar-content-container, body.dark-mode .score-row { background: #2f3542; border-color: #111418; box-shadow: 0 6px 0 #111418; }
+        body.dark-mode .vocab-group-title { color: #f1f2f6; }
+        body.dark-mode p[style*="color: #333"] { color: #f1f2f6 !important; }
+        body.dark-mode .category-select { background-color: #2f3542; color: var(--main-teal); border-color: var(--main-teal); box-shadow: 0 4px 0 #111418;}
+        
+        body.dark-mode .color-blue { box-shadow: 0 6px 0 #111418; border-color: #111418; }
+        body.dark-mode .color-orange { box-shadow: 0 6px 0 #111418; border-color: #111418; }
+        body.dark-mode .color-pink { box-shadow: 0 6px 0 #111418; border-color: #111418; }
+        body.dark-mode .color-green { box-shadow: 0 6px 0 #111418; border-color: #111418; }
+        body.dark-mode .color-grey { box-shadow: 0 6px 0 #111418; border-color: #111418; background-color: #576574;}
+        body.dark-mode .color-teal { box-shadow: 0 6px 0 #111418; border-color: #111418; }
+        body.dark-mode .color-offwhite { box-shadow: 0 6px 0 #111418; border-color: #111418; background-color: #2f3542; color: #f1f2f6; }
+        body.dark-mode #right-panel { background-color: #111418; }
+        body.dark-mode #giant-timer-box { background-color: #2f3542 !important; }
+        body.dark-mode #giant-examples-container { color: #f1f2f6 !important; }
+        body.dark-mode .sc-name { color: white; }
         body.dark-mode .mobile-drawer, body.dark-mode .mobile-drawer-right { background: #2f3542 !important; border-color: #111418 !important; }
         body.dark-mode .chat-player { background-color: #2f3542; color: #f1f2f6; border-color: #576574; }
         body.dark-mode .chat-sys { background-color: #1e272e; color: #a4b0be; border-color: #576574; }
@@ -497,6 +528,7 @@
         </div>
     </div>
 
+    <!-- Solo Mode Sub-Selection -->
     <div id="solo-mode-select" class="full-screen-menu" style="display: none;">
         <div class="menu-box">
             <h1 class="menu-title">👤 Select Solo Mode 👤</h1>
@@ -521,22 +553,29 @@
         </div>
     </div>
 
+    <!-- Reorganized Solo Character Setup -->
     <div id="solo-setup-menu" class="full-screen-menu" style="display: none;">
         <div class="menu-box" style="max-width: 800px;">
             <h1 class="menu-title">Pick your character!</h1>
+            
             <div class="avatar-grid">
+                <!-- Row 1 -->
                 <button class="btn color-offwhite setup-btn" onclick="launchSoloAvatar('👦')">👦</button>
                 <button class="btn color-offwhite setup-btn" onclick="launchSoloAvatar('👦🏽')">👦🏽</button>
                 <button class="btn color-offwhite setup-btn" onclick="launchSoloAvatar('👦🏿')">👦🏿</button>
                 <button class="btn color-offwhite setup-btn" onclick="launchSoloAvatar('👧')">👧</button>
                 <button class="btn color-offwhite setup-btn" onclick="launchSoloAvatar('👧🏽')">👧🏽</button>
                 <button class="btn color-offwhite setup-btn" onclick="launchSoloAvatar('👧🏿')">👧🏿</button>
+
+                <!-- Row 2 -->
                 <button class="btn color-offwhite setup-btn" onclick="launchSoloAvatar('👨')">👨</button>
                 <button class="btn color-offwhite setup-btn" onclick="launchSoloAvatar('👨🏽')">👨🏽</button>
                 <button class="btn color-offwhite setup-btn" onclick="launchSoloAvatar('👨🏿')">👨🏿</button>
                 <button class="btn color-offwhite setup-btn" onclick="launchSoloAvatar('👩')">👩</button>
                 <button class="btn color-offwhite setup-btn" onclick="launchSoloAvatar('👩🏽')">👩🏽</button>
                 <button class="btn color-offwhite setup-btn" onclick="launchSoloAvatar('👩🏿')">👩🏿</button>
+
+                <!-- Row 3 -->
                 <button class="btn color-offwhite setup-btn" onclick="launchSoloAvatar('🧑')">🧑</button>
                 <button class="btn color-offwhite setup-btn" onclick="launchSoloAvatar('🧑🏽')">🧑🏽</button>
                 <button class="btn color-offwhite setup-btn" onclick="launchSoloAvatar('🧑🏿')">🧑🏿</button>
@@ -544,10 +583,12 @@
                 <button class="btn color-offwhite setup-btn" onclick="launchSoloAvatar('🧓🏽')">🧓🏽</button>
                 <button class="btn color-offwhite setup-btn" onclick="launchSoloAvatar('🧓🏿')">🧓🏿</button>
             </div>
+
             <button class="btn color-grey undo-btn menu-btn" style="margin-top: 4vh;" onclick="showScreen('solo-mode-select')">Back</button>
         </div>
     </div>
 
+    <!-- Classroom Menus -->
     <div id="team-setup-menu" class="full-screen-menu" style="display: none;">
         <div class="menu-box">
             <h1 class="menu-title">🏆 Team Setup 🏆</h1>
@@ -580,6 +621,19 @@
         </div>
     </div>
 
+    <div id="timer-setup-menu" class="full-screen-menu" style="display: none;">
+        <div class="menu-box">
+            <h1 class="menu-title">⏱️ Timer Setup ⏱️</h1>
+            <p style="font-size: 3vh; font-weight: bold;">Countdown timer for guesses?</p>
+            <div class="menu-btn-container">
+                <button class="btn color-grey menu-btn" onclick="initClassroom(false)">🚫 No Timer</button>
+                <button class="btn color-pink menu-btn" onclick="initClassroom(true)">⏳ 30 Second Timer</button>
+            </div>
+            <button class="btn color-grey undo-btn menu-btn" style="margin-top: 4vh;" onclick="showScreen('student-setup-menu')">Back</button>
+        </div>
+    </div>
+
+    <!-- 2P Menus -->
     <div id="twop-menu" class="full-screen-menu" style="display: none;">
         <div class="menu-box">
             <h1 class="menu-title">🤝 1-on-1 Setup 🤝</h1>
@@ -602,6 +656,7 @@
         </div>
     </div>
 
+    <!-- ✨ MOBILE CHAT OVERLAY -->
     <div id="mobile-chat-overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; padding: 10vh 5vw 0 5vw; box-sizing: border-box; z-index: 4000; flex-direction: column; gap: 1.5vh; pointer-events: none; transition: opacity 0.5s; background: rgba(0,0,0,0.5); backdrop-filter: blur(2px);"></div>
 
     <div id="game-wrapper">
@@ -621,6 +676,7 @@
             <h1 id="game-title">🐾 Guess What Animal! 🐾</h1>
             
             <div class="top-info-bar">
+                
                 <div class="stat-wrapper" id="main-guess-wrapper">
                     <div class="info-box guess-box top-stat-box">
                         <div class="label-text">🎯 Guesses</div>
@@ -628,6 +684,7 @@
                     </div>
                 </div>
                 
+                <!-- Solo Top Stats Info -->
                 <div id="solo-top-stats" style="display: none; gap: 2vw; justify-content: center; width: 100%;">
                     <div class="stat-wrapper">
                         <div class="info-box top-stat-box" style="border-color: #ffa502;">
@@ -694,10 +751,13 @@
                     <div id="round-win-pts" style="font-size: clamp(20px, 5vw, 4vh); color: #ff4757; font-weight: bold; background: var(--bg-color); padding: 1.5vh 4vw; border-radius: 50px; display: inline-block; border: 4px solid #ff4757; animation: pulseText 1s infinite;"></div>
                 </div>
             </div>
+            
         </div>
 
         <div id="right-panel">
             <div id="right-panel-top-content">
+                
+                <!-- Solo Mode Container -->
                 <div id="solo-chat-container" style="display: none; width: 100%; flex-direction: column; align-items: center;">
                     <div class="sidebar-title">💬 Chat</div>
                     <div id="drawer-guess-container" style="display: flex; gap: 1vw; width: 90%; justify-content: center; margin-bottom: 1.5vh;">
@@ -708,9 +768,11 @@
                     </div>
                     <div id="solo-chat-log" style="display: flex; flex-direction: column; gap: 1vh; width: 90%; max-height: 50vh; overflow-y: auto; padding-right: 1vw; padding-bottom: 1vh;">
                     </div>
+                    <button id="solo-undo-btn" class="btn color-grey undo-btn" onclick="undoLastAction()" style="width: 90%; margin-top: 1vh; font-size: 2.2vh; padding: 1.5vh; flex-shrink: 0;">↩️ Undo</button>
                     <button id="close-solo-chat-btn" class="btn color-grey" onclick="toggleDrawer('close')" style="display: none; width: 90%; margin-top: 1vh; font-size: 2.2vh; padding: 1.5vh; flex-shrink: 0;">✖️ Close</button>
                 </div>
 
+                <!-- Classroom Container -->
                 <div id="team-dice-container">
                     <div class="sidebar-title">Who's Turn?</div>
                     <div style="display:flex; gap:1vw; width:90%; justify-content:center; margin-bottom: 1vh;">
@@ -725,6 +787,7 @@
                     </div><br>
                 </div>
 
+                <!-- 1-on-1 Container -->
                 <div id="twop-secret-card-container">
                     <div class="sidebar-title">Your Secret Card</div>
                     <div class="secret-card-display" id="secret-card" onclick="wiggleSecretCard();">
@@ -775,6 +838,7 @@
         </div>
     </div>
 
+    <!-- Gameplay Action Modals -->
     <div id="victory-modal" class="modal-overlay">
         <div class="modal-content">
             <h2 id="modal-points-title" style="color: var(--main-teal); font-size: 4vh; margin-top:0;">Award points to:</h2>
@@ -840,13 +904,16 @@
         </div>
     </div>
 
+    <!-- 🚨 Comprehensive Solo Final Results Modal -->
     <div id="solo-results-modal" class="modal-overlay" style="z-index: 2500;">
         <div class="modal-content" id="solo-results-card" style="width: 60vw; max-width: 600px; padding: 5vh;">
             <h2 id="solo-results-title" style="color: var(--main-teal); font-size: 5vh; margin-top:0; text-transform: uppercase;">Game Over</h2>
+            
             <div id="solo-rating-container" style="display: none; margin: 3vh 0;">
                 <div style="font-weight: bold; color: #a4b0be; text-transform: uppercase; font-size: 2vh; margin-bottom: 1vh;">Final Grade</div>
                 <div id="solo-rating-badge" class="grade-badge grade-s-plus">S+</div>
             </div>
+
             <div style="display: flex; justify-content: center; gap: 3vw; margin: 3vh 0; flex-wrap: wrap;">
                 <div class="info-box top-stat-box" style="border-color: #ffa502; width: 180px;">
                     <div class="label-text">Final Score</div>
@@ -857,7 +924,9 @@
                     <div class="guess-text" id="solo-results-rounds" style="color: #218c53;">0</div>
                 </div>
             </div>
+
             <p id="solo-results-message" style="font-size: 2.5vh; font-weight: bold; color: #2f3542; margin-bottom: 4vh;"></p>
+            
             <div style="display: flex; justify-content: center; gap: 2vw; flex-wrap: wrap;">
                 <button class="btn color-green" id="solo-save-img-btn" style="font-size: 2vh; padding: 1.5vh 3vw;" onclick="downloadSoloScreenshot()">💾 Save Result</button>
                 <button class="btn color-blue" style="font-size: 2vh; padding: 1.5vh 3vw;" onclick="closeSoloResults()">🏠 Back to Menu</button>
@@ -887,7 +956,10 @@
 
     <script>
         let isMobileMode = false; let isDarkMode = false; let isSoundOn = true;
+        
+        // --- AUDIO SYSTEM ---
         const sfx = { bonus: new Audio('sounds/bonus.mp3'), dice: new Audio('sounds/dice.mp3'), hover: new Audio('sounds/hover.mp3'), select: new Audio('sounds/select.mp3'), change: new Audio('sounds/change.mp3'), win: new Audio('sounds/win.mp3'), yes: new Audio('sounds/yes.mp3'), no: new Audio('sounds/no.mp3'), timer: new Audio('sounds/timer.mp3'), timeup: new Audio('sounds/timeup.mp3') };
+
         function playSound(soundName) { if (isSoundOn && sfx[soundName]) { sfx[soundName].currentTime = 0; sfx[soundName].play().catch(e => console.log(e)); } }
 
         let lastHoveredElement = null;
@@ -896,42 +968,123 @@
             if (hoverable && hoverable !== lastHoveredElement) { playSound('hover'); lastHoveredElement = hoverable; } 
             else if (!hoverable) { lastHoveredElement = null; }
         });
+        
+        // Universal Button Bounce Animation
+        document.addEventListener('click', function(e) {
+            const btn = e.target.closest('.btn, .setup-btn, .category-select, .icon-only');
+            if (btn && !btn.closest('#grid-container') && !btn.classList.contains('score-btn')) {
+                btn.classList.remove('toggle-bounce');
+                void btn.offsetWidth; // trigger reflow
+                btn.classList.add('toggle-bounce');
+            }
+        });
 
+        // Settings Toggles
         function toggleFullScreen() {
             playSound('select');
             if (!document.fullscreenElement) { if (document.documentElement.requestFullscreen) document.documentElement.requestFullscreen(); else if (document.documentElement.webkitRequestFullscreen) document.documentElement.webkitRequestFullscreen(); } 
             else { if (document.exitFullscreen) document.exitFullscreen(); else if (document.webkitExitFullscreen) document.webkitExitFullscreen(); }
+            
+            document.querySelectorAll('.fullscreen-toggle-btn').forEach(btn => {
+                btn.classList.remove('toggle-bounce');
+                void btn.offsetWidth; // trigger reflow
+                btn.classList.add('toggle-bounce');
+            });
         }
-        function toggleSoundMode() { playSound('select'); isSoundOn = !isSoundOn; document.querySelectorAll('.sound-toggle-btn').forEach(btn => { const i = btn.querySelector('.icon'), t = btn.querySelector('.btn-text'); if (i && t) { i.innerHTML = isSoundOn ? '🔊' : '🔇'; t.innerHTML = isSoundOn ? 'Sound On' : 'Sound Off'; } }); }
+        document.addEventListener('fullscreenchange', () => {
+            const isFS = document.fullscreenElement;
+            document.querySelectorAll('.fullscreen-toggle-btn').forEach(btn => {
+                const i = btn.querySelector('.icon'), t = btn.querySelector('.btn-text');
+                if (i && t) { i.innerHTML = isFS ? '🗗' : '⛶'; t.innerHTML = isFS ? 'Windowed' : 'Fullscreen'; }
+            });
+        });
+
+        function toggleSoundMode() {
+            playSound('select'); isSoundOn = !isSoundOn;
+            document.querySelectorAll('.sound-toggle-btn').forEach(btn => {
+                const i = btn.querySelector('.icon'), t = btn.querySelector('.btn-text');
+                if (i && t) { i.innerHTML = isSoundOn ? '🔊' : '🔇'; t.innerHTML = isSoundOn ? 'Sound On' : 'Sound Off'; }
+                btn.classList.remove('toggle-bounce');
+                void btn.offsetWidth;
+                btn.classList.add('toggle-bounce');
+            });
+        }
 
         function selectInitialDevice(device) {
             playSound('select');
             const classroomBtn = document.getElementById('classroom-mode-btn');
-            if (device === 'mobile') { isMobileMode = true; document.body.classList.add('mobile-mode'); if (classroomBtn) classroomBtn.classList.add('hide-animated'); }
-            else { isMobileMode = false; document.body.classList.remove('mobile-mode'); if (classroomBtn) classroomBtn.classList.remove('hide-animated'); }
+            
+            if (device === 'mobile') {
+                isMobileMode = true;
+                document.body.classList.add('mobile-mode');
+                if (classroomBtn) classroomBtn.classList.add('hide-animated');
+            } else {
+                isMobileMode = false;
+                document.body.classList.remove('mobile-mode');
+                if (classroomBtn) classroomBtn.classList.remove('hide-animated');
+            }
+            
+            document.querySelectorAll('.device-toggle-btn').forEach(btn => {
+                const i = btn.querySelector('.icon'), t = btn.querySelector('.btn-text');
+                if (i && t) { 
+                    i.innerHTML = isMobileMode ? '📱' : '💻'; 
+                    t.innerHTML = isMobileMode ? 'Mobile Mode' : 'PC Mode'; 
+                }
+                btn.classList.remove('toggle-bounce');
+                void btn.offsetWidth;
+                btn.classList.add('toggle-bounce');
+            });
+
             showScreen('main-menu');
         }
 
         function toggleDeviceMode() {
             playSound('select'); isMobileMode = !isMobileMode;
+            
             const classroomBtn = document.getElementById('classroom-mode-btn');
-            if (classroomBtn) isMobileMode ? classroomBtn.classList.add('hide-animated') : classroomBtn.classList.remove('hide-animated');
-            isMobileMode ? document.body.classList.add('mobile-mode') : document.body.classList.remove('mobile-mode');
+            if (classroomBtn) {
+                if (isMobileMode) {
+                    classroomBtn.classList.add('hide-animated');
+                } else {
+                    classroomBtn.classList.remove('hide-animated');
+                }
+            }
+
+            document.querySelectorAll('.device-toggle-btn').forEach(btn => {
+                const i = btn.querySelector('.icon'), t = btn.querySelector('.btn-text');
+                if (i && t) { i.innerHTML = isMobileMode ? '📱' : '💻'; t.innerHTML = isMobileMode ? 'Mobile Mode' : 'PC Mode'; }
+                btn.classList.remove('toggle-bounce');
+                void btn.offsetWidth;
+                btn.classList.add('toggle-bounce');
+            });
+            if (isMobileMode) document.body.classList.add('mobile-mode'); else document.body.classList.remove('mobile-mode');
             document.getElementById('settings-modal').style.display = 'none';
             if (document.getElementById('game-wrapper').style.display === 'flex') { applyResponsiveLayout(); }
         }
 
         function toggleThemeMode() {
             playSound('select'); isDarkMode = !isDarkMode;
-            document.querySelectorAll('.theme-toggle-btn').forEach(btn => { const i = btn.querySelector('.icon'), t = btn.querySelector('.btn-text'); if (i && t) { i.innerHTML = isDarkMode ? '🌙' : '☀️'; t.innerHTML = isDarkMode ? 'Dark Mode' : 'Light Mode'; } });
+            document.querySelectorAll('.theme-toggle-btn').forEach(btn => {
+                const i = btn.querySelector('.icon'), t = btn.querySelector('.btn-text');
+                if (i && t) { i.innerHTML = isDarkMode ? '🌙' : '☀️'; t.innerHTML = isDarkMode ? 'Dark Mode' : 'Light Mode'; }
+                btn.classList.remove('toggle-bounce');
+                void btn.offsetWidth;
+                btn.classList.add('toggle-bounce');
+            });
             if (isDarkMode) document.body.classList.add('dark-mode'); else document.body.classList.remove('dark-mode');
         }
 
-        function cleanupSoloEngine() {
-            clearInterval(soloTimerInterval);
-            soloTimerInterval = null;
-            isTimerPaused = false;
-            isBotThinking = false;
+        // Timer Pause Helper to prevent menu exploits!
+        function pauseGameTimers() {
+            if (gameMode === 'solo' && soloModeType === 'time') {
+                isTimerPaused = true;
+            }
+        }
+        
+        function resumeGameTimers() {
+            if (gameMode === 'solo' && soloModeType === 'time' && !isBotThinking) {
+                isTimerPaused = false;
+            }
         }
 
         function closeAllDrawers() {
@@ -950,10 +1103,20 @@
             const vocabDrawer = document.getElementById('sidebar-content-container');
             const overlay = document.getElementById('mobile-drawer-overlay');
             const triggerBtnWrap = document.getElementById('mobile-drawer-btn-wrap');
+            
             const isOpen = activeDrawer.classList.contains('open');
             let shouldOpen = action === 'open' ? true : (action === 'close' ? false : !isOpen);
-            if (shouldOpen) { vocabDrawer.classList.remove('open'); activeDrawer.classList.add('open'); overlay.style.display = 'block'; triggerBtnWrap.style.display = 'none'; } 
-            else { activeDrawer.classList.remove('open'); overlay.style.display = 'none'; triggerBtnWrap.style.display = 'flex'; }
+            
+            if (shouldOpen) {
+                vocabDrawer.classList.remove('open');
+                activeDrawer.classList.add('open');
+                overlay.style.display = 'block';
+                triggerBtnWrap.style.display = 'none';
+            } else {
+                activeDrawer.classList.remove('open');
+                overlay.style.display = 'none';
+                triggerBtnWrap.style.display = 'flex';
+            }
         }
 
         function toggleVocabDrawer(action) {
@@ -961,10 +1124,21 @@
             const drawer = document.getElementById('sidebar-content-container');
             const overlay = document.getElementById('mobile-drawer-overlay');
             const triggerBtnWrap = document.getElementById('mobile-drawer-btn-wrap');
+            
             const isOpen = drawer.classList.contains('open');
             let shouldOpen = action === 'open' ? true : (action === 'close' ? false : !isOpen);
-            if (shouldOpen) { const mainDrawer = gameMode === 'solo' ? document.getElementById('solo-chat-container') : document.getElementById('twop-secret-card-container'); if (mainDrawer) mainDrawer.classList.remove('open'); drawer.classList.add('open'); overlay.style.display = 'block'; triggerBtnWrap.style.display = 'none'; } 
-            else { drawer.classList.remove('open'); overlay.style.display = 'none'; triggerBtnWrap.style.display = 'flex'; }
+            
+            if (shouldOpen) {
+                const mainDrawer = gameMode === 'solo' ? document.getElementById('solo-chat-container') : document.getElementById('twop-secret-card-container');
+                if (mainDrawer) mainDrawer.classList.remove('open');
+                drawer.classList.add('open');
+                overlay.style.display = 'block';
+                triggerBtnWrap.style.display = 'none';
+            } else {
+                drawer.classList.remove('open');
+                overlay.style.display = 'none';
+                triggerBtnWrap.style.display = 'flex';
+            }
         }
 
         const gameData = {
@@ -1023,14 +1197,36 @@
             }
         };
 
-        let currentCategory = 'animals', currentLayout = [], guessCount = 0, actionHistory = [], gameMode = '', askedTraits = [];
-        let tempTeamCount = 0, teams = [], studentsPerTeam = 0, availableTeams = [], availableStudents = {}, pendingAction = {};
-        let useTimer = false, p1Score = 0, p2Score = 0, isRightPanelVisible = true, giantTimerInterval = null, giantTimeLeft = 30, isTimerPaused = false, resetTimerInterval;
-        let soloModeType = 'standard', soloTimeLimit = 0, soloTimeRemaining = 0, soloTimerInterval = null, soloMaxGuesses = 7, soloGuessesUsed = 0, soloSecretItem = null, soloPlayerAvatar = '🧑', soloScore = 0, soloRound = 1, soloRoundStats = [], soloRoundStartTime = 0, isBotThinking = false;
+        // Standard Game State
+        let currentCategory = 'animals', currentLayout = [], guessCount = 0, actionHistory = [], gameMode = '';
+        let pendingAction = {}; 
+        let askedTraits = []; // Tracks which specific traits have already been asked
+        let tempTeamCount = 0, teams = [], studentsPerTeam = 0, availableTeams = [], availableStudents = {};
+        let useTimer = false, p1Score = 0, p2Score = 0, isRightPanelVisible = true;
+        
+        // Timer Variables
+        let giantTimerInterval = null, giantTimeLeft = 30, isTimerPaused = false;
+        let resetTimerInterval;
+
+        // --- SOLO MODE VARIABLES ---
+        let soloModeType = 'standard'; // 'standard', 'time', 'endless'
+        let soloTimeLimit = 0; // for time attack
+        let soloTimeRemaining = 0;
+        let soloTimerInterval = null;
+
+        let soloMaxGuesses = 7;
+        let soloGuessesUsed = 0;
+        let soloSecretItem = null;
+        let soloPlayerAvatar = '🧑';
+        let soloScore = 0;
+        let soloRound = 1;
+        let soloRoundStats = []; // [{timeTaken, guessesUsed}]
+        let soloRoundStartTime = 0;
+        let isBotThinking = false;
 
         function getTooltip(traitKey, value) {
             const tooltips = {"🥩": "meat-eater", "🌿": "plant-eater", "🖐️": "use hands", "🍴": "use fork/spoon", "🍬": "sweet", "🧂": "salty", "❄️": "cold", "♨️": "hot", "👤": "individual sport", "👥": "team sport", "🏠": "indoor", "🌳": "outdoor", "🚫": "no ball/puck", "⚽": "uses ball/puck"};
-            return traitKey === 'legs' ? value + " legs" : tooltips[value] || value.replace(/,/g, ' / '); 
+            if (traitKey === 'legs') return value + " legs"; return tooltips[value] || value.replace(/,/g, ' / '); 
         }
 
         function getQuestionText(key, val, category) {
@@ -1042,6 +1238,21 @@
             return `Is it ${cleanVal}?`;
         }
 
+        function getBotSentence(qText, isYes) {
+            if (qText.startsWith("Is")) return isYes ? "Yes, it is." : "No, it isn't.";
+            if (qText.startsWith("Does")) return isYes ? "Yes, it does." : "No, it doesn't.";
+            if (qText.startsWith("Do")) return isYes ? "Yes, I do." : "No, I don't.";
+            return isYes ? "Yes." : "No.";
+        }
+
+        function setYesNoText(question, yesId, noId) {
+            const yesBtn = document.getElementById(yesId), noBtn = document.getElementById(noId);
+            if (question.startsWith("Do you")) { yesBtn.innerText = "👍 Yes, I do."; noBtn.innerText = "👎 No, I don't."; } 
+            else if (question.startsWith("Does it")) { yesBtn.innerText = "👍 Yes, it does."; noBtn.innerText = "👎 No, it doesn't."; } 
+            else if (question.startsWith("Is it")) { yesBtn.innerText = "👍 Yes, it is."; noBtn.innerText = "👎 No, it isn't."; } 
+            else { yesBtn.innerText = "👍 Yes"; noBtn.innerText = "👎 No"; }
+        }
+
         function showScreen(screenId) {
             if (screenId) playSound('select');
             document.querySelectorAll('.full-screen-menu').forEach(el => el.style.display = 'none');
@@ -1049,278 +1260,1050 @@
             if(screenId) document.getElementById(screenId).style.display = 'flex';
         }
 
+        function setTempTeams(num) { playSound('select'); tempTeamCount = num; showScreen('student-setup-menu'); }
+        function setTempStudents(num) { playSound('select'); studentsPerTeam = num; initClassroom(true); }
+        
         function selectMode(mode) { playSound('select'); gameMode = mode; launchGame(); }
 
+        // --- SOLO MODE SETUP ---
         function setSoloType(type, time = 0) {
-            playSound('select'); cleanupSoloEngine(); soloModeType = type;
+            playSound('select');
+            soloModeType = type;
             if (type === 'time') soloTimeLimit = time;
+            
             if (type === 'standard' || type === 'endless') { showScreen('solo-setup-menu'); }
             else if (type === 'time' && time === 0) { showScreen('solo-time-select'); }
             else if (type === 'time' && time > 0) { showScreen('solo-setup-menu'); }
         }
 
         function launchSoloAvatar(emoji) {
-            playSound('select'); soloPlayerAvatar = emoji; gameMode = 'solo'; soloScore = 0; soloRound = 1; soloRoundStats = [];
+            playSound('select');
+            soloPlayerAvatar = emoji; gameMode = 'solo';
+            
+            // Reset state
+            soloScore = 0; soloRound = 1; soloRoundStats = [];
             document.getElementById('solo-chat-log').innerHTML = '';
+            
+            clearInterval(soloTimerInterval);
+            
             launchGame();
+        }
+
+        function initClassroom(timerEnabled) {
+            useTimer = timerEnabled; teams = []; availableTeams = []; availableStudents = {};
+            for (let i = 1; i <= tempTeamCount; i++) { teams.push({ name: "Team " + i, score: 0 }); availableTeams.push(i); availableStudents[i] = []; for(let j = 1; j <= studentsPerTeam; j++) availableStudents[i].push(j); }
+            gameMode = 'team'; launchGame();
         }
 
         function applyResponsiveLayout() {
             const rp = document.getElementById('right-panel'), lp = document.getElementById('left-panel');
             const teamControls = document.getElementById('team-controls-wrapper'), drawerBtnWrap = document.getElementById('mobile-drawer-btn-wrap'), rightActionBtns = document.getElementById('right-action-btns');
+            
             if (isMobileMode) {
                 rp.style.display = 'flex'; document.getElementById('toggle-panel-btn').style.display = 'none'; lp.style.borderRight = 'none'; 
-                if (gameMode === 'team') { teamControls.style.display = 'flex'; drawerBtnWrap.style.display = 'none'; document.getElementById('twop-secret-card-container').classList.remove('mobile-drawer'); } 
-                else if (gameMode === 'solo') { teamControls.style.display = 'none'; drawerBtnWrap.style.display = 'flex'; document.getElementById('mobile-drawer-btn').innerHTML = '💬 Open Chat'; document.getElementById('solo-chat-container').classList.add('mobile-drawer'); } 
-                else { teamControls.style.display = 'none'; drawerBtnWrap.style.display = 'flex'; document.getElementById('mobile-drawer-btn').innerHTML = '🃏 Show My Card'; document.getElementById('twop-secret-card-container').classList.add('mobile-drawer'); }
+                if (gameMode === 'team') { 
+                    teamControls.style.display = 'flex'; drawerBtnWrap.style.display = 'none'; 
+                    document.getElementById('twop-secret-card-container').classList.remove('mobile-drawer'); 
+                    document.getElementById('close-drawer-btn').style.display = 'none'; 
+                    document.getElementById('mobile-vocab-btn').style.display = 'none';
+                    document.getElementById('sidebar-content-container').classList.remove('mobile-drawer-right');
+                } 
+                else if (gameMode === 'solo') { 
+                    teamControls.style.display = 'none'; 
+                    drawerBtnWrap.style.display = 'flex'; 
+                    document.getElementById('mobile-drawer-btn').innerHTML = '💬 Open Chat';
+                    document.getElementById('solo-chat-container').classList.add('mobile-drawer');
+                    document.getElementById('twop-secret-card-container').classList.remove('mobile-drawer'); 
+                    document.getElementById('close-drawer-btn').style.display = 'none';
+                    document.getElementById('close-solo-chat-btn').style.display = 'block';
+                    document.getElementById('mobile-vocab-btn').style.display = 'none';
+                    document.getElementById('sidebar-content-container').classList.remove('mobile-drawer-right');
+                } 
+                else { 
+                    teamControls.style.display = 'none'; drawerBtnWrap.style.display = 'flex'; 
+                    document.getElementById('mobile-drawer-btn').innerHTML = '🃏 Show My Card';
+                    document.getElementById('twop-secret-card-container').classList.add('mobile-drawer'); 
+                    document.getElementById('solo-chat-container').classList.remove('mobile-drawer'); 
+                    document.getElementById('close-drawer-btn').style.display = 'block'; 
+                    document.getElementById('close-solo-chat-btn').style.display = 'none';
+                    
+                    if (gameMode === '2p-student') {
+                        document.getElementById('mobile-vocab-btn').style.display = 'flex';
+                        document.getElementById('sidebar-content-container').classList.add('mobile-drawer-right');
+                        document.getElementById('close-vocab-drawer-btn').style.display = 'block';
+                    } else {
+                        document.getElementById('mobile-vocab-btn').style.display = 'none';
+                        document.getElementById('sidebar-content-container').classList.remove('mobile-drawer-right');
+                        document.getElementById('close-vocab-drawer-btn').style.display = 'none';
+                    }
+                    if (rightActionBtns) rightActionBtns.style.display = 'flex'; 
+                }
             } else {
                 rp.style.display = 'flex'; lp.style.borderRight = '6px dashed rgba(0,0,0,0.1)'; drawerBtnWrap.style.display = 'none'; teamControls.style.display = 'none';
-                if (gameMode === 'solo') { document.getElementById('toggle-panel-btn').style.display = 'none'; } else { document.getElementById('toggle-panel-btn').style.display = (gameMode === 'team') ? 'none' : 'flex'; }
+                document.getElementById('twop-secret-card-container').classList.remove('mobile-drawer'); document.getElementById('twop-secret-card-container').classList.remove('open'); document.getElementById('close-drawer-btn').style.display = 'none'; document.getElementById('mobile-drawer-overlay').style.display = 'none';
+                document.getElementById('solo-chat-container').classList.remove('mobile-drawer'); document.getElementById('solo-chat-container').classList.remove('open'); document.getElementById('close-solo-chat-btn').style.display = 'none';
+                document.getElementById('sidebar-content-container').classList.remove('mobile-drawer-right'); document.getElementById('sidebar-content-container').classList.remove('open'); document.getElementById('mobile-vocab-btn').style.display = 'none'; document.getElementById('close-vocab-drawer-btn').style.display = 'none';
+                
+                if (gameMode !== 'team' && gameMode !== 'solo') { document.getElementById('toggle-panel-btn').style.display = 'flex'; teamControls.style.display = 'none'; if (rightActionBtns) rightActionBtns.style.display = 'flex'; } 
+                else if (gameMode === 'solo') { document.getElementById('toggle-panel-btn').style.display = 'none'; teamControls.style.display = 'none'; } 
+                else { document.getElementById('toggle-panel-btn').style.display = 'none'; teamControls.style.display = 'flex'; }
             }
         }
 
         function launchGame() {
             document.body.setAttribute('data-mode', gameMode);
             showScreen(null); document.getElementById('game-wrapper').style.display = 'flex';
-            document.getElementById('solo-chat-container').style.display = (gameMode === 'solo') ? 'flex' : 'none';
-            document.getElementById('solo-undo-btn').style.display = (gameMode === 'solo') ? 'none' : 'block';
-            document.getElementById('twop-secret-card-container').style.display = (gameMode.startsWith('2p')) ? 'flex' : 'none';
-            document.getElementById('team-dice-container').style.display = (gameMode === 'team') ? 'flex' : 'none';
-            document.getElementById('solo-top-stats').style.display = (gameMode === 'solo') ? 'flex' : 'none';
-            document.getElementById('twop-top-scoreboard').style.display = (gameMode.startsWith('2p')) ? 'flex' : 'none';
-            if (gameMode === 'solo') { initSoloRound(); }
+            
+            const teamBoard = document.getElementById('team-leaderboard-container'), teamDice = document.getElementById('team-dice-container');
+            const p2Card = document.getElementById('twop-secret-card-container'), soloChat = document.getElementById('solo-chat-container');
+            const resetBtn = document.getElementById('settings-reset-scores-btn'), sidebarContent = document.getElementById('sidebar-content-container');
+            const exampleQList = document.getElementById('example-questions-list'), exampleQHeader = document.getElementById('example-q-header');
+            const vocabHeader = document.getElementById('vocab-header');
+            const traitHeader = document.getElementById('trait-question-header'), verifyHeader = document.getElementById('verify-question-header');
+            const mainGuessWrapper = document.getElementById('main-guess-wrapper');
+
+            teamBoard.style.display = 'none'; teamDice.style.display = 'none'; p2Card.style.display = 'none'; soloChat.style.display = 'none';
+            isRightPanelVisible = true; document.getElementById('toggle-panel-btn').innerText = '🙈';
+            document.getElementById('twop-top-scoreboard').style.display = 'none';
+            mainGuessWrapper.style.display = 'flex';
+            document.getElementById('solo-top-stats').style.display = 'none';
+
+            const p1Label = document.getElementById('p1-label'), p2Label = document.getElementById('p2-label');
+            const p1Controls = document.getElementById('p1-controls'), p2Controls = document.getElementById('p2-controls');
+            const p2Wrapper = document.getElementById('p2-score-wrapper');
+            
+            // Force PC Mode for Classroom
+            if (gameMode === 'team' && isMobileMode) {
+                isMobileMode = false; document.body.classList.remove('mobile-mode');
+                document.querySelectorAll('.device-toggle-btn').forEach(btn => { btn.querySelector('.icon').innerHTML = '💻'; btn.querySelector('.btn-text').innerHTML = 'PC Mode'; });
+            }
+
+            // Disable Settings PC/Mobile Toggle if starting game in Mobile Mode
+            const settingsDeviceToggle = document.getElementById('settings-device-toggle-btn');
+            if (settingsDeviceToggle) {
+                settingsDeviceToggle.style.display = 'flex'; // Ensure it remains visible
+                if (isMobileMode) {
+                    settingsDeviceToggle.disabled = true;
+                    settingsDeviceToggle.style.opacity = '0.5';
+                    settingsDeviceToggle.style.pointerEvents = 'none';
+                } else {
+                    settingsDeviceToggle.disabled = false;
+                    settingsDeviceToggle.style.opacity = '1';
+                    settingsDeviceToggle.style.pointerEvents = 'auto';
+                }
+            }
+
+            if (gameMode === 'team') {
+                traitHeader.innerText = "Ask the teacher:"; verifyHeader.innerText = "Ask the teacher:";
+                teamBoard.style.display = 'flex'; teamDice.style.display = 'flex'; sidebarContent.style.display = 'block'; 
+                exampleQList.style.display = 'block'; exampleQHeader.style.display = 'block'; vocabHeader.style.marginTop = '1.5vh';
+                if(resetBtn) resetBtn.innerText = '🗑️ Reset Scores';
+                updateTeamLeaderboard();
+            } else if (gameMode === 'solo') {
+                soloChat.style.display = 'flex'; sidebarContent.style.display = 'none'; mainGuessWrapper.style.display = 'none';
+                
+                // Show Solo Stats Bar
+                const sts = document.getElementById('solo-top-stats'); sts.style.display = 'flex';
+                document.getElementById('top-solo-score').innerText = soloScore;
+                
+                // Mode Specific Config
+                if (soloModeType === 'standard') {
+                    document.getElementById('solo-round-wrapper').style.display = 'flex';
+                    document.getElementById('top-solo-round').innerText = `${soloRound}/5`;
+                    document.getElementById('solo-time-wrapper').style.display = 'none';
+                } else if (soloModeType === 'time') {
+                    document.getElementById('solo-round-wrapper').style.display = 'flex';
+                    document.getElementById('top-solo-round').innerText = soloRound;
+                    document.getElementById('solo-time-wrapper').style.display = 'flex';
+                    soloTimeRemaining = soloTimeLimit;
+                    updateSoloGlobalTimer();
+                    soloTimerInterval = setInterval(handleSoloGlobalTimer, 1000);
+                } else if (soloModeType === 'endless') {
+                    document.getElementById('solo-round-wrapper').style.display = 'flex';
+                    document.getElementById('top-solo-round').innerText = soloRound;
+                    document.getElementById('solo-time-wrapper').style.display = 'none';
+                }
+
+                initSoloRound();
+                
+            } else {
+                traitHeader.innerText = "Ask your opponent:"; verifyHeader.innerText = "Ask your opponent:";
+                p2Card.style.display = 'flex'; sidebarContent.style.display = (gameMode === '2p-student') ? 'block' : 'none';
+                exampleQList.style.display = 'none'; exampleQHeader.style.display = 'none'; vocabHeader.style.marginTop = '0';
+                if(resetBtn) resetBtn.innerText = '🗑️ Reset Score'; 
+                drawSecretCard(); document.getElementById('twop-top-scoreboard').style.display = 'flex';
+
+                if (gameMode === '2p-teacher') {
+                    p1Label.innerText = 'Teacher'; p2Label.innerText = 'Student'; p1Controls.style.display = 'flex'; p2Controls.style.display = 'flex'; p2Wrapper.style.display = 'flex';
+                    if(resetBtn) resetBtn.innerText = '🗑️ Reset Scores'; 
+                } else {
+                    p1Label.innerText = 'My Points'; p1Controls.style.display = 'none'; p2Controls.style.display = 'none'; p2Wrapper.style.display = 'none';
+                    if(resetBtn) resetBtn.innerText = '🗑️ Reset Score';
+                }
+            }
+            
+            document.querySelectorAll('.device-toggle-btn').forEach(btn => {
+                if (gameMode === 'team') { btn.disabled = true; btn.style.opacity = '0.5'; btn.style.cursor = 'not-allowed'; } 
+                else { btn.disabled = false; btn.style.opacity = '1'; btn.style.cursor = 'pointer'; }
+            });
+
             applyResponsiveLayout(); updateSidebarContent(); renderGrid();
         }
 
-        function isTraitResolved(traitKey, val) {
+        // --- TRAIT GREYING HELPERS ---
+        function isTraitFullyAsked(val) {
             const parts = String(val).split(',').map(s => s.trim());
-            if (parts.every(p => askedTraits.includes(p))) return true;
+            return parts.every(p => askedTraits.includes(p));
+        }
+        
+        // Smarter resolution logic that automatically handles 2-choice eliminations!
+        function isTraitResolved(traitKey, val) {
+            if (isTraitFullyAsked(val)) return true;
+            
             const cat = gameData[currentCategory];
             const uniqueVals = new Set();
-            cat.items.forEach(item => String(item[traitKey]).split(',').forEach(v => uniqueVals.add(v.trim())));
-            if (uniqueVals.size === 2) return Array.from(uniqueVals).some(v => askedTraits.includes(v));
+            cat.items.forEach(item => {
+                String(item[traitKey]).split(',').forEach(v => uniqueVals.add(v.trim()));
+            });
+            
+            // If the category only has exactly 2 options (like 🥩/🌿 or 🏠/🌳), and ANY of them have been asked...
+            if (uniqueVals.size === 2) {
+                return Array.from(uniqueVals).some(v => askedTraits.includes(v));
+            }
             return false;
         }
 
         function updateAskedTraitsUI() {
             document.querySelectorAll('#grid-container .card').forEach(card => {
-                const item = gameData[currentCategory].items.find(i => i.name === card.id.replace('card-', ''));
+                const itemName = card.id.replace('card-', '');
+                const item = gameData[currentCategory].items.find(i => i.name === itemName);
                 if (!item) return;
                 const traitCols = card.querySelectorAll('.trait-col');
-                gameData[currentCategory].traits.forEach((trait, i) => {
-                    if (isTraitResolved(trait.key, item[trait.key]) && traitCols[i]) traitCols[i].classList.add('asked-trait');
-                    else if (traitCols[i]) traitCols[i].classList.remove('asked-trait');
+                gameData[currentCategory].traits.forEach((trait, index) => {
+                    const val = item[trait.key];
+                    if (isTraitResolved(trait.key, val) && traitCols[index]) {
+                        traitCols[index].classList.add('asked-trait');
+                    } else if (traitCols[index]) {
+                        traitCols[index].classList.remove('asked-trait');
+                    }
                 });
             });
         }
 
+        // --- SOLO MODE SYSTEMS ---
         function initSoloRound() {
-            cleanupSoloEngine(); soloGuessesUsed = 0; document.body.classList.remove('last-guess-active');
+            soloGuessesUsed = 0; isBotThinking = false;
+            document.body.classList.remove('last-guess-active');
             document.getElementById('solo-chat-log').innerHTML = '';
+            
             const catItems = gameData[currentCategory].items;
             soloSecretItem = catItems[Math.floor(Math.random() * catItems.length)];
             soloRoundStartTime = Date.now();
-            addSoloChat(`Round ${soloRound} Start!`, 'chat-sys');
-            if (soloModeType === 'time' && !soloTimerInterval) {
-                soloTimeRemaining = (soloRound === 1) ? soloTimeLimit : soloTimeRemaining;
-                updateSoloGlobalTimer();
-                soloTimerInterval = setInterval(() => { if(!isTimerPaused) { soloTimeRemaining--; updateSoloGlobalTimer(); if(soloTimeRemaining <= 0) { clearInterval(soloTimerInterval); endSoloGame('time-out'); } } }, 1000);
-            }
+            
+            addSoloChat(`Round ${soloRound} Start! Ask me about the traits.`, 'chat-sys');
             updateSoloUI();
         }
 
-        function updateSoloGlobalTimer() { const m = Math.floor(soloTimeRemaining / 60), s = soloTimeRemaining % 60; document.getElementById('top-solo-time').innerText = `${m}:${s.toString().padStart(2, '0')}`; }
-        function updateSoloUI() { document.getElementById('solo-guesses-left').innerText = soloMaxGuesses - soloGuessesUsed; document.getElementById('top-solo-guesses').innerText = soloMaxGuesses - soloGuessesUsed; document.getElementById('top-solo-score').innerText = soloScore; document.getElementById('top-solo-round').innerText = (soloModeType === 'standard') ? `${soloRound}/5` : soloRound; }
-        function addSoloChat(text, className) { const log = document.getElementById('solo-chat-log'); const b = document.createElement('div'); b.className = `chat-bubble ${className}`; b.innerText = text; log.appendChild(b); log.scrollTo({ top: log.scrollHeight, behavior: 'smooth' }); }
-
-        function changeCategory() {
-            if (isBotThinking) return;
-            playSound('select'); currentCategory = document.getElementById('category-selector').value; 
-            document.getElementById('game-title').innerText = gameData[currentCategory].title;
-            resetBoard(); renderGrid(); if(gameMode.startsWith('2p')) executeDrawCard(); updateSidebarContent();
-            if (gameMode === 'solo') initSoloRound();
+        function updateSoloGlobalTimer() {
+            if (soloTimeRemaining < 0) soloTimeRemaining = 0;
+            const m = Math.floor(soloTimeRemaining / 60);
+            const s = soloTimeRemaining % 60;
+            document.getElementById('top-solo-time').innerText = `${m}:${s.toString().padStart(2, '0')}`;
         }
 
+        function handleSoloGlobalTimer() {
+            if (isTimerPaused) return; 
+            soloTimeRemaining--;
+            updateSoloGlobalTimer();
+            if (soloTimeRemaining <= 0) {
+                clearInterval(soloTimerInterval);
+                endSoloGame('time-out');
+            }
+        }
+
+        function updateSoloUI() {
+            let left = soloMaxGuesses - soloGuessesUsed;
+            document.getElementById('solo-guesses-left').innerText = left;
+            document.getElementById('top-solo-guesses').innerText = left;
+            document.getElementById('top-solo-score').innerText = soloScore;
+            
+            if (soloModeType === 'standard') { document.getElementById('top-solo-round').innerText = `${soloRound}/5`; } 
+            else { document.getElementById('top-solo-round').innerText = soloRound; }
+        }
+
+        function addSoloChat(text, className) {
+            const log = document.getElementById('solo-chat-log'); const b = document.createElement('div');
+            b.className = `chat-bubble ${className}`; b.innerText = text;
+            log.appendChild(b); log.scrollTo({ top: log.scrollHeight, behavior: 'smooth' });
+        }
+        
+        function showChatOverlay(msg, className) {
+            const overlay = document.getElementById('mobile-chat-overlay');
+            overlay.innerHTML = `<div class="chat-bubble ${className}" style="align-self: flex-end; box-shadow: 0 4px 10px rgba(0,0,0,0.2); width: fit-content; max-width: 85%; font-size: 2.2vh; padding: 1.5vh 3vw;">${msg}</div>`;
+            overlay.style.display = 'flex';
+            overlay.style.opacity = '1';
+        }
+        function appendChatOverlay(msg, className) {
+            const overlay = document.getElementById('mobile-chat-overlay');
+            overlay.innerHTML += `<div class="chat-bubble ${className}" style="align-self: flex-start; box-shadow: 0 4px 10px rgba(0,0,0,0.2); width: fit-content; max-width: 85%; font-size: 2.2vh; padding: 1.5vh 3vw;">${msg}</div>`;
+        }
+        function hideChatOverlay() {
+            const overlay = document.getElementById('mobile-chat-overlay');
+            overlay.style.opacity = '0';
+            setTimeout(() => { overlay.style.display = 'none'; overlay.innerHTML = ''; }, 500);
+        }
+
+        function handleSoloWin() {
+            playSound('win');
+            
+            const timeTaken = (Date.now() - soloRoundStartTime) / 1000;
+            const pointsEarned = 10 + ((soloMaxGuesses - soloGuessesUsed) * 10);
+            soloScore += pointsEarned;
+            
+            soloRoundStats.push({ timeTaken: timeTaken, guessesUsed: soloGuessesUsed });
+            
+            updateSoloUI();
+
+            const splash = document.getElementById('round-win-splash');
+            document.getElementById('round-win-pts').innerText = `+${pointsEarned} POINTS!`;
+            splash.style.display = 'block';
+
+            if (soloModeType === 'standard') {
+                if (soloRound >= 5) { 
+                    setTimeout(() => {
+                        splash.style.display = 'none';
+                        endSoloGame('win-standard'); 
+                    }, 2500);
+                } 
+                else {
+                    addSoloChat(`🎉 Correct! +${pointsEarned} pts. Loading next round...`, 'chat-win');
+                    setTimeout(() => { 
+                        splash.style.display = 'none';
+                        soloRound++; resetBoard(); renderGrid(); initSoloRound(); 
+                    }, 2500);
+                }
+            } else if (soloModeType === 'time' || soloModeType === 'endless') {
+                addSoloChat(`🎉 Correct! +${pointsEarned} pts. Next round!`, 'chat-win');
+                setTimeout(() => { 
+                    splash.style.display = 'none';
+                    soloRound++; resetBoard(); renderGrid(); initSoloRound(); 
+                }, 2000);
+            }
+        }
+
+        function endSoloGame(reason) {
+            playSound(reason.includes('win') ? 'win' : 'timeup');
+            clearInterval(soloTimerInterval);
+            
+            const modal = document.getElementById('solo-results-modal');
+            const title = document.getElementById('solo-results-title');
+            const msg = document.getElementById('solo-results-message');
+            const sScore = document.getElementById('solo-results-score');
+            const sRounds = document.getElementById('solo-results-rounds');
+            const rContainer = document.getElementById('solo-rating-container');
+            const rBadge = document.getElementById('solo-rating-badge');
+            const saveBtn = document.getElementById('solo-save-img-btn');
+
+            sScore.innerText = soloScore;
+            rContainer.style.display = 'none'; // Hide by default unless it's a win
+            saveBtn.style.display = 'inline-block';
+
+            if (reason === 'loss') {
+                title.innerText = "Game Over"; title.style.color = "#ff4757";
+                msg.innerText = `The correct answer was ${soloSecretItem.emoji} ${soloSecretItem.name}.`;
+                sRounds.innerText = soloRound - 1; // Didn't complete this round
+            } else if (reason === 'time-out') {
+                title.innerText = "Time's Up!"; title.style.color = "#ffa502";
+                msg.innerText = `You ran out of time! You completed ${soloRound - 1} full rounds.`;
+                sRounds.innerText = soloRound - 1;
+                
+                // Grade Time Attack
+                rContainer.style.display = 'block';
+                const grade = calculateTimeAttackGrade(soloRound - 1);
+                applyGradeStyle(rBadge, grade);
+            } else if (reason === 'win-standard') {
+                title.innerText = "Course Cleared!"; title.style.color = "#2ed573";
+                sRounds.innerText = 5;
+                msg.innerText = `You completed all 5 rounds! Let's see your rating...`;
+                
+                // Grade Standard
+                rContainer.style.display = 'block';
+                const grade = calculateStandardGrade();
+                applyGradeStyle(rBadge, grade);
+            }
+
+            modal.style.display = 'flex';
+        }
+
+        function calculateStandardGrade() {
+            if (soloRoundStats.length !== 5) return 'C'; // Should never happen unless bug
+            
+            const underMinCount = soloRoundStats.filter(r => r.timeTaken <= 60).length;
+            const fourOrLessUsed = soloRoundStats.filter(r => r.guessesUsed <= 4).length;
+            const fiveOrLessUsed = soloRoundStats.filter(r => r.guessesUsed <= 5).length;
+
+            if (underMinCount === 5 && fourOrLessUsed === 5) return 'S+';
+            if (underMinCount >= 4 && fourOrLessUsed === 5) return 'S';
+            if (underMinCount >= 3 && fiveOrLessUsed >= 4) return 'A';
+            if (underMinCount >= 1 && fiveOrLessUsed >= 3) return 'B';
+            return 'C';
+        }
+
+        function calculateTimeAttackGrade(roundsCompleted) {
+            if (roundsCompleted === 0) return 'C';
+            
+            const underMinCount = soloRoundStats.filter(r => r.timeTaken <= 60).length;
+            const fourOrLessUsed = soloRoundStats.filter(r => r.guessesUsed <= 4).length;
+            const fiveOrLessUsed = soloRoundStats.filter(r => r.guessesUsed <= 5).length;
+
+            const uRatio = underMinCount / roundsCompleted;
+            const fourRatio = fourOrLessUsed / roundsCompleted;
+            const fiveRatio = fiveOrLessUsed / roundsCompleted;
+
+            if (uRatio === 1 && fourRatio === 1) return 'S+';
+            if (uRatio >= 0.8 && fourRatio === 1) return 'S';
+            if (uRatio >= 0.6 && fiveRatio >= 0.8) return 'A';
+            if (uRatio >= 0.2 && fiveRatio >= 0.6) return 'B';
+            return 'C';
+        }
+
+        function applyGradeStyle(badge, grade) {
+            badge.innerText = grade;
+            badge.className = 'grade-badge'; // reset
+            if (grade === 'S+') badge.classList.add('grade-s-plus');
+            else if (grade === 'S') badge.classList.add('grade-s');
+            else if (grade === 'A') badge.classList.add('grade-a');
+            else if (grade === 'B') badge.classList.add('grade-b');
+            else badge.classList.add('grade-c');
+        }
+
+        function closeSoloResults() {
+            playSound('select');
+            document.getElementById('solo-results-modal').style.display = 'none';
+            resetBoard();
+            showScreen('main-menu');
+        }
+
+        function downloadSoloScreenshot() {
+            playSound('select');
+            const canvas = document.createElement('canvas');
+            canvas.width = 800;
+            canvas.height = 800;
+            const ctx = canvas.getContext('2d');
+
+            // Main Background
+            ctx.fillStyle = isDarkMode ? '#1e272e' : '#e0f7fa';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // Decorative background elements
+            ctx.fillStyle = isDarkMode ? 'rgba(255,255,255,0.02)' : 'rgba(255,255,255,0.4)';
+            ctx.beginPath(); ctx.arc(100, 100, 200, 0, Math.PI*2); ctx.fill();
+            ctx.beginPath(); ctx.arc(700, 700, 300, 0, Math.PI*2); ctx.fill();
+            ctx.beginPath(); ctx.arc(400, 800, 150, 0, Math.PI*2); ctx.fill();
+
+            // Card Background
+            ctx.fillStyle = isDarkMode ? '#2f3542' : '#ffffff';
+            ctx.shadowColor = 'rgba(0,0,0,0.15)';
+            ctx.shadowBlur = 25;
+            ctx.shadowOffsetY = 15;
+            if(ctx.roundRect) {
+                ctx.beginPath(); ctx.roundRect(100, 100, 600, 600, 40); ctx.fill();
+            } else {
+                ctx.fillRect(100, 100, 600, 600); // Fallback
+            }
+            ctx.shadowColor = 'transparent';
+
+            // Inner Border
+            ctx.strokeStyle = isDarkMode ? '#111418' : '#ffffff';
+            ctx.lineWidth = 8;
+            if(ctx.roundRect) {
+                ctx.beginPath(); ctx.roundRect(100, 100, 600, 600, 40); ctx.stroke();
+            }
+
+            // Dynamically grab the exact title and color!
+            const titleEl = document.getElementById('solo-results-title');
+            const titleText = titleEl.innerText;
+            const titleColor = titleEl.style.color || (isDarkMode ? '#00cec9' : '#00838F');
+
+            ctx.fillStyle = titleColor;
+            ctx.font = 'bold 55px "Fredoka", sans-serif';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(titleText, 400, 180);
+
+            // Player & Mode
+            ctx.fillStyle = isDarkMode ? '#a4b0be' : '#747d8c';
+            ctx.font = 'bold 28px "Fredoka", sans-serif';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            const modeName = soloModeType.charAt(0).toUpperCase() + soloModeType.slice(1);
+            ctx.fillText(`${soloPlayerAvatar} Solo Mode: ${modeName}`, 400, 240);
+
+            // Grade Badge Logic (Only show if UI container is visible)
+            let currentY = 290;
+            const ratingContainer = document.getElementById('solo-rating-container');
+            const showGrade = soloModeType !== 'endless' && ratingContainer.style.display !== 'none';
+            
+            if (showGrade) {
+                const grade = document.getElementById('solo-rating-badge').innerText;
+                
+                let bg, border;
+                if (grade === 'S+') { 
+                    bg = ctx.createLinearGradient(300, currentY, 500, currentY + 120);
+                    bg.addColorStop(0, '#ff9a9e'); bg.addColorStop(1, '#fecfef');
+                    border = '#ff7eb3'; 
+                }
+                else if (grade === 'S') { bg = '#fbc531'; border = '#e1b12c'; }
+                else if (grade === 'A') { bg = '#2ed573'; border = '#218c53'; }
+                else if (grade === 'B') { bg = '#1e90ff'; border = '#0984e3'; }
+                else { bg = '#a4b0be'; border = '#747d8c'; }
+
+                ctx.fillStyle = bg;
+                if (ctx.roundRect) {
+                    ctx.beginPath(); ctx.roundRect(300, currentY, 200, 120, 25); ctx.fill();
+                } else {
+                    ctx.fillRect(300, currentY, 200, 120);
+                }
+                
+                ctx.strokeStyle = border;
+                ctx.lineWidth = 6;
+                if(ctx.roundRect) {
+                    ctx.beginPath(); ctx.roundRect(300, currentY, 200, 120, 25); ctx.stroke();
+                }
+
+                ctx.fillStyle = '#ffffff';
+                ctx.font = 'bold 80px "Fredoka", sans-serif';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText(grade, 400, currentY + 65);
+
+                currentY += 160;
+            } else {
+                currentY += 70; // Shift down slightly for Endless mode or if the player lost!
+            }
+
+            // Stats Boxes (Score & Rounds)
+            const drawStatBox = (x, y, title, value, color) => {
+                ctx.fillStyle = isDarkMode ? '#2f3542' : '#ffffff';
+                if(ctx.roundRect) {
+                    ctx.beginPath(); ctx.roundRect(x, y, 220, 120, 20); ctx.fill();
+                } else {
+                    ctx.fillRect(x, y, 220, 120);
+                }
+                ctx.strokeStyle = color;
+                ctx.lineWidth = 4;
+                if(ctx.roundRect) {
+                    ctx.beginPath(); ctx.roundRect(x, y, 220, 120, 20); ctx.stroke();
+                }
+
+                // Explicit alignments for optical center inside the stat boxes!
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+
+                ctx.fillStyle = isDarkMode ? '#00cec9' : '#00838F';
+                ctx.font = 'bold 20px "Fredoka", sans-serif';
+                ctx.fillText(title, x + 110, y + 40);
+                
+                ctx.fillStyle = color;
+                ctx.font = 'bold 50px "Fredoka", sans-serif';
+                ctx.fillText(value, x + 110, y + 85);
+            };
+
+            const roundsCleared = document.getElementById('solo-results-rounds').innerText;
+            drawStatBox(160, currentY, "FINAL SCORE", soloScore.toString(), "#ffa502");
+            drawStatBox(420, currentY, "ROUNDS CLEARED", roundsCleared, "#2ed573");
+
+            // Footer Context
+            ctx.fillStyle = isDarkMode ? '#576574' : '#ced6e0';
+            ctx.font = 'bold 24px "Fredoka", sans-serif';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(gameData[currentCategory].title, 400, 660);
+
+            // Generate Download
+            const link = document.createElement('a');
+            link.download = `GuessWhat-${modeName}Result.jpg`;
+            link.href = canvas.toDataURL('image/jpeg', 0.95);
+            link.click();
+        }
+        
+        function toggleRightPanel() {
+            playSound('select'); const rp = document.getElementById('right-panel'), lp = document.getElementById('left-panel'), btn = document.getElementById('toggle-panel-btn');
+            isRightPanelVisible = !isRightPanelVisible; rp.style.display = isRightPanelVisible ? 'flex' : 'none'; lp.style.borderRight = isRightPanelVisible ? '6px dashed rgba(0,0,0,0.1)' : 'none'; btn.innerText = isRightPanelVisible ? '🙈' : '👁️';
+        }
+
+        function rollDice() {
+            playSound('dice');
+            if (availableTeams.length === 0) for (let i = 1; i <= teams.length; i++) availableTeams.push(i);
+            const tIndex = Math.floor(Math.random() * availableTeams.length); const selectedTeam = availableTeams[tIndex]; availableTeams.splice(tIndex, 1);
+            if (availableStudents[selectedTeam].length === 0) for(let j = 1; j <= studentsPerTeam; j++) availableStudents[selectedTeam].push(j);
+            const sIndex = Math.floor(Math.random() * availableStudents[selectedTeam].length); const selectedStudent = availableStudents[selectedTeam][sIndex]; availableStudents[selectedTeam].splice(sIndex, 1);
+            let rolls = 0; const rollInterval = setInterval(() => { document.getElementById('dice-result-team').innerText = Math.ceil(Math.random() * teams.length); document.getElementById('dice-result-student').innerText = Math.ceil(Math.random() * studentsPerTeam); if(++rolls > 10) { clearInterval(rollInterval); document.getElementById('dice-result-team').innerText = selectedTeam; document.getElementById('dice-result-student').innerText = selectedStudent; } }, 50);
+        }
+
+        // --- Giant Timer Logic ---
+        function openGiantTimer() { document.getElementById('giant-timer-modal').style.display = 'flex'; restartTimer(true); }
+        function closeTimerModal() { playSound('select'); clearInterval(giantTimerInterval); if (sfx['timer']) { sfx['timer'].pause(); sfx['timer'].currentTime = 0; } document.getElementById('giant-timer-modal').style.display = 'none'; }
+        function togglePauseTimer() { playSound('select'); isTimerPaused = !isTimerPaused; const btn = document.getElementById('timer-pause-btn'); if (isTimerPaused) { btn.innerHTML = '▶️ Resume'; if (sfx['timer']) sfx['timer'].pause(); } else { btn.innerHTML = '⏸️ Pause'; if (sfx['timer'] && giantTimeLeft > 0) sfx['timer'].play().catch(e => console.log(e)); } }
+        function restartTimer(playSnd = true) { if(playSnd) playSound('timer'); clearInterval(giantTimerInterval); giantTimeLeft = 30; isTimerPaused = false; document.getElementById('timer-pause-btn').innerHTML = '⏸️ Pause'; updateTimerUI(); generateGiantExamples(); giantTimerInterval = setInterval(() => { if(isTimerPaused) return; giantTimeLeft--; updateTimerUI(); if (giantTimeLeft > 0 && giantTimeLeft % 5 === 0) generateGiantExamples(); if(giantTimeLeft <= 0) { clearInterval(giantTimerInterval); if (sfx['timer']) { sfx['timer'].pause(); sfx['timer'].currentTime = 0; } playSound('timeup'); document.getElementById('giant-examples-container').innerHTML = "<div style='font-size: 8vh; color: #ff4757; animation: pulseText 1s infinite;'>TIME'S UP!</div>"; } }, 1000); }
+        function updateTimerUI() { const d = document.getElementById('giant-timer-text'), box = document.getElementById('giant-timer-box'); d.innerText = giantTimeLeft > 0 ? giantTimeLeft : 0; box.classList.remove('border-green', 'border-yellow', 'border-flash'); if (giantTimeLeft > 15) { box.classList.add('border-green'); d.style.color = "var(--main-teal)"; } else if (giantTimeLeft > 5) { box.classList.add('border-yellow'); d.style.color = "#ffa502"; } else { box.classList.add('border-flash'); d.style.color = "#ff4757"; } }
+        function generateGiantExamples() { const cat = gameData[currentCategory]; const container = document.getElementById('giant-examples-container'); container.innerHTML = ''; let shuffledTraits = shuffleArray([...cat.traits]); let selectedTraits = shuffledTraits.slice(0, Math.min(3, shuffledTraits.length)); selectedTraits.forEach(trait => { const randomItem = cat.items[Math.floor(Math.random() * cat.items.length)]; let val = randomItem[trait.key]; val = String(val).split(',')[0].trim(); const qText = getQuestionText(trait.key, val, currentCategory); const div = document.createElement('div'); div.style.marginBottom = '2vh'; div.innerText = qText; container.appendChild(div); }); }
+        
+        function updateSidebarContent() { const qList = document.getElementById('example-questions-list'); qList.innerHTML = ''; gameData[currentCategory].examples.forEach(q => { const li = document.createElement('li'); li.innerText = q; qList.appendChild(li); }); const vContainer = document.getElementById('vocab-container'); vContainer.innerHTML = ''; gameData[currentCategory].vocab.forEach(vGroup => { const title = document.createElement('div'); title.className = 'vocab-group-title'; title.innerText = vGroup.title; vContainer.appendChild(title); const ul = document.createElement('ul'); ul.className = 'vocab-group-list'; vGroup.items.forEach(item => { const li = document.createElement('li'); li.innerText = item; ul.appendChild(li); }); vContainer.appendChild(ul); }); }
+        function updateTeamLeaderboard() { const lb = document.getElementById('leaderboard'); lb.innerHTML = ''; teams.forEach((t, i) => { const box = document.createElement('div'); box.className = 'info-box'; box.innerHTML = `<div class="label-text">${t.name}</div><div class="point-text">${t.score}</div><button class="bonus-btn" onclick="awardBonus(${i})">⭐ +10</button>`; lb.appendChild(box); }); }
+        function awardBonus(i) { playSound('bonus'); teams[i].score += 10; updateTeamLeaderboard(); }
+        
+        function triggerResetScores() { 
+            playSound('select'); 
+            pauseGameTimers(); 
+            document.getElementById('settings-modal').style.display = 'none'; 
+            const modal = document.getElementById('reset-modal'), confirmBtn = document.getElementById('reset-confirm-btn'); confirmBtn.disabled = true; let timeLeft = 5; confirmBtn.innerText = `Yes (${timeLeft})`; modal.style.display = 'flex'; clearInterval(resetTimerInterval); resetTimerInterval = setInterval(() => { timeLeft--; if (timeLeft > 0) confirmBtn.innerText = `Yes (${timeLeft})`; else { clearInterval(resetTimerInterval); confirmBtn.disabled = false; confirmBtn.innerText = "Yes"; } }, 1000); 
+        }
+        function closeResetModal() { 
+            playSound('select'); 
+            clearInterval(resetTimerInterval); 
+            document.getElementById('reset-modal').style.display = 'none'; 
+            resumeGameTimers(); 
+        }
+        function executeResetScores() { playSound('change'); if (gameMode === 'team') { teams.forEach(t => t.score = 0); updateTeamLeaderboard(); } else if (gameMode === 'solo') { soloScore = 0; document.getElementById('top-solo-score').innerText = soloScore; } else { p1Score = 0; p2Score = 0; document.getElementById('p1-score').innerText = 0; document.getElementById('p2-score').innerText = 0; } closeResetModal(); }
+        
+        function openSettingsModal() { 
+            playSound('select'); 
+            document.getElementById('settings-modal').style.display = 'flex'; 
+            document.getElementById('settings-reset-board-btn').style.display = (gameMode === 'solo') ? 'none' : 'block';
+            pauseGameTimers();
+        }
+        function closeSettingsModal() { 
+            playSound('select'); 
+            document.getElementById('settings-modal').style.display = 'none'; 
+            resumeGameTimers();
+        }
+        function adjScore(n, a) { playSound('select'); if (n === 1) { p1Score = Math.max(0, p1Score + a); document.getElementById('p1-score').innerText = p1Score; } else { p2Score = Math.max(0, p2Score + a); document.getElementById('p2-score').innerText = p2Score; } }
+
+        function executeSettingsReset() {
+            playSound('change');
+            resetBoard();
+            if (gameMode === 'solo') initSoloRound();
+            else { renderGrid(); if(gameMode.startsWith('2p')) executeDrawCard(); }
+            closeSettingsModal();
+        }
+
+        function returnToMainMenu() {
+            playSound('select');
+            closeSettingsModal();
+            resetBoard();
+            clearInterval(soloTimerInterval);
+            clearInterval(giantTimerInterval);
+            closeAllDrawers();
+            
+            // Full Reset (simulating reload but keeping device/theme choices)
+            p1Score = 0; p2Score = 0;
+            document.getElementById('p1-score').innerText = 0;
+            document.getElementById('p2-score').innerText = 0;
+            soloScore = 0; soloRound = 1;
+            
+            showScreen('main-menu');
+        }
+
+        function drawSecretCard(manual = false) {
+            if ((gameMode === '2p-student' || gameMode === '2p-inperson') && manual) { playSound('select'); const modal = document.getElementById('draw-warning-modal'), btn = document.getElementById('draw-continue-btn'); btn.style.display = 'inline-block'; btn.disabled = true; modal.style.display = 'flex'; let timeLeft = 3; btn.innerText = `Draw New Card (${timeLeft})`; const timer = setInterval(() => { timeLeft--; if(timeLeft > 0) btn.innerText = `Draw New Card (${timeLeft})`; else { clearInterval(timer); btn.disabled = false; btn.innerText = "Draw New Card"; } }, 1000); return; }
+            executeDrawCard();
+        }
+        function executeDrawCard() { const items = gameData[currentCategory].items; const randomItem = items[Math.floor(Math.random() * items.length)]; document.getElementById('sc-emoji').innerText = randomItem.emoji; document.getElementById('sc-name').innerText = randomItem.name; }
+        function confirmDrawCard() { playSound('select'); document.getElementById('draw-warning-modal').style.display = 'none'; executeDrawCard(); }
+        function closeDrawWarningModal() { playSound('select'); document.getElementById('draw-warning-modal').style.display = 'none'; }
+
+        function changeCategory() {
+            playSound('select'); currentCategory = document.getElementById('category-selector').value; document.getElementById('game-title').innerText = gameData[currentCategory].title;
+            renderGrid(); if(gameMode.startsWith('2p')) executeDrawCard(); updateSidebarContent();
+        }
+
+        // Gameplay Handlers
         function toggleCard(cardId) {
             const c = document.getElementById(cardId); if (c.classList.contains('eliminated')) return;
+            
             if (gameMode === 'solo') {
                 if (isBotThinking) return;
+                
                 const itemName = cardId.replace('card-', '');
                 const question = (currentCategory === 'animals') ? `Is it ${/^[aeiou]/i.test(itemName) ? 'an' : 'a'} ${itemName}?` : `Is it ${itemName}?`;
-                isBotThinking = true; if (isMobileMode && soloModeType === 'time') isTimerPaused = true;
+                
+                isBotThinking = true;
+                if (isMobileMode && soloModeType === 'time') isTimerPaused = true;
+                
                 addSoloChat(`${soloPlayerAvatar}: ${question}`, 'chat-player');
+                if (isMobileMode) showChatOverlay(`${soloPlayerAvatar}: ${question}`, 'chat-player');
+                
                 setTimeout(() => {
-                    if (itemName === soloSecretItem.name) { handleSoloWin(); } 
-                    else {
+                    if (itemName === soloSecretItem.name) {
+                        if (isMobileMode) appendChatOverlay(`🤖: Yes!`, 'chat-bot-yes');
+                        setTimeout(() => {
+                            if (isMobileMode) hideChatOverlay();
+                            // Keep isBotThinking true to prevent clicks during transition!
+                            if (isMobileMode && soloModeType === 'time') isTimerPaused = false;
+                            handleSoloWin();
+                        }, 1500);
+                    } else {
                         playSound('no'); document.getElementById(cardId).classList.add('eliminated'); 
+                        
+                        // Push single guess to history so Undo knows to restore it!
                         actionHistory.push({ type: 'single', id: cardId });
-                        soloGuessesUsed++; const botReply = getBotSentence(question, false); addSoloChat(`🤖: ${botReply}`, 'chat-bot-no');
+                        
+                        soloGuessesUsed++;
+                        const botReply = getBotSentence(question, false); 
+                        addSoloChat(`🤖: ${botReply}`, 'chat-bot-no');
+                        if (isMobileMode) appendChatOverlay(`🤖: ${botReply}`, 'chat-bot-no');
                         updateSoloUI();
-                        if (soloGuessesUsed >= soloMaxGuesses) endSoloGame('loss');
-                        else { isBotThinking = false; if (isMobileMode && soloModeType === 'time') isTimerPaused = false; }
+                        
+                        if (soloGuessesUsed >= soloMaxGuesses) { 
+                            setTimeout(() => { 
+                                if (isMobileMode) hideChatOverlay();
+                                // Keep isBotThinking true to prevent clicks during transition!
+                                if (isMobileMode && soloModeType === 'time') isTimerPaused = false;
+                                endSoloGame('loss'); 
+                            }, 1500); 
+                        } else {
+                            let left = soloMaxGuesses - soloGuessesUsed;
+                            if (left === 1) {
+                                document.body.classList.add('last-guess-active');
+                                addSoloChat("⚠️ LAST GUESS! Pick the final card!", 'chat-sys');
+                                if (isMobileMode) {
+                                    showChatOverlay("⚠️ LAST GUESS! Pick the final card!", 'chat-sys');
+                                    setTimeout(() => hideChatOverlay(), 2000);
+                                }
+                            } else {
+                                if (isMobileMode) setTimeout(() => hideChatOverlay(), 1500);
+                            }
+                            
+                            // Unlock the board immediately for the next rapid-fire question!
+                            isBotThinking = false;
+                            if (isMobileMode && soloModeType === 'time') isTimerPaused = false;
+                        }
                     }
                 }, 800);
                 return;
             }
-            playSound('select'); pendingAction = { type: 'card', id: cardId, name: c.querySelector('.item-name').innerText };
-            document.getElementById('verify-question-text').innerText = (currentCategory === 'animals') ? `Is it ${/^[aeiou]/i.test(pendingAction.name) ? 'an' : 'a'} ${pendingAction.name}?` : `Is it ${pendingAction.name}?`; 
-            document.getElementById('verify-answer-modal').style.display = 'flex';
+
+            playSound('select'); const itemName = c.querySelector('.item-name').innerText; pendingAction = { type: 'card', id: cardId, name: itemName };
+            let question = (currentCategory === 'animals') ? `Is it ${/^[aeiou]/i.test(itemName) ? 'an' : 'a'} ${itemName}?` : `Is it ${itemName}?`; document.getElementById('verify-question-text').innerText = question; setYesNoText(question, 'verify-yes-btn', 'verify-no-btn'); document.getElementById('verify-answer-modal').style.display = 'flex';
         }
+
+        function handleTraitClick(traitKey, traitValue, event, cardId) {
+            event.stopPropagation(); const c = document.getElementById(cardId); if (c.classList.contains('eliminated') || isBotThinking) return;
+            
+            if (gameMode === 'solo' && (soloMaxGuesses - soloGuessesUsed) <= 1) {
+                playSound('no');
+                addSoloChat("⚠️ Last guess! You must pick a card!", 'chat-sys');
+                if (isMobileMode) {
+                    showChatOverlay("⚠️ Last guess! You must pick a card!", 'chat-sys');
+                    setTimeout(() => hideChatOverlay(), 1500);
+                }
+                return;
+            }
+            
+            playSound('select');
+            if (traitValue.includes(',')) {
+                pendingAction = { key: traitKey }; const container = document.getElementById('trait-btn-container'); container.innerHTML = '';
+                traitValue.split(',').forEach(opt => { 
+                    const optTrimmed = opt.trim();
+                    const btn = document.createElement('button'); 
+                    btn.className = 'btn color-teal normal-case'; 
+                    btn.innerText = opt; 
+                    
+                    // Grey out already asked traits in the choice modal
+                    if (askedTraits.includes(optTrimmed)) {
+                        btn.classList.remove('color-teal');
+                        btn.classList.add('color-grey');
+                        btn.style.opacity = '0.5';
+                        btn.style.pointerEvents = 'none';
+                    }
+                    
+                    btn.onclick = () => { closeTraitModal(); askTraitQuestion(traitKey, optTrimmed); }; 
+                    container.appendChild(btn); 
+                }); 
+                document.getElementById('trait-choice-modal').style.display = 'flex';
+            } else { askTraitQuestion(traitKey, traitValue); }
+        }
+        function closeTraitModal() { playSound('select'); document.getElementById('trait-choice-modal').style.display = 'none'; }
 
         function askTraitQuestion(traitKey, targetValue) {
             const valStr = String(targetValue).trim();
+            
             if (gameMode === 'solo') {
-                if (isBotThinking || isTraitResolved(traitKey, valStr)) return;
-                if (!askedTraits.includes(valStr)) askedTraits.push(valStr); updateAskedTraitsUI();
+                if (soloMaxGuesses - soloGuessesUsed <= 1) { 
+                    playSound('no'); addSoloChat("⚠️ Last guess! You must pick a card!", 'chat-sys'); 
+                    if (isMobileMode) { showChatOverlay("⚠️ Last guess! You must pick a card!", 'chat-sys'); setTimeout(() => hideChatOverlay(), 1500); }
+                    return; 
+                }
+                
+                // Add to asked traits instantly so it greys out
+                if (!askedTraits.includes(valStr)) askedTraits.push(valStr);
+                updateAskedTraitsUI();
+                
                 const qText = getQuestionText(traitKey, targetValue, currentCategory); const hasTrait = String(soloSecretItem[traitKey]).split(',').map(s=>s.trim()).includes(valStr);
-                isBotThinking = true; if (isMobileMode && soloModeType === 'time') isTimerPaused = true;
+                
+                isBotThinking = true;
+                if (isMobileMode && soloModeType === 'time') isTimerPaused = true;
+                
                 addSoloChat(`${soloPlayerAvatar}: ${qText}`, 'chat-player');
+                if (isMobileMode) showChatOverlay(`${soloPlayerAvatar}: ${qText}`, 'chat-player');
+                
                 setTimeout(() => {
-                    const botReply = getBotSentence(qText, hasTrait); addSoloChat(`🤖: ${botReply}`, hasTrait ? 'chat-bot-yes' : 'chat-bot-no');
+                    const botReply = getBotSentence(qText, hasTrait); 
+                    addSoloChat(`🤖: ${botReply}`, hasTrait ? 'chat-bot-yes' : 'chat-bot-no'); 
+                    if (isMobileMode) appendChatOverlay(`🤖: ${botReply}`, hasTrait ? 'chat-bot-yes' : 'chat-bot-no');
                     playSound(hasTrait ? 'yes' : 'no');
-                    const elims = []; currentLayout.forEach(item => { const cId = 'card-' + item.name; const card = document.getElementById(cId); if(card.classList.contains('eliminated')) return; const itemHasTrait = String(item[traitKey]).split(',').map(s=>s.trim()).includes(valStr); if ((hasTrait && !itemHasTrait) || (!hasTrait && itemHasTrait)) { card.classList.add('eliminated'); elims.push(cId); } });
-                    actionHistory.push({ type: 'trait', ids: elims, traitVal: valStr });
+                    
+                    const elimThisTurn = [];
+                    currentLayout.forEach(item => {
+                        const cId = 'card-' + item.name; const card = document.getElementById(cId); if(card.classList.contains('eliminated')) return;
+                        const itemHasTrait = String(item[traitKey]).split(',').map(s=>s.trim()).includes(valStr);
+                        if ((hasTrait && !itemHasTrait) || (!hasTrait && itemHasTrait)) {
+                            card.classList.add('eliminated');
+                            elimThisTurn.push(cId);
+                        }
+                    });
+                    
+                    // Push trait question to history so Undo knows what to restore!
+                    actionHistory.push({ type: 'trait', ids: elimThisTurn, traitVal: valStr });
+                    
                     soloGuessesUsed++; updateSoloUI();
-                    if (soloGuessesUsed >= soloMaxGuesses) endSoloGame('loss');
-                    else { isBotThinking = false; if (isMobileMode && soloModeType === 'time') isTimerPaused = false; }
+                    
+                    if (soloGuessesUsed >= soloMaxGuesses) {
+                        setTimeout(() => { 
+                            if (isMobileMode) hideChatOverlay();
+                            // Keep isBotThinking true to prevent clicks during transition!
+                            if (isMobileMode && soloModeType === 'time') isTimerPaused = false;
+                            endSoloGame('loss'); 
+                        }, 1500);
+                    } else {
+                        let left = soloMaxGuesses - soloGuessesUsed;
+                        if (left === 1) {
+                            document.body.classList.add('last-guess-active');
+                            addSoloChat("⚠️ LAST GUESS! Pick the final card!", 'chat-sys');
+                            if (isMobileMode) {
+                                showChatOverlay("⚠️ LAST GUESS! Pick the final card!", 'chat-sys');
+                                setTimeout(() => hideChatOverlay(), 2000);
+                            }
+                        } else {
+                            if (isMobileMode) setTimeout(() => hideChatOverlay(), 1500);
+                        }
+                        
+                        // Unlock the board immediately for the next rapid-fire question!
+                        isBotThinking = false;
+                        if (isMobileMode && soloModeType === 'time') isTimerPaused = false;
+                    }
                 }, 800);
                 return;
             }
-            pendingAction = { key: traitKey, val: valStr }; document.getElementById('trait-question-text').innerText = getQuestionText(traitKey, targetValue, currentCategory); document.getElementById('trait-question-modal').style.display = 'flex';
+
+            pendingAction = { key: traitKey, val: valStr }; const qText = getQuestionText(traitKey, targetValue, currentCategory); document.getElementById('trait-question-text').innerText = qText; setYesNoText(qText, 'trait-yes-btn', 'trait-no-btn'); document.getElementById('trait-question-modal').style.display = 'flex';
+        }
+        function closeTraitQuestionModal() { playSound('select'); document.getElementById('trait-question-modal').style.display = 'none'; }
+
+        function answerTraitQuestion(isYes) {
+            playSound(isYes ? 'yes' : 'no'); document.getElementById('trait-question-modal').style.display = 'none'; guessCount++; const elimThisTurn = []; const { key, val } = pendingAction;
+            
+            // Register trait as asked and grey it out immediately
+            const valStr = String(val).trim();
+            if (!askedTraits.includes(valStr)) askedTraits.push(valStr);
+            updateAskedTraitsUI();
+            
+            currentLayout.forEach(item => {
+                const cardId = 'card-' + item.name; const card = document.getElementById(cardId); if (card.classList.contains('eliminated')) return;
+                const hasTrait = String(item[key]).split(',').map(s => s.trim()).includes(valStr); let shouldEliminate = (isYes && !hasTrait) || (!isYes && hasTrait);
+                if (shouldEliminate) { card.classList.add('eliminated'); elimThisTurn.push(cardId); }
+            });
+            actionHistory.push({ type: 'trait', ids: elimThisTurn, traitVal: valStr }); document.getElementById('guess-count').innerText = guessCount;
         }
 
+        function verifySuccess() {
+            playSound('win'); document.getElementById('verify-answer-modal').style.display = 'none'; guessCount++; document.getElementById('guess-count').innerText = guessCount;
+            const elimThisTurn = []; currentLayout.forEach(item => { const cardId = 'card-' + item.name; const card = document.getElementById(cardId); if (cardId !== pendingAction.id && !card.classList.contains('eliminated')) { card.classList.add('eliminated'); elimThisTurn.push(cardId); } });
+            actionHistory.push({ type: 'win', ids: elimThisTurn }); clearInterval(giantTimerInterval);
+            
+            if (gameMode === 'team') {
+                const pts = guessCount <= 2 ? 100 : guessCount <= 4 ? 75 : guessCount <= 6 ? 50 : 25; document.getElementById('modal-points-title').innerText = `Award ${pts} points to:`; const list = document.getElementById('team-award-list'); list.innerHTML = '';
+                teams.forEach((t, i) => { const b = document.createElement('button'); b.className = 'btn color-teal team-award-btn'; b.innerText = t.name; b.onclick = () => { t.score += pts; closeVictoryModal(); updateTeamLeaderboard(); resetBoard(); renderGrid(); }; list.appendChild(b); }); document.getElementById('victory-modal').style.display = 'flex';
+            } else {
+                p1Score++; document.getElementById('p1-score').innerText = p1Score; document.getElementById('victory-stats-text').innerText = `It took you ${guessCount} guesses to find the answer!`; document.getElementById('two-player-victory-modal').style.display = 'flex';
+            }
+        }
+
+        function verifyNo() { playSound('no'); document.getElementById('verify-answer-modal').style.display = 'none'; guessCount++; document.getElementById('guess-count').innerText = guessCount; const card = document.getElementById(pendingAction.id); card.classList.add('eliminated'); actionHistory.push({ type: 'single', id: pendingAction.id }); }
+        function closeVerifyModal() { playSound('select'); document.getElementById('verify-answer-modal').style.display = 'none'; }
+        function closeTwoPlayerVictory() { playSound('select'); document.getElementById('two-player-victory-modal').style.display = 'none'; resetBoard(); renderGrid(); executeDrawCard(); }
+        function closeVictoryModal() { playSound('select'); document.getElementById('victory-modal').style.display = 'none'; }
+        
+        function wiggleSecretCard() { const sc = document.getElementById('secret-card'); sc.classList.remove('wiggle'); void sc.offsetWidth; sc.classList.add('wiggle'); }
+        
         function undoLastAction() {
-            if (gameMode === 'solo' || isBotThinking) return;
-            playSound('change'); if (actionHistory.length === 0) return;
+            if (gameMode === 'solo' && isBotThinking) return; // Prevent corrupting states during bot replies!
+            playSound('change'); 
+            if (actionHistory.length === 0) return; 
             const last = actionHistory.pop();
-            if (last.type === 'single') document.getElementById(last.id).classList.remove('eliminated');
-            else last.ids.forEach(id => document.getElementById(id).classList.remove('eliminated'));
-            if (last.type === 'trait' && last.traitVal) { askedTraits = askedTraits.filter(t => t !== last.traitVal); updateAskedTraitsUI(); }
-            guessCount = Math.max(0, guessCount - 1); document.getElementById('guess-count').innerText = guessCount;
-        }
+            
+            // 1) Restore board visuals
+            if (last.type === 'single') { 
+                document.getElementById(last.id).classList.remove('eliminated'); 
+            } else if (last.type === 'trait' || last.type === 'win') { 
+                last.ids.forEach(id => document.getElementById(id).classList.remove('eliminated')); 
+            }
+            
+            // 2) Restore requested trait availability
+            if (last.type === 'trait' && last.traitVal) {
+                askedTraits = askedTraits.filter(t => t !== last.traitVal);
+                document.querySelectorAll('.asked-trait').forEach(el => el.classList.remove('asked-trait'));
+                updateAskedTraitsUI();
+            }
+            
+            // 3) Sync Solo Engine specifically
+            if (gameMode === 'solo') {
+                document.body.classList.remove('last-guess-active');
+                if (isMobileMode) hideChatOverlay();
 
-        function openSettingsModal() { 
-            pauseGameTimers(); playSound('select'); 
-            document.getElementById('settings-reset-board-btn').style.display = (gameMode === 'solo') ? 'none' : 'block';
-            document.getElementById('settings-modal').style.display = 'flex'; 
+                const log = document.getElementById('solo-chat-log');
+                const elsToRemove = [];
+                
+                // Sweep up all chat elements linked to the last turn!
+                for (let i = log.children.length - 1; i >= 0; i--) {
+                    const bubble = log.children[i];
+                    if (bubble.classList.contains('removing')) continue; // Ignore items already vacuumed
+                    
+                    elsToRemove.push(bubble);
+                    bubble.classList.add('removing');
+                    if (bubble.classList.contains('chat-player')) break; // The player's question marks the start of the turn
+                }
+
+                // Smoothly animate their removal
+                elsToRemove.forEach(el => {
+                    el.style.animation = 'popOut 0.3s forwards';
+                    setTimeout(() => { if (log.contains(el)) el.remove(); }, 300);
+                });
+
+                soloGuessesUsed = Math.max(0, soloGuessesUsed - 1);
+                updateSoloUI();
+
+                // Re-apply last guess warning dynamically if they undid back to it
+                if (soloMaxGuesses - soloGuessesUsed === 1) {
+                    document.body.classList.add('last-guess-active');
+                }
+            } 
+            // 4) Or just sync Multiplayer
+            else {
+                guessCount = Math.max(0, guessCount - 1); 
+                document.getElementById('guess-count').innerText = guessCount;
+            }
         }
-        function closeSettingsModal() { resumeGameTimers(); playSound('select'); document.getElementById('settings-modal').style.display = 'none'; }
-        function returnToMainMenu() { cleanupSoloEngine(); playSound('select'); closeSettingsModal(); resetBoard(); soloScore = 0; soloRound = 1; showScreen('main-menu'); }
 
         function resetBoard() { 
             document.querySelectorAll('.card').forEach(c => c.classList.remove('eliminated')); 
             document.body.classList.remove('last-guess-active');
             guessCount = 0; actionHistory = []; askedTraits = []; document.getElementById('guess-count').innerText = 0; 
-            updateAskedTraitsUI();
+            clearInterval(giantTimerInterval); 
+            updateAskedTraitsUI(); // Clears any greyed out traits if resetting mid-round
         }
-
+        function shuffleArray(arr) { let s = [...arr]; for (let i = s.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [s[i], s[j]] = [s[j], s[i]]; } return s; }
+        
         function handleCardClickEvent(e, itemName, cardId, isModalCard) {
-            if (e.target.closest('.trait-col')) return;
+            if (e.target.closest('.trait-col')) return; // Safely ignore clicks directly on trait icons
+
             if (gameMode === 'solo' && isBotThinking) return;
-            const card = e.target.closest('.card'); const rect = card.getBoundingClientRect();
-            if (!isMobileMode || isModalCard) {
-                if ((e.clientY - rect.top) > rect.height * 0.55) {
-                    const traits = card.querySelectorAll('.trait-col:not(.asked-trait)');
-                    if (traits.length > 0) {
-                        let closest = null, minDist = Infinity;
-                        traits.forEach(t => { const tRect = t.getBoundingClientRect(); const dist = Math.abs(e.clientX - (tRect.left + tRect.width / 2)); if (dist < minDist) { minDist = dist; closest = t; } });
-                        if (closest) { closest.click(); return; }
+
+            const card = e.target.closest('.card');
+            const rect = card.getBoundingClientRect();
+            const isLastGuess = gameMode === 'solo' && (soloMaxGuesses - soloGuessesUsed) <= 1;
+
+            // If click is in the bottom 45% of the card, auto-snap to the closest trait!
+            const shouldSnapToTrait = (!isMobileMode || isModalCard) && !isLastGuess;
+
+            if (shouldSnapToTrait && (e.clientY - rect.top) > rect.height * 0.55) {
+                // Ensure we only snap to traits that haven't been asked yet!
+                const traits = card.querySelectorAll('.trait-col:not(.asked-trait)');
+                if (traits.length > 0) {
+                    let closest = null, minDist = Infinity;
+                    traits.forEach(t => {
+                        const tRect = t.getBoundingClientRect();
+                        const dist = Math.abs(e.clientX - (tRect.left + tRect.width / 2));
+                        if (dist < minDist) { minDist = dist; closest = t; }
+                    });
+                    if (closest) {
+                        closest.click();
+                        e.stopPropagation();
+                        e.preventDefault();
+                        return; // Stop the card from triggering a guess
                     }
                 }
             }
-            if (isMobileMode && !isModalCard) openMobileCardModal(itemName);
-            else { if (isModalCard) closeMobileCardModal(false); toggleCard(cardId); }
+
+            // Normal Card Guess action
+            if (isMobileMode && !isModalCard) {
+                openMobileCardModal(itemName);
+            } else {
+                if (isModalCard) closeMobileCardModal(false);
+                toggleCard(cardId);
+            }
         }
 
+        function openMobileCardModal(itemName) {
+            const gridCard = document.getElementById('card-' + itemName); if (gridCard && gridCard.classList.contains('eliminated')) return; playSound('select');
+            const cat = gameData[currentCategory]; const item = cat.items.find(i => i.name === itemName); const container = document.getElementById('mobile-modal-card-container'); let traitsHTML = '';
+            
+            const isLastGuess = gameMode === 'solo' && (soloMaxGuesses - soloGuessesUsed) <= 1;
+            
+            if (!isLastGuess) {
+                cat.traits.forEach(trait => { 
+                    let val = item[trait.key], display = trait.type === 'color' ? `<div class="color-circle" style="${item.colorStyle}"></div>` : val; 
+                    const tClass = isTraitResolved(trait.key, val) ? 'trait-col asked-trait' : 'trait-col';
+                    traitsHTML += `<div class="${tClass}" title="${getTooltip(trait.key, val)}" onclick="event.stopPropagation(); closeMobileCardModal(false); handleTraitClick('${trait.key}', '${val}', event, 'card-${item.name}')"><div class="trait-value">${display}</div></div>`; 
+                });
+            } else {
+                traitsHTML = `<div style="color:#ff4757; font-weight:bold; font-size:2.5vh; padding: 1.5vh; text-align: center; width: 100%;">⚠️ Last Guess! Pick this card?</div>`;
+            }
+
+            container.innerHTML = `<div class="card" style="pointer-events: auto; width: 100%; height: 100%; aspect-ratio: 4/4.5; cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: space-evenly; margin: 0 auto;" onclick="handleCardClickEvent(event, '${item.name}', 'card-${item.name}', true)"><div class="emoji" style="font-size: 8vh; line-height: 1; display: block !important;">${item.emoji}</div><div class="item-name" style="font-size: 3vh; font-weight: bold; display: block !important;">${item.name}</div><div class="traits-row" style="display: flex !important; width: 100%; justify-content: space-around; flex-wrap: wrap;">${traitsHTML}</div></div>`;
+            document.getElementById('mobile-card-modal').style.display = 'flex';
+        }
+
+        function closeMobileCardModal(playSnd = true) { if (playSnd) playSound('select'); document.getElementById('mobile-card-modal').style.display = 'none'; }
+
         function renderGrid() {
-            const container = document.getElementById('grid-container'); container.innerHTML = '';
+            const container = document.getElementById('grid-container'); container.innerHTML = ''; guessCount = 0; actionHistory = []; document.getElementById('guess-count').innerText = 0;
+            
             const cat = gameData[currentCategory]; currentLayout = shuffleArray(cat.items);
             currentLayout.forEach(item => {
                 const card = document.createElement('div'); card.className = 'card'; card.id = 'card-' + item.name;
                 card.onclick = (e) => handleCardClickEvent(e, item.name, card.id, false);
                 let traitsHTML = '';
                 cat.traits.forEach(trait => { 
-                    let val = item[trait.key], display = (trait.type === 'color') ? `<div class="color-circle" style="${item.colorStyle}"></div>` : val;
-                    traitsHTML += `<div class="trait-col" title="${getTooltip(trait.key, val)}" onclick="handleTraitClick('${trait.key}', '${val}', event, 'card-${item.name}')"><div class="trait-value">${display}</div></div>`; 
+                    let val = item[trait.key], display = trait.type === 'color' ? `<div class="color-circle" style="${item.colorStyle}"></div>` : val; 
+                    const tClass = isTraitResolved(trait.key, val) ? 'trait-col asked-trait' : 'trait-col';
+                    traitsHTML += `<div class="${tClass}" title="${getTooltip(trait.key, val)}" onclick="handleTraitClick('${trait.key}', '${val}', event, 'card-${item.name}')"><div class="trait-value">${display}</div></div>`; 
                 });
                 card.innerHTML = `<div class="emoji">${item.emoji}</div><div class="item-name">${item.name}</div><div class="traits-row">${traitsHTML}</div>`;
                 container.appendChild(card);
             });
-            updateAskedTraitsUI();
         }
 
-        /* Essential Boilerplate */
-        function shuffleArray(arr) { let s = [...arr]; for (let i = s.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [s[i], s[j]] = [s[j], s[i]]; } return s; }
-        function handleBotTyping(msg) { isBotThinking = true; }
-        function getBotSentence(q, res) { if (q.includes("Is")) return res ? "Yes, it is." : "No, it isn't."; if (q.includes("Do")) return res ? "Yes, I do." : "No, I don't."; return res ? "Yes." : "No."; }
-        function updateSidebarContent() {
-            const qList = document.getElementById('example-questions-list'); qList.innerHTML = ''; gameData[currentCategory].examples.forEach(q => { const li = document.createElement('li'); li.innerText = q; qList.appendChild(li); });
-            const vContainer = document.getElementById('vocab-container'); vContainer.innerHTML = ''; gameData[currentCategory].vocab.forEach(vGroup => { const title = document.createElement('div'); title.className = 'vocab-group-title'; title.innerText = vGroup.title; vContainer.appendChild(title); const ul = document.createElement('ul'); ul.className = 'vocab-group-list'; vGroup.items.forEach(item => { const li = document.createElement('li'); li.innerText = item; ul.appendChild(li); }); vContainer.appendChild(ul); });
-        }
-        function handleTraitClick(traitKey, traitValue, event, cardId) {
-            event.stopPropagation(); if (document.getElementById(cardId).classList.contains('eliminated') || isBotThinking) return;
-            if (traitValue.includes(',')) {
-                pendingAction = { key: traitKey }; const container = document.getElementById('trait-btn-container'); container.innerHTML = '';
-                traitValue.split(',').forEach(opt => { 
-                    const btn = document.createElement('button'); btn.className = askedTraits.includes(opt.trim()) ? 'btn color-grey' : 'btn color-teal normal-case';
-                    btn.innerText = opt; btn.onclick = () => { closeTraitModal(); askTraitQuestion(traitKey, opt.trim()); }; container.appendChild(btn); 
-                });
-                document.getElementById('trait-choice-modal').style.display = 'flex';
-            } else { askTraitQuestion(traitKey, traitValue); }
-        }
-        function closeTraitModal() { document.getElementById('trait-choice-modal').style.display = 'none'; }
-        function closeMobileCardModal(playSnd = true) { if (playSnd) playSound('select'); document.getElementById('mobile-card-modal').style.display = 'none'; }
-        function openMobileCardModal(itemName) {
-            const gridCard = document.getElementById('card-' + itemName); if (gridCard && gridCard.classList.contains('eliminated')) return; playSound('select');
-            const cat = gameData[currentCategory], item = cat.items.find(i => i.name === itemName), container = document.getElementById('mobile-modal-card-container');
-            let traitsHTML = ''; cat.traits.forEach(trait => { let val = item[trait.key], display = (trait.type === 'color') ? `<div class="color-circle" style="${item.colorStyle}"></div>` : val; traitsHTML += `<div class="trait-col ${isTraitResolved(trait.key, val) ? 'asked-trait' : ''}" onclick="event.stopPropagation(); closeMobileCardModal(false); handleTraitClick('${trait.key}', '${val}', event, 'card-${item.name}')"><div class="trait-value">${display}</div></div>`; });
-            container.innerHTML = `<div class="card" style="width:100%;height:100%;aspect-ratio:4/4.5;" onclick="handleCardClickEvent(event, '${item.name}', 'card-${item.name}', true)"><div class="emoji" style="font-size:8vh;">${item.emoji}</div><div class="item-name">${item.name}</div><div class="traits-row">${traitsHTML}</div></div>`;
-            document.getElementById('mobile-card-modal').style.display = 'flex';
-        }
-        function togglePauseTimer() { isTimerPaused = !isTimerPaused; document.getElementById('timer-pause-btn').innerText = isTimerPaused ? "▶️ Resume" : "⏸️ Pause"; }
-        function restartTimer() { giantTimeLeft = 30; updateTimerUI(); }
-        function pauseGameTimers() { isTimerPaused = true; }
-        function resumeGameTimers() { if (!isBotThinking) isTimerPaused = false; }
-        function adjScore(p, amt) { if (p===1) p1Score += amt; else p2Score += amt; document.getElementById(`p${p}-score`).innerText = (p===1 ? p1Score : p2Score); }
-        function triggerResetScores() { document.getElementById('reset-modal').style.display = 'flex'; }
-        function executeResetScores() { p1Score = 0; p2Score = 0; soloScore = 0; document.getElementById('p1-score').innerText=0; document.getElementById('p2-score').innerText=0; document.getElementById('top-solo-score').innerText=0; closeResetModal(); }
-        function closeResetModal() { document.getElementById('reset-modal').style.display = 'none'; }
-        function closeVictoryModal() { document.getElementById('victory-modal').style.display = 'none'; }
-        function closeVerifyModal() { document.getElementById('verify-answer-modal').style.display = 'none'; }
-        function closeTwoPlayerVictory() { document.getElementById('two-player-victory-modal').style.display = 'none'; resetBoard(); renderGrid(); executeDrawCard(); }
-        function executeSettingsReset() { resetBoard(); renderGrid(); closeSettingsModal(); }
-        function toggleRightPanel() { isRightPanelVisible = !isRightPanelVisible; document.getElementById('right-panel').style.display = isRightPanelVisible ? 'flex' : 'none'; }
-        function openGiantTimer() { document.getElementById('giant-timer-modal').style.display = 'flex'; }
-        function closeTimerModal() { document.getElementById('giant-timer-modal').style.display = 'none'; }
-        function executeDrawCard() { const items = gameData[currentCategory].items; const r = items[Math.floor(Math.random()*items.length)]; document.getElementById('sc-emoji').innerText = r.emoji; document.getElementById('sc-name').innerText = r.name; }
-        function drawSecretCard() { executeDrawCard(); }
-        function wiggleSecretCard() { const sc = document.getElementById('secret-card'); sc.classList.add('wiggle'); setTimeout(() => sc.classList.remove('wiggle'), 400); }
-        function rollDice() { playSound('dice'); document.getElementById('dice-result-team').innerText = Math.floor(Math.random()*6)+1; document.getElementById('dice-result-student').innerText = Math.floor(Math.random()*6)+1; }
-        function confirmDrawCard() { executeDrawCard(); closeDrawWarningModal(); }
-        function closeDrawWarningModal() { document.getElementById('draw-warning-modal').style.display = 'none'; }
-        function closeSoloResults() { document.getElementById('solo-results-modal').style.display = 'none'; returnToMainMenu(); }
-        function setYesNoText(q, yId, nId) { } // Legacy helper
-        function updateTeamLeaderboard() {} // Legacy helper
-        function downloadSoloScreenshot() {
-            playSound('select'); const canvas = document.createElement('canvas'); canvas.width = 800; canvas.height = 800; const ctx = canvas.getContext('2d');
-            ctx.fillStyle = isDarkMode ? '#1e272e' : '#e0f7fa'; ctx.fillRect(0,0,800,800);
-            ctx.fillStyle = isDarkMode ? '#2f3542' : '#ffffff'; if(ctx.roundRect) ctx.roundRect(100,100,600,600,40); ctx.fill();
-            const titleEl = document.getElementById('solo-results-title'); ctx.fillStyle = titleEl.style.color || '#00838F'; ctx.font = 'bold 50px Fredoka'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(titleEl.innerText, 400, 200);
-            ctx.fillStyle = '#747d8c'; ctx.font = 'bold 30px Fredoka'; ctx.fillText(`${soloPlayerAvatar} Score: ${soloScore}`, 400, 300);
-            const link = document.createElement('a'); link.download = 'GuessWhatResult.jpg'; link.href = canvas.toDataURL('image/jpeg'); link.click();
-        }
-
+        // Close modals
         document.querySelectorAll('.modal-overlay').forEach(modal => {
-            modal.addEventListener('click', function(e) { if (e.target === this) {
-                if (this.id === 'reset-modal') closeResetModal();
-                else if (this.id === 'victory-modal') closeVictoryModal();
-                else if (this.id === 'verify-answer-modal') closeVerifyModal();
-                else if (this.id === 'settings-modal') closeSettingsModal();
-                else if (this.id === 'giant-timer-modal') closeTimerModal();
-                else if (this.id === 'mobile-card-modal') closeMobileCardModal();
-                else if (this.id === 'mobile-drawer-overlay') closeAllDrawers();
-                else if (this.id !== 'solo-results-modal') this.style.display = 'none';
-            }});
+            modal.addEventListener('click', function(e) {
+                if (e.target === this || e.target.id === 'mobile-card-wrap') {
+                    if (this.id === 'reset-modal') closeResetModal();
+                    else if (this.id === 'victory-modal') closeVictoryModal();
+                    else if (this.id === 'draw-warning-modal') closeDrawWarningModal();
+                    else if (this.id === 'trait-choice-modal') closeTraitModal();
+                    else if (this.id === 'trait-question-modal') closeTraitQuestionModal();
+                    else if (this.id === 'verify-answer-modal') closeVerifyModal();
+                    else if (this.id === 'two-player-victory-modal') closeTwoPlayerVictory();
+                    else if (this.id === 'settings-modal') closeSettingsModal();
+                    else if (this.id === 'giant-timer-modal') closeTimerModal();
+                    else if (this.id === 'mobile-card-modal') closeMobileCardModal();
+                    else if (this.id === 'mobile-drawer-overlay') closeAllDrawers();
+                    // Prevent closing solo results by clicking outside so they don't accidentally skip it
+                    else if (this.id !== 'solo-results-modal') { playSound('select'); this.style.display = 'none'; }
+                }
+            });
         });
     </script>
 </body>
