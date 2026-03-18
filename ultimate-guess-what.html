@@ -1102,6 +1102,7 @@
             document.getElementById('team-dice-container').style.display = (gameMode === 'team') ? 'flex' : 'none';
             document.getElementById('solo-top-stats').style.display = (gameMode === 'solo') ? 'flex' : 'none';
             document.getElementById('twop-top-scoreboard').style.display = (gameMode.startsWith('2p')) ? 'flex' : 'none';
+            document.getElementById('main-guess-wrapper').style.display = (gameMode === 'solo') ? 'none' : 'flex';
             
             // Force PC Mode for Classroom
             if (gameMode === 'team' && isMobileMode) {
