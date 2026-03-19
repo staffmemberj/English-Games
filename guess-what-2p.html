@@ -340,7 +340,8 @@
         /* 🌙 Dark Mode Overrides */
         body.dark-mode { --bg-color: #1e272e; --main-teal: #00cec9; --card-border: #2f3542; --card-shadow: #111418; color: #f1f2f6; }
         body.dark-mode .full-screen-menu { background-color: #2f3542; }
-        body.dark-mode .card { background-color: #2f3542; color: white; }
+        body.dark-mode .menu-box, body.dark-mode .modal-content { background-color: #2f3542; border-color: #111418; color: white;}
+        body.dark-mode .card, body.dark-mode .secret-card-display { background-color: #2f3542; color: white; }
         body.dark-mode .card.eliminated { background-color: #1e272e; border-color: #111418; }
         body.dark-mode .info-box, body.dark-mode .score-row { background: #2f3542; border-color: #111418; box-shadow: 0 6px 0 #111418; }
         body.dark-mode .vocab-group-title { color: #f1f2f6; }
@@ -494,7 +495,7 @@
             <!-- PC Notes Overlay -->
             <div id="pc-notes-overlay" onclick="toggleVocabDrawer('close')"></div>
 
-            <!-- Vocabulary Sidebar Container (Acts as Bottom Drawer on PC, Right Drawer on Mobile) -->
+            <!-- Vocabulary Sidebar Container -->
             <div id="sidebar-content-container">
                 <div id="vocab-scroll-wrap">
                     <h3 style="margin-top:0; color: var(--main-teal); font-size: 2.5vh; text-transform: uppercase; text-align: center; flex-shrink: 0;">📝 My Notes</h3>
@@ -593,10 +594,28 @@
     </div>
 
     <script>
-        let isMobileMode = window.innerWidth < 768; 
+        // Auto-detect device type
+        function detectMobile() {
+            return window.innerWidth < 768 || /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+        }
+        
+        let isMobileMode = detectMobile(); 
         let isDarkMode = false; 
         let isSoundOn = true;
         let isInGame = false;
+        
+        // Dynamic resize detection for Desktop
+        window.addEventListener('resize', () => {
+            if (!isInGame) {
+                let newMode = detectMobile();
+                if (newMode !== isMobileMode) {
+                    isMobileMode = newMode;
+                    if (isMobileMode) document.body.classList.add('mobile-mode');
+                    else document.body.classList.remove('mobile-mode');
+                    syncToggleUI();
+                }
+            }
+        });
         
         // --- AUDIO SYSTEM ---
         const sfx = { 
@@ -703,7 +722,6 @@
             if (isMobileMode) document.body.classList.add('mobile-mode'); 
             else document.body.classList.remove('mobile-mode');
             syncToggleUI();
-            closeAllDrawers(); // Clear overlays and reset positions
             if (document.getElementById('game-wrapper').style.display === 'flex') { applyResponsiveLayout(); }
         }
 
@@ -810,7 +828,7 @@
                     mobileOverlay.classList.remove('show');
                     drawerCloseTimeout = setTimeout(() => {
                         mobileOverlay.style.display = 'none';
-                        triggerBtnWrap.style.display = 'flex';
+                        if (isMobileMode) triggerBtnWrap.style.display = 'flex';
                     }, 400);
                 } else {
                     pcOverlay.classList.remove('show');
@@ -860,7 +878,7 @@
                 items: [
                     { name: "apple", emoji: "🍎", style: "🖐️", taste: "🍬", temp: "❄️" }, { name: "banana", emoji: "🍌", style: "🖐️", taste: "🍬", temp: "❄️" }, { name: "pizza", emoji: "🍕", style: "🖐️", taste: "🧂", temp: "♨️" }, { name: "ice cream", emoji: "🍦", style: "🍴", taste: "🍬", temp: "❄️" }, { name: "burger", emoji: "🍔", style: "🖐️", taste: "🧂", temp: "♨️" }, { name: "salad", emoji: "🥗", style: "🍴", taste: "🧂", temp: "❄️" }, { name: "soup", emoji: "🥣", style: "🍴", taste: "🧂", temp: "♨️" }, { name: "bread", emoji: "🍞", style: "🖐️", taste: "🧂", temp: "❄️" }, { name: "sandwich", emoji: "🥪", style: "🖐️", taste: "🧂", temp: "❄️" }, { name: "egg", emoji: "🥚", style: "🖐️", taste: "🧂", temp: "❄️" }, { name: "pancakes", emoji: "🥞", style: "🍴", taste: "🍬", temp: "♨️" }, { name: "carrot", emoji: "🥕", style: "🖐️", taste: "🧂", temp: "❄️" }, { name: "donut", emoji: "🍩", style: "🖐️", taste: "🍬", temp: "❄️" }, { name: "chips", emoji: "🥔", style: "🖐️", taste: "🧂", temp: "❄️" }, { name: "cheese", emoji: "🧀", style: "🖐️", taste: "🧂", temp: "❄️" }, { name: "pear", emoji: "🍐", style: "🖐️", taste: "🍬", temp: "❄️" }, { name: "grapes", emoji: "🍇", style: "🖐️", taste: "🍬", temp: "❄️" }, { name: "pretzel", emoji: "🥨", style: "🖐️", taste: "🧂", temp: "❄️" }, { name: "hot dog", emoji: "🌭", style: "🖐️", taste: "🧂", temp: "♨️" }, { name: "corn", emoji: "🌽", style: "🖐️", taste: "🍬", temp: "♨️" }
                 ],
-                examples: ["Do you use your hands to eat it?", "Is it sweet?", "Is it hot?"],
+                examples: ["Is it eaten with your hands?", "Is it sweet?", "Is it hot?"],
                 vocab: [
                     { title: "Style", items: ["use hands 🖐️", "use fork/spoon 🍴"] }, { title: "Taste", items: ["sweet 🍬", "salty 🧂"] }, { title: "Temperature", items: ["hot ♨️", "cold ❄️"] }
                 ]
@@ -871,7 +889,7 @@
                 items: [
                     { name: "judo", emoji: "🥋", teamType: "👤", location: "🏠", gear: "🚫" }, { name: "swimming", emoji: "🏊", teamType: "👤", location: "🏠", gear: "🚫" }, { name: "gymnastics", emoji: "🤸", teamType: "👤", location: "🏠", gear: "🚫" }, { name: "table tennis", emoji: "🏓", teamType: "👤", location: "🏠", gear: "⚽" }, { name: "badminton", emoji: "🏸", teamType: "👤", location: "🏠", gear: "⚽" }, { name: "bowling", emoji: "🎳", teamType: "👤", location: "🏠", gear: "⚽" }, { name: "dance", emoji: "💃", teamType: "👥", location: "🏠", gear: "🚫" }, { name: "cheerleading", emoji: "📣", teamType: "👥", location: "🏠", gear: "🚫" }, { name: "basketball", emoji: "🏀", teamType: "👥", location: "🏠", gear: "⚽" }, { name: "volleyball", emoji: "🏐", teamType: "👥", location: "🏠", gear: "⚽" }, { name: "dodgeball", emoji: "🔴", teamType: "👥", location: "🏠", gear: "⚽" }, { name: "track", emoji: "🏃", teamType: "👤", location: "🌳", gear: "🚫" }, { name: "skiing", emoji: "⛷️", teamType: "👤", location: "🌳", gear: "🚫" }, { name: "surfing", emoji: "🏄", teamType: "👤", location: "🌳", gear: "🚫" }, { name: "tennis", emoji: "🎾", teamType: "👤", location: "🌳", gear: "⚽" }, { name: "relay race", emoji: "👟", teamType: "👥", location: "🌳", gear: "🚫" }, { name: "tug of war", emoji: "➰", teamType: "👥", location: "🌳", gear: "🚫" }, { name: "soccer", emoji: "⚽", teamType: "👥", location: "🌳", gear: "⚽" }, { name: "baseball", emoji: "⚾", teamType: "👥", location: "🌳", gear: "⚽" }, { name: "rugby", emoji: "🏉", teamType: "👥", location: "🌳", gear: "⚽" }
                 ],
-                examples: ["Is it a team sport?", "Do you play it outdoors?", "Do you use a ball or puck?"],
+                examples: ["Is it a team sport?", "Is it played outdoors?", "Does it use a ball or puck?"],
                 vocab: [
                     { title: "Players", items: ["individual sport 👤", "team sport 👥"] }, { title: "Location", items: ["indoor 🏠", "outdoor 🌳"] }, { title: "Gear", items: ["uses ball/puck ⚽", "no ball/puck 🚫"] }
                 ]
@@ -899,8 +917,8 @@
             const emojiToText = {"🥩": "meat-eater", "🌿": "plant-eater", "🖐️": "use hands", "🍴": "use fork/spoon", "🍬": "sweet", "🧂": "salty", "❄️": "cold", "♨️": "hot", "👤": "individual sport", "👥": "team sport", "🏠": "indoor", "🌳": "outdoor", "🚫": "no ball/puck", "⚽": "uses ball/puck"};
             let cleanVal = emojiToText[val] || String(val).trim();
             if (category === 'animals') { if (key === 'colorName') return `Is it ${cleanVal}?`; if (key === 'legs') return `Does it have ${cleanVal} legs?`; if (key === 'diet') return `Is it a ${cleanVal}?`; }
-            if (category === 'food') { if (key === 'style') return (cleanVal === 'use hands') ? 'Do you use your hands to eat it?' : 'Do you use a fork or spoon to eat it?'; if (key === 'taste') return `Is it ${cleanVal}?`; if (key === 'temp') return `Is it ${cleanVal}?`; }
-            if (category === 'sports') { if (key === 'teamType') return `Is it ${cleanVal.includes('individual') ? 'an' : 'a'} ${cleanVal}?`; if (key === 'location') return `Do you play it ${cleanVal === 'indoor' ? 'indoors' : 'outdoors'}?`; if (key === 'gear') return cleanVal.includes('no') ? `Do you play without a ball or puck?` : `Do you use a ball or puck?`; }
+            if (category === 'food') { if (key === 'style') return (cleanVal === 'use hands') ? 'Is it eaten with your hands?' : 'Is it eaten with a fork or spoon?'; if (key === 'taste') return `Is it ${cleanVal}?`; if (key === 'temp') return `Is it ${cleanVal}?`; }
+            if (category === 'sports') { if (key === 'teamType') return `Is it ${cleanVal.includes('individual') ? 'an' : 'a'} ${cleanVal}?`; if (key === 'location') return `Is it played ${cleanVal === 'indoor' ? 'indoors' : 'outdoors'}?`; if (key === 'gear') return cleanVal.includes('no') ? `Is it played without a ball or puck?` : `Does it use a ball or puck?`; }
             return `Is it ${cleanVal}?`;
         }
 
@@ -1185,7 +1203,6 @@
             }
             executeDrawCard();
         }
-        
         function executeDrawCard() { const items = gameData[currentCategory].items; const randomItem = items[Math.floor(Math.random() * items.length)]; document.getElementById('sc-emoji').innerText = randomItem.emoji; document.getElementById('sc-name').innerText = randomItem.name; }
         function confirmDrawCard() { playSound('select'); document.getElementById('draw-warning-modal').style.display = 'none'; executeDrawCard(); }
         function closeDrawWarningModal() { playSound('select'); document.getElementById('draw-warning-modal').style.display = 'none'; }
