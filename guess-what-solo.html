@@ -340,7 +340,7 @@
             <h1 class="menu-title">👤 Ultimate Guess What: Solo 👤</h1>
             <p style="font-size: 2vh; font-weight: 600; margin-bottom: 3vh;">Play against the bot! Can you guess the secret item?</p>
             <div class="menu-btn-container">
-                <button class="btn color-blue menu-btn" onclick="setSoloType('standard')">⭐ Standard</button>
+                <button class="btn color-blue menu-btn" onclick="setSoloType('standard')">⭐ Standard (5 Rounds)</button>
                 <button class="btn color-pink menu-btn" onclick="showScreen('solo-time-select')">⏱️ Time Attack</button>
                 <button class="btn color-orange menu-btn" onclick="setSoloType('endless')">♾️ Endless</button>
             </div>
@@ -535,19 +535,14 @@
                     <div class="label-text" style="font-size: 2vh; white-space: normal; overflow: visible;">Rounds Cleared</div>
                     <div class="guess-text" id="solo-results-rounds" style="color: #218c53; font-size: 5vh;">0</div>
                 </div>
-                <div class="info-box top-stat-box" style="border-color: #ff4757; width: 260px; padding: 2vh 2vw !important; height: auto;" id="solo-retries-box">
-                    <div class="label-text" style="font-size: 2vh; white-space: normal; overflow: visible;">Retries Used</div>
-                    <div class="guess-text" id="solo-results-retries" style="color: #ff4757; font-size: 5vh;">0</div>
-                </div>
             </div>
 
             <p id="solo-results-message" style="font-size: clamp(16px, 3vw, 2.5vh); line-height: 1.4; font-weight: bold; color: #2f3542; margin-bottom: 4vh;"></p>
             
             <div style="display: flex; justify-content: center; gap: 2vw; flex-wrap: wrap;">
                 <button class="btn color-green" id="solo-save-img-btn" style="font-size: 2vh; padding: 1.5vh 3vw;" onclick="downloadSoloScreenshot()">💾 Save Result</button>
-                <button class="btn color-orange" id="solo-retry-round-btn" style="font-size: 2vh; padding: 1.5vh 3vw;" onclick="retrySoloRound()">🔄 Retry Round</button>
-                <button class="btn color-orange" id="solo-play-again-btn" style="font-size: 2vh; padding: 1.5vh 3vw;" onclick="restartSoloGame()">🔄 Play Again</button>
-                <button class="btn color-blue" style="font-size: 2vh; padding: 1.5vh 3vw;" onclick="closeSoloResults()">🏠 Menu</button>
+                <button class="btn color-orange" style="font-size: 2vh; padding: 1.5vh 3vw;" onclick="restartSoloGame()">🔄 Retry</button>
+                <button class="btn color-blue" style="font-size: 2vh; padding: 1.5vh 3vw;" onclick="closeSoloResults()">🏠 Back to Menu</button>
             </div>
         </div>
     </div>
@@ -790,7 +785,6 @@
         let soloRound = 1;
         let soloRoundStats = []; 
         let soloRoundStartTime = 0;
-        let soloRetries = 0;
         let isBotThinking = false;
 
         // Utilities
@@ -836,7 +830,7 @@
             syncToggleUI();
             
             // Reset state
-            soloScore = 0; soloRound = 1; soloRoundStats = []; soloRetries = 0;
+            soloScore = 0; soloRound = 1; soloRoundStats = [];
             document.getElementById('solo-chat-log').innerHTML = '';
             clearInterval(soloTimerInterval);
             
@@ -1174,28 +1168,20 @@
 
         function endSoloGame(reason) {
             playSound(reason.includes('win') ? 'win' : 'timeup');
-            
-            if (reason !== 'loss') {
-                clearInterval(soloTimerInterval);
-            } else {
-                isTimerPaused = true;
-            }
+            clearInterval(soloTimerInterval);
             
             const modal = document.getElementById('solo-results-modal');
             const title = document.getElementById('solo-results-title');
             const msg = document.getElementById('solo-results-message');
             const sScore = document.getElementById('solo-results-score');
             const sRounds = document.getElementById('solo-results-rounds');
-            const sRetries = document.getElementById('solo-results-retries');
             const rContainer = document.getElementById('solo-rating-container');
             const rBadge = document.getElementById('solo-rating-badge');
             const saveBtn = document.getElementById('solo-save-img-btn');
-            const retryBtn = document.getElementById('solo-retry-round-btn');
-            const playAgainBtn = document.getElementById('solo-play-again-btn');
 
             sScore.innerText = soloScore || 0;
-            sRetries.innerText = soloRetries || 0;
             rContainer.style.display = 'none';
+            saveBtn.style.display = 'inline-block';
 
             if (reason === 'loss') {
                 title.innerText = "Game Over"; title.style.color = "#ff4757";
@@ -1203,10 +1189,6 @@
                 const correctName = soloSecretItem ? soloSecretItem.name : 'unknown';
                 msg.innerHTML = `The correct answer was <span style="font-size:3.5vh;">${correctEmoji}</span> <br/><b>${correctName}</b>.`;
                 sRounds.innerText = Math.max(0, soloRound - 1); 
-                
-                saveBtn.style.display = 'none';
-                retryBtn.style.display = 'inline-block';
-                playAgainBtn.style.display = 'none';
             } else if (reason === 'time-out') {
                 title.innerText = "Time's Up!"; title.style.color = "#ffa502";
                 msg.innerText = `You ran out of time! You completed ${soloRound - 1} full rounds.`;
@@ -1214,10 +1196,6 @@
                 rContainer.style.display = 'block';
                 const grade = calculateTimeAttackGrade(soloRound - 1);
                 applyGradeStyle(rBadge, grade);
-                
-                saveBtn.style.display = 'inline-block';
-                retryBtn.style.display = 'none';
-                playAgainBtn.style.display = 'inline-block';
             } else if (reason === 'win-standard') {
                 title.innerText = "Course Cleared!"; title.style.color = "#2ed573";
                 sRounds.innerText = 5;
@@ -1225,10 +1203,6 @@
                 rContainer.style.display = 'block';
                 const grade = calculateStandardGrade();
                 applyGradeStyle(rBadge, grade);
-                
-                saveBtn.style.display = 'inline-block';
-                retryBtn.style.display = 'none';
-                playAgainBtn.style.display = 'inline-block';
             }
 
             modal.style.display = 'flex';
@@ -1285,23 +1259,131 @@
             showScreen('main-menu');
         }
 
-        function retrySoloRound() {
-            playSound('change');
-            const modal = document.getElementById('solo-results-modal');
-            modal.style.display = 'none';
-            modal.classList.remove('force-show');
+        function downloadSoloScreenshot() {
+            playSound('select'); const card = document.getElementById('solo-results-card');
+            const btns = card.querySelectorAll('button'); btns.forEach(b => b.style.display = 'none');
             
-            soloScore -= 10;
-            soloRetries++;
-            updateSoloUI();
+            html2canvas(card, {
+                backgroundColor: isDarkMode ? '#2f3542' : '#ffffff',
+                scale: 2,
+                useCORS: true,
+                logging: false
+            }).then(canvas => {
+                const link = document.createElement('a');
+                const modeName = soloModeType.charAt(0).toUpperCase() + soloModeType.slice(1);
+                link.download = `GuessWhat-Solo-${modeName}Result.jpg`;
+                link.href = canvas.toDataURL('image/jpeg', 0.9);
+                link.click();
+                btns.forEach(b => b.style.display = 'inline-block');
+            });
+        }
+
+        // --- Render & Modals ---
+        function renderGrid() {
+            const container = document.getElementById('grid-container'); container.innerHTML = ''; 
+            const cat = gameData[currentCategory]; currentLayout = shuffleArray(cat.items);
+            currentLayout.forEach(item => {
+                const card = document.createElement('div'); card.className = 'card'; card.id = 'card-' + item.name;
+                card.onclick = (e) => handleCardClickEvent(e, item.name, card.id, false);
+                let traitsHTML = '';
+                cat.traits.forEach(trait => { 
+                    let val = item[trait.key], display = trait.type === 'color' ? `<div class="color-circle" style="${item.colorStyle}"></div>` : val; 
+                    traitsHTML += `<div class="trait-col" data-trait-key="${trait.key}" data-trait-val="${val}" title="${getTooltip(trait.key, val)}" onclick="handleTraitClick('${trait.key}', '${val}', event, 'card-${item.name}')"><div class="trait-value">${display}</div></div>`; 
+                });
+                card.innerHTML = `<div class="emoji">${item.emoji}</div><div class="item-name">${item.name}</div><div class="traits-row">${traitsHTML}</div>`;
+                container.appendChild(card);
+            });
+        }
+
+        function resetBoard() { 
+            document.querySelectorAll('.card').forEach(c => c.classList.remove('eliminated')); 
+            document.querySelectorAll('.trait-col').forEach(t => t.classList.remove('trait-disabled'));
+            document.body.classList.remove('last-guess-active');
+            clearInterval(soloTimerInterval); 
+        }
+
+        function openMobileCardModal(itemName) {
+            const gridCard = document.getElementById('card-' + itemName); if (gridCard && gridCard.classList.contains('eliminated')) return; playSound('select');
+            const cat = gameData[currentCategory]; const item = cat.items.find(i => i.name === itemName); const container = document.getElementById('mobile-modal-card-container'); let traitsHTML = '';
             
-            resetBoard();
-            renderGrid();
-            initSoloRound();
+            const isLastGuess = (soloMaxGuesses - soloGuessesUsed) <= 1;
             
-            if (soloModeType === 'time') {
-                isTimerPaused = false;
+            if (!isLastGuess) {
+                cat.traits.forEach(trait => { 
+                    let val = item[trait.key], display = trait.type === 'color' ? `<div class="color-circle" style="${item.colorStyle}"></div>` : val; 
+                    const gridTrait = gridCard.querySelector(`[data-trait-key="${trait.key}"]`);
+                    const isDisabled = gridTrait && gridTrait.classList.contains('trait-disabled') ? 'trait-disabled' : '';
+                    
+                    traitsHTML += `<div class="trait-col ${isDisabled}" data-trait-key="${trait.key}" data-trait-val="${val}" title="${getTooltip(trait.key, val)}" onclick="event.stopPropagation(); closeMobileCardModal(false); handleTraitClick('${trait.key}', '${val}', event, 'card-${item.name}')"><div class="trait-value">${display}</div></div>`; 
+                });
+            } else {
+                traitsHTML = `<div style="color:#ff4757; font-weight:bold; font-size:2.5vh; padding: 1.5vh; text-align: center; width: 100%;">⚠️ Last Guess! Pick this card?</div>`;
             }
+
+            container.innerHTML = `<div class="card" style="pointer-events: auto; width: 100%; height: 100%; aspect-ratio: 4/4.5; cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: space-evenly; margin: 0 auto;" onclick="handleCardClickEvent(event, '${item.name}', 'card-${item.name}', true)"><div class="emoji" style="font-size: 8vh; line-height: 1; display: block !important;">${item.emoji}</div><div class="item-name" style="font-size: 3vh; font-weight: bold; display: block !important;">${item.name}</div><div class="traits-row" style="display: flex !important; width: 100%; justify-content: space-around; flex-wrap: wrap;">${traitsHTML}</div></div>`;
+            document.getElementById('mobile-card-modal').style.display = 'flex';
+        }
+
+        function closeMobileCardModal(playSnd = true) { if (playSnd) playSound('select'); document.getElementById('mobile-card-modal').style.display = 'none'; }
+        
+        function openSettingsModal() { playSound('select'); document.getElementById('settings-modal').style.display = 'flex'; }
+        
+        function closeSettingsModal() { 
+            playSound('select'); 
+            document.getElementById('settings-modal').style.display = 'none'; 
+            resetCooldownButton('settings-restart-btn', '🔄 Restart Game', 'color-pink');
+        }
+
+        let cooldownTicks = {};
+        let revertTimeouts = {};
+
+        function initiateCooldownRestart(btnId, defaultText, originalColorClass) {
+            playSound('select');
+            const btn = document.getElementById(btnId);
+            
+            if (btn.dataset.state === 'ready') {
+                clearTimeout(revertTimeouts[btnId]);
+                resetCooldownButton(btnId, defaultText, originalColorClass);
+                restartSoloGame();
+                return;
+            }
+            
+            if (btn.dataset.state === 'cooldown') return; 
+            
+            btn.dataset.state = 'cooldown';
+            let count = 3;
+            
+            btn.classList.remove(originalColorClass);
+            btn.classList.add('color-grey');
+            btn.innerText = `Lose progress! (${count}s)`;
+            
+            cooldownTicks[btnId] = setInterval(() => {
+                count--;
+                if (count > 0) {
+                    btn.innerText = `Lose progress! (${count}s)`;
+                } else {
+                    clearInterval(cooldownTicks[btnId]);
+                    btn.classList.remove('color-grey');
+                    btn.classList.add('color-pink'); 
+                    btn.innerText = '⚠️ Confirm Restart';
+                    btn.dataset.state = 'ready';
+                    
+                    revertTimeouts[btnId] = setTimeout(() => {
+                        resetCooldownButton(btnId, defaultText, originalColorClass);
+                    }, 4000);
+                }
+            }, 1000);
+        }
+
+        function resetCooldownButton(btnId, defaultText, originalColorClass) {
+            const btn = document.getElementById(btnId);
+            if (!btn) return;
+            clearInterval(cooldownTicks[btnId]);
+            clearTimeout(revertTimeouts[btnId]);
+            btn.dataset.state = 'idle';
+            btn.innerText = defaultText;
+            btn.classList.remove('color-grey', 'color-pink');
+            btn.classList.add(originalColorClass);
         }
 
         function restartSoloGame() {
@@ -1314,7 +1396,6 @@
             soloScore = 0; 
             soloRound = 1; 
             soloRoundStats = [];
-            soloRetries = 0;
             isInGame = true;
             syncToggleUI();
             resetBoard(); 
@@ -1331,7 +1412,7 @@
 
         function returnToMainMenu() {
             playSound('select'); closeSettingsModal(); resetBoard(); closeAllDrawers();
-            soloScore = 0; soloRound = 1; soloRetries = 0; isInGame = false; syncToggleUI(); showScreen('main-menu');
+            soloScore = 0; soloRound = 1; isInGame = false; syncToggleUI(); showScreen('main-menu');
         }
 
         document.querySelectorAll('.modal-overlay').forEach(modal => {
