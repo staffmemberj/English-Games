@@ -218,7 +218,7 @@
         .secret-card-display { 
             background-color: white; border: 4px solid var(--card-border); border-radius: 30px;
             box-shadow: 0 8px 0 var(--card-shadow); display: flex; flex-direction: column; align-items: center; justify-content: center; 
-            width: 14vw; min-width: 120px; aspect-ratio: 4 / 4.5; margin: 0.5vh auto 1.5vh auto; 
+            width: 14vw; min-width: 120px; height: auto; padding: 2vh 1vw; margin: 0.5vh auto 1.5vh auto; 
             transition: all 0.3s var(--bounce); cursor: pointer;
         }
         .secret-card-display:hover { transform: scale(1.05) translateY(-4px) rotate(1deg); box-shadow: 0 12px 0 var(--card-shadow); border-color: var(--main-teal); }
@@ -228,6 +228,11 @@
 
         .sc-emoji { font-size: 7vh; line-height: 1; pointer-events: none; margin-bottom: 1vh; }
         .sc-name { font-size: 2.2vh; font-weight: bold; margin: 0; pointer-events: none; color: #2f3542; text-transform: lowercase; }
+
+        .sc-trait-pill {
+            background: #f1f2f6; color: #2f3542; padding: 0.5vh 1vw; border-radius: 12px;
+            font-size: 1.5vh; font-weight: 600; width: 100%; box-sizing: border-box; text-align: center;
+        }
 
         /* Two Player Score Controls */
         .score-controls { display: flex; gap: 0.5vw; margin-top: 1vh; margin-bottom: 0.5vh; justify-content: center; }
@@ -286,7 +291,7 @@
             width: 100% !important; height: auto !important; min-height: 0 !important;
             flex: 1 1 auto !important; box-sizing: border-box !important; align-content: stretch !important; overflow: visible !important;
         }
-        body.mobile-mode #grid-container .card { aspect-ratio: auto !important; height: 100% !important; min-height: 0 !important; width: 100% !important; justify-content: center; padding: 0; box-sizing: border-box !important; }
+        body.mobile-mode #grid-container .card { justify-content: center; padding: 0; box-sizing: border-box !important; }
         body.mobile-mode #grid-container .card .item-name,
         body.mobile-mode #grid-container .card .traits-row { display: none !important; }
         body.mobile-mode #grid-container .card .emoji { font-size: clamp(24px, 8vw, 5vh) !important; margin-bottom: 0; line-height: 1; display: flex; align-items: center; justify-content: center; height: 100%; }
@@ -341,11 +346,12 @@
         body.dark-mode { --bg-color: #1e272e; --main-teal: #00cec9; --card-border: #2f3542; --card-shadow: #111418; color: #f1f2f6; }
         body.dark-mode .full-screen-menu { background-color: #2f3542; }
         body.dark-mode .menu-box, body.dark-mode .modal-content { background-color: #2f3542; border-color: #111418; color: white;}
-        body.dark-mode .card, body.dark-mode .secret-card-display { background-color: #2f3542; color: white; }
+        body.dark-mode .card, body.dark-mode .secret-card-display { background-color: #2f3542; color: white; border-color: #111418; }
         body.dark-mode .card.eliminated { background-color: #1e272e; border-color: #111418; }
         body.dark-mode .info-box, body.dark-mode .score-row { background: #2f3542; border-color: #111418; box-shadow: 0 6px 0 #111418; }
         body.dark-mode .vocab-group-title { color: #f1f2f6; }
         body.dark-mode .vocab-group-list li { background: #1e272e; color: #f1f2f6; }
+        body.dark-mode .sc-trait-pill { background: #1e272e; color: #f1f2f6; }
         body.dark-mode .category-select { background-color: #2f3542; color: var(--main-teal); border-color: var(--main-teal); box-shadow: 0 4px 0 #111418;}
         body.dark-mode .card:not(.eliminated) .trait-col:hover { background-color: #1e272e; }
         
@@ -476,6 +482,7 @@
                         <div class="secret-card-display" id="secret-card" onclick="wiggleSecretCard();">
                             <div class="sc-emoji" id="sc-emoji">❓</div>
                             <div class="sc-name normal-case" id="sc-name">???</div>
+                            <div id="sc-traits" style="display: flex; flex-direction: column; width: 100%; gap: 0.5vh; margin-top: 1vh;"></div>
                         </div>
                         <button class="btn color-blue draw-btn" onclick="drawSecretCard(true); if(isMobileMode) toggleDrawer('close');">🃏 Draw New Card</button>
                         <div id="right-action-btns" style="display:flex; width:90%; gap:1vw; margin-bottom: 0; margin-top: 1.5vh;">
@@ -585,7 +592,7 @@
                         <button class="btn color-offwhite flex-expand-btn sound-toggle-btn" onclick="toggleSoundMode()"><span class="icon">🔊</span><span class="btn-text">Sound On</span></button>
                     </div>
                     <button class="btn color-teal" style="width: 100%; padding: 1.5vh; margin: 0;" onclick="executeSettingsReset()">🔄 Reset Board</button>
-                    <button class="btn color-pink" id="settings-restart-btn" data-state="idle" style="width: 100%; padding: 1.5vh; margin: 0;" onclick="initiateCooldownRestart('settings-restart-btn', '🔄 Restart Game', 'color-pink')">🔄 Restart Game</button>
+                    <button class="btn color-pink" id="settings-restart-btn" style="width: 100%; padding: 1.5vh; margin: 0;" onclick="executeSettingsReset()">🔄 Restart Game</button>
                     <button class="btn color-orange" style="width: 100%; padding: 1.5vh; margin: 0;" onclick="returnToMainMenu()">🏠 Main Menu</button>
                     <button class="btn color-grey undo-btn" style="width: 100%; padding: 1.5vh; margin: 0;" onclick="closeSettingsModal()">🔙 Back</button>
                 </div>
@@ -598,7 +605,7 @@
         function detectMobile() {
             return window.innerWidth < 768 || /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
         }
-        
+
         let isMobileMode = detectMobile(); 
         let isDarkMode = false; 
         let isSoundOn = true;
@@ -1203,7 +1210,30 @@
             }
             executeDrawCard();
         }
-        function executeDrawCard() { const items = gameData[currentCategory].items; const randomItem = items[Math.floor(Math.random() * items.length)]; document.getElementById('sc-emoji').innerText = randomItem.emoji; document.getElementById('sc-name').innerText = randomItem.name; }
+        
+        function executeDrawCard() { 
+            const cat = gameData[currentCategory];
+            const items = cat.items; 
+            const randomItem = items[Math.floor(Math.random() * items.length)]; 
+            document.getElementById('sc-emoji').innerText = randomItem.emoji; 
+            document.getElementById('sc-name').innerText = randomItem.name; 
+            
+            const traitsContainer = document.getElementById('sc-traits');
+            traitsContainer.innerHTML = '';
+            
+            cat.traits.forEach(trait => {
+                const firstVal = String(randomItem[trait.key]).split(',')[0].trim();
+                let text = getTooltip(trait.key, firstVal);
+                if (['diet', 'style', 'taste', 'temp', 'teamType', 'location', 'gear'].includes(trait.key)) {
+                    text += ' ' + firstVal;
+                }
+                const pill = document.createElement('div');
+                pill.className = 'sc-trait-pill normal-case';
+                pill.innerText = text;
+                traitsContainer.appendChild(pill);
+            });
+        }
+        
         function confirmDrawCard() { playSound('select'); document.getElementById('draw-warning-modal').style.display = 'none'; executeDrawCard(); }
         function closeDrawWarningModal() { playSound('select'); document.getElementById('draw-warning-modal').style.display = 'none'; }
 
@@ -1251,59 +1281,7 @@
         function closeMobileCardModal(playSnd = true) { if (playSnd) playSound('select'); document.getElementById('mobile-card-modal').style.display = 'none'; }
         
         function openSettingsModal() { playSound('select'); document.getElementById('settings-modal').style.display = 'flex'; }
-        function closeSettingsModal() { playSound('select'); document.getElementById('settings-modal').style.display = 'none'; resetCooldownButton('settings-restart-btn', '🔄 Restart Game', 'color-pink');}
-
-        let cooldownTicks = {};
-        let revertTimeouts = {};
-
-        function initiateCooldownRestart(btnId, defaultText, originalColorClass) {
-            playSound('select');
-            const btn = document.getElementById(btnId);
-            
-            if (btn.dataset.state === 'ready') {
-                clearTimeout(revertTimeouts[btnId]);
-                resetCooldownButton(btnId, defaultText, originalColorClass);
-                executeSettingsReset();
-                return;
-            }
-            
-            if (btn.dataset.state === 'cooldown') return; 
-            
-            btn.dataset.state = 'cooldown';
-            let count = 3;
-            
-            btn.classList.remove(originalColorClass);
-            btn.classList.add('color-grey');
-            btn.innerText = `Lose progress! (${count}s)`;
-            
-            cooldownTicks[btnId] = setInterval(() => {
-                count--;
-                if (count > 0) {
-                    btn.innerText = `Lose progress! (${count}s)`;
-                } else {
-                    clearInterval(cooldownTicks[btnId]);
-                    btn.classList.remove('color-grey');
-                    btn.classList.add('color-pink'); 
-                    btn.innerText = '⚠️ Confirm Restart';
-                    btn.dataset.state = 'ready';
-                    
-                    revertTimeouts[btnId] = setTimeout(() => {
-                        resetCooldownButton(btnId, defaultText, originalColorClass);
-                    }, 4000);
-                }
-            }, 1000);
-        }
-
-        function resetCooldownButton(btnId, defaultText, originalColorClass) {
-            const btn = document.getElementById(btnId);
-            if (!btn) return;
-            clearInterval(cooldownTicks[btnId]);
-            clearTimeout(revertTimeouts[btnId]);
-            btn.dataset.state = 'idle';
-            btn.innerText = defaultText;
-            btn.classList.remove('color-grey', 'color-pink');
-            btn.classList.add(originalColorClass);
-        }
+        function closeSettingsModal() { playSound('select'); document.getElementById('settings-modal').style.display = 'none'; }
 
         function executeSettingsReset() {
             playSound('change');
