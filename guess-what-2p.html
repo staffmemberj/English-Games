@@ -219,9 +219,14 @@
             background-color: white; border: 4px solid var(--card-border); border-radius: 30px;
             box-shadow: 0 8px 0 var(--card-shadow); display: flex; flex-direction: column; align-items: center; justify-content: center; 
             width: 14vw; min-width: 120px; height: auto; padding: 2vh 1vw; margin: 0.5vh auto 1.5vh auto; 
-            transition: all 0.3s var(--bounce); cursor: pointer;
+            transition: all 0.3s var(--bounce); cursor: pointer; position: relative;
         }
         .secret-card-display:hover { transform: scale(1.05) translateY(-4px) rotate(1deg); box-shadow: 0 12px 0 var(--card-shadow); border-color: var(--main-teal); }
+
+        .sc-front-content { display: flex; flex-direction: column; width: 100%; align-items: center; transition: opacity 0s; }
+        .sc-back-content { position: absolute; top: 0; left: 0; right: 0; bottom: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0s; }
+        .secret-card-display.flipped .sc-front-content { opacity: 0; pointer-events: none; }
+        .secret-card-display.flipped .sc-back-content { opacity: 1; pointer-events: auto; }
 
         @keyframes wiggleCard { 0%, 100% { transform: scale(1.05) translateY(-4px) rotate(1deg); } 25% { transform: scale(1.05) translateY(-4px) rotate(-6deg); } 75% { transform: scale(1.05) translateY(-4px) rotate(8deg); } }
         .secret-card-display.wiggle { animation: wiggleCard 0.4s ease-in-out; }
@@ -301,6 +306,7 @@
         body.mobile-mode .sc-emoji { font-size: 10vh !important; margin-bottom: 1.5vh !important; }
         body.mobile-mode .sc-name { font-size: 3vh !important; margin-bottom: 1vh !important; }
         body.mobile-mode .sc-trait-pill { font-size: 1.8vh !important; padding: 1vh 2vw !important; }
+        body.mobile-mode .sc-back-content div { font-size: 14vh !important; }
 
         /* Mobile Top Stats Shrink */
         body.mobile-mode .stat-wrapper { min-width: 0 !important; width: auto !important; flex: 1 1 0 !important; padding: 0 !important; margin: 0 !important; }
@@ -430,7 +436,6 @@
                 </select>
                 <div id="top-right-controls">
                     <button class="btn color-offwhite icon-only" id="settings-btn" onclick="openSettingsModal()" title="Settings">⚙️</button>
-                    <button class="btn color-offwhite icon-only toggle-panel-btn" id="toggle-panel-btn" style="display:none;" onclick="toggleRightPanel()" title="Toggle Right Panel">🙈</button>
                 </div>
             </div>
             
@@ -485,10 +490,15 @@
                     <!-- 1-on-1 Sidebar Container -->
                     <div id="twop-secret-card-container">
                         <div class="sidebar-title">Your Secret Card</div>
-                        <div class="secret-card-display" id="secret-card" onclick="wiggleSecretCard();">
-                            <div class="sc-emoji" id="sc-emoji">❓</div>
-                            <div class="sc-name normal-case" id="sc-name">???</div>
-                            <div id="sc-traits" style="display: flex; flex-direction: column; width: 100%; gap: 0.5vh; margin-top: 1vh;"></div>
+                        <div class="secret-card-display" id="secret-card" onclick="handleSecretCardClick(this);">
+                            <div class="sc-front-content">
+                                <div class="sc-emoji" id="sc-emoji">❓</div>
+                                <div class="sc-name normal-case" id="sc-name">???</div>
+                                <div id="sc-traits" style="display: flex; flex-direction: column; width: 100%; gap: 0.5vh; margin-top: 1vh;"></div>
+                            </div>
+                            <div class="sc-back-content">
+                                <div style="font-size: 8vh; margin: 0;">🤫</div>
+                            </div>
                         </div>
                         <button class="btn color-blue draw-btn" onclick="drawSecretCard(true); if(isMobileMode) toggleDrawer('close');">🃏 Draw New Card</button>
                         <div id="right-action-btns" style="display:flex; width:90%; gap:1vw; margin-bottom: 0; margin-top: 1.5vh;">
@@ -917,7 +927,6 @@
         let actionHistory = [];
         let p1Score = 0; 
         let p2Score = 0; 
-        let isRightPanelVisible = true;
         let pendingAction = {};
 
         // Utilities
@@ -1022,14 +1031,8 @@
                 
                 document.getElementById('mobile-drawer-overlay').style.display = 'none';
                 document.getElementById('pc-notes-overlay').style.display = 'none';
-                document.getElementById('toggle-panel-btn').style.display = 'flex'; 
                 if (rightActionBtns) rightActionBtns.style.display = 'flex'; 
             }
-        }
-
-        function toggleRightPanel() {
-            playSound('select'); const rp = document.getElementById('right-panel'), lp = document.getElementById('left-panel'), btn = document.getElementById('toggle-panel-btn');
-            isRightPanelVisible = !isRightPanelVisible; rp.style.display = isRightPanelVisible ? 'flex' : 'none'; lp.style.borderRight = isRightPanelVisible ? '6px dashed rgba(0,0,0,0.1)' : 'none'; btn.innerText = isRightPanelVisible ? '🙈' : '👁️';
         }
 
         function changeCategory() {
@@ -1192,7 +1195,28 @@
         
         function closeTwoPlayerVictory() { playSound('select'); document.getElementById('two-player-victory-modal').style.display = 'none'; resetBoard(); renderGrid(); executeDrawCard(); }
         
-        function wiggleSecretCard() { const sc = document.getElementById('secret-card'); sc.classList.remove('wiggle'); void sc.offsetWidth; sc.classList.add('wiggle'); }
+        function handleSecretCardClick(card) {
+            playSound('change');
+            if (isMobileMode) {
+                card.classList.remove('wiggle'); 
+                void card.offsetWidth; 
+                card.classList.add('wiggle');
+            }
+            
+            card.style.transition = 'transform 0.15s ease-in';
+            card.style.transform = 'scaleX(0)';
+            
+            setTimeout(() => {
+                card.classList.toggle('flipped');
+                card.style.transition = 'transform 0.15s ease-out';
+                card.style.transform = 'scaleX(1)';
+                
+                setTimeout(() => {
+                    card.style.transition = '';
+                    card.style.transform = '';
+                }, 150);
+            }, 150);
+        }
         
         function undoLastAction() {
             playSound('change'); if (actionHistory.length === 0) return; const last = actionHistory.pop();
@@ -1218,6 +1242,9 @@
         }
         
         function executeDrawCard() { 
+            const card = document.getElementById('secret-card');
+            card.classList.remove('flipped');
+            
             const cat = gameData[currentCategory];
             const items = cat.items; 
             const randomItem = items[Math.floor(Math.random() * items.length)]; 
