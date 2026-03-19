@@ -281,7 +281,6 @@
                 </select>
                 <div id="top-right-controls">
                     <button class="btn color-offwhite icon-only" id="settings-btn" onclick="openSettingsModal()" title="Settings">⚙️</button>
-                    <button class="btn color-offwhite icon-only toggle-panel-btn" id="toggle-panel-btn" onclick="toggleRightPanel()" title="Toggle Right Panel">🙈</button>
                 </div>
             </div>
             
@@ -508,7 +507,10 @@
         document.addEventListener('fullscreenchange', () => {
             const isFS = document.fullscreenElement;
             if (!isFS) {
-                try { window.resizeTo(preFullW, preFullH); } catch(e) {}
+                // Add a small delay so the browser finishes exiting fullscreen before we attempt to resize it
+                setTimeout(() => {
+                    try { window.resizeTo(preFullW, preFullH); } catch(e) { console.log("Resize blocked by browser"); }
+                }, 100);
             }
             document.querySelectorAll('.fullscreen-toggle-btn').forEach(btn => {
                 const i = btn.querySelector('.icon'), t = btn.querySelector('.btn-text');
@@ -616,12 +618,6 @@
             
             document.getElementById('sidebar-content-container').classList.remove('open'); 
             document.getElementById('pc-notes-overlay').style.display = 'none';
-            document.getElementById('toggle-panel-btn').style.display = 'flex'; 
-        }
-
-        function toggleRightPanel() {
-            playSound('select'); const rp = document.getElementById('right-panel'), lp = document.getElementById('left-panel'), btn = document.getElementById('toggle-panel-btn');
-            isRightPanelVisible = !isRightPanelVisible; rp.style.display = isRightPanelVisible ? 'flex' : 'none'; lp.style.borderRight = isRightPanelVisible ? '6px dashed rgba(0,0,0,0.1)' : 'none'; btn.innerText = isRightPanelVisible ? '🙈' : '👁️';
         }
 
         function changeCategory() {

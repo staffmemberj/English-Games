@@ -682,9 +682,10 @@
         document.addEventListener('fullscreenchange', () => {
             const isFS = document.fullscreenElement;
             if (!isFS) {
-                try {
-                    window.resizeTo(preFullW, preFullH);
-                } catch(e) { console.log("Resize natively blocked by browser tab rules."); }
+                // Add a small delay so the browser finishes exiting fullscreen before we attempt to resize it
+                setTimeout(() => {
+                    try { window.resizeTo(preFullW, preFullH); } catch(e) { console.log("Resize blocked by browser"); }
+                }, 100);
             }
             document.querySelectorAll('.fullscreen-toggle-btn').forEach(btn => {
                 const i = btn.querySelector('.icon'), t = btn.querySelector('.btn-text');
