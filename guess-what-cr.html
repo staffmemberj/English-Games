@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ultimate Guess What - Classroom</title>
+    <title>Guess What - Classroom</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&display=swap');
 
@@ -122,11 +122,11 @@
         #team-leaderboard-container { display: flex; flex-direction: row; align-items: center; flex: 1; flex-wrap: wrap; justify-content: center; gap: 0.5vw; padding-bottom: 0; overflow: hidden; }
         
         .info-box, .dice-display { background: white; border-radius: 20px; box-shadow: 0 6px 0 rgba(0,0,0,0.1); border: 4px solid #f1f2f6; transition: background-color 0.3s, border-color 0.3s; }
-        .info-box { padding: 0.5vh 1vw; flex: 1 1 auto; max-width: 140px; min-width: 80px; }
+        .info-box { padding: 1vh 2vw; flex: 1 1 auto; max-width: 250px; min-width: 140px; display: flex; flex-direction: column; align-items: center; justify-content: center; }
         .guess-box { border-color: #70a1ff; }
-        .label-text { font-weight: bold; color: var(--main-teal); font-size: 1.5vh; text-transform: uppercase; line-height: 1; margin-bottom: 0.5vh; }
-        .guess-text { font-size: 4vh; color: #1e90ff; font-weight: bold; line-height: 1;}
-        .point-text { font-size: 2.8vh; color: #ff4757; font-weight: bold; margin: 0.2vh 0; line-height: 1; }
+        .label-text { font-weight: bold; color: var(--main-teal); font-size: 1.5vh; text-transform: uppercase; line-height: 1; margin-bottom: 0.5vh; text-align: center; }
+        .guess-text { font-size: 4vh; color: #1e90ff; font-weight: bold; line-height: 1; text-align: center; }
+        .point-text { font-size: 2.8vh; color: #ff4757; font-weight: bold; margin: 0.2vh 0; line-height: 1; text-align: center; }
         
         .bonus-btn { background-color: #fff200; color: #e58e26; border: 3px solid #fbc531; box-shadow: 0 4px 0 #e1b12c; border-radius: 20px; padding: 0.2vh 0.5vw; font-size: 1.3vh; font-weight: bold; cursor: pointer; width: 100%; transition: all 0.3s var(--bounce); }
         .bonus-btn:active { transform: translateY(4px); box-shadow: 0 0 0 #e1b12c; }
@@ -188,7 +188,7 @@
 
         /* Modals */
         .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); backdrop-filter: blur(5px); z-index: 2000; justify-content: center; align-items: center; overflow: hidden; }
-        .modal-content { background: white; padding: 3vh 4vw; width: 45vw; max-height: 95vh; overflow: hidden; text-align: center; border-radius: 40px; border: 6px solid #ffffff; box-shadow: 0 15px 0 rgba(0,0,0,0.15); display: flex; flex-direction: column; align-items: center; justify-content: center; box-sizing: border-box; }
+        .modal-content { background: white; padding: 5vh 5vw; width: fit-content; min-width: 50vw; max-width: 90vw; max-height: 95vh; overflow: hidden; text-align: center; border-radius: 40px; border: 6px solid #ffffff; box-shadow: 0 15px 0 rgba(0,0,0,0.15); display: flex; flex-direction: column; align-items: center; justify-content: center; box-sizing: border-box; }
         
         #team-award-list { display: flex; flex-wrap: wrap; justify-content: center; gap: 1vw; width: 100%; }
         .team-award-btn { display: block; flex: 1 1 30%; margin: 0; padding: 2vh 1vw; font-size: 2.2vh; box-sizing: border-box;}
@@ -366,43 +366,43 @@
     </div>
 
     <div id="trait-choice-modal" class="modal-overlay">
-        <div class="modal-content" style="max-width: 600px; width: 85%;">
+        <div class="modal-content">
             <h2 style="color: var(--main-teal); font-size: clamp(24px, 5vw, 4vh); margin:0;">Which characteristic?</h2>
             <div id="trait-btn-container" style="display: flex; justify-content: center; gap: 2vw; margin-top: 3vh; flex-wrap: wrap;"></div>
-            <button class="btn color-grey undo-btn" style="margin-top: 3vh; width: 50%;" onclick="closeTraitModal()">Cancel</button>
+            <button class="btn color-grey undo-btn" style="margin-top: 3vh; width: 50%; min-width: 150px;" onclick="closeTraitModal()">Cancel</button>
         </div>
     </div>
 
     <div id="trait-question-modal" class="modal-overlay">
-        <div class="modal-content" style="max-width: 650px; width: 90%;">
+        <div class="modal-content">
             <h2 id="trait-question-header" class="normal-case" style="color: var(--main-teal); margin: 0; font-size: clamp(24px, 5vw, 4vh);">Ask the teacher:</h2>
-            <p id="trait-question-text" class="normal-case" style="font-size: clamp(24px, 6vw, 4vh); color: #1e90ff; font-weight: bold; margin: 3vh 0; line-height: 1.2;"></p>
+            <p id="trait-question-text" class="normal-case" style="font-size: clamp(24px, 6vw, 4vh); color: #1e90ff; font-weight: bold; margin: 3vh 0; line-height: 1.2; padding: 0 2vw;"></p>
             <div style="display: flex; justify-content: center; gap: 2vw; flex-wrap: wrap;">
                 <button class="btn color-green normal-case" id="trait-yes-btn" style="font-size: clamp(16px, 4vw, 2.5vh); padding: 2vh 4vw;" onclick="answerTraitQuestion(true)">👍 Yes</button>
                 <button class="btn color-pink normal-case" id="trait-no-btn" style="font-size: clamp(16px, 4vw, 2.5vh); padding: 2vh 4vw;" onclick="answerTraitQuestion(false)">👎 No</button>
             </div>
-            <button class="btn color-grey undo-btn" style="margin-top: 3vh; width: 50%;" onclick="closeTraitQuestionModal()">Cancel</button>
+            <button class="btn color-grey undo-btn" style="margin-top: 3vh; width: 50%; min-width: 150px;" onclick="closeTraitQuestionModal()">Cancel</button>
         </div>
     </div>
     
     <div id="verify-answer-modal" class="modal-overlay">
-        <div class="modal-content" style="max-width: 650px; width: 90%;">
+        <div class="modal-content">
             <h2 id="verify-question-header" class="normal-case" style="color: var(--main-teal); margin: 0; font-size: clamp(24px, 5vw, 4vh);">Ask the teacher:</h2>
-            <p id="verify-question-text" class="normal-case" style="font-size: clamp(24px, 6vw, 4vh); color: #1e90ff; font-weight: bold; margin: 3vh 0; line-height: 1.2;"></p>
+            <p id="verify-question-text" class="normal-case" style="font-size: clamp(24px, 6vw, 4vh); color: #1e90ff; font-weight: bold; margin: 3vh 0; line-height: 1.2; padding: 0 2vw;"></p>
             <div style="display: flex; justify-content: center; gap: 2vw; flex-wrap: wrap;">
                 <button class="btn color-green normal-case" id="verify-yes-btn" style="font-size: clamp(16px, 4vw, 2.5vh); padding: 2vh 4vw;" onclick="verifySuccess()">👍 Yes</button>
                 <button class="btn color-pink normal-case" id="verify-no-btn" style="font-size: clamp(16px, 4vw, 2.5vh); padding: 2vh 4vw;" onclick="verifyNo()">👎 No</button>
             </div>
-            <button class="btn color-grey undo-btn" style="margin-top: 3vh; width: 50%;" onclick="closeVerifyModal()">Cancel</button>
+            <button class="btn color-grey undo-btn" style="margin-top: 3vh; width: 50%; min-width: 150px;" onclick="closeVerifyModal()">Cancel</button>
         </div>
     </div>
 
     <!-- Victory Point Award Modal -->
     <div id="victory-modal" class="modal-overlay">
-        <div class="modal-content" style="max-width: 600px; width: 85%;">
+        <div class="modal-content">
             <h2 id="modal-points-title" style="color: var(--main-teal); font-size: clamp(28px, 6vw, 4vh); margin:0;">Award points to:</h2>
             <div id="team-award-list" style="margin-top: 2vh;"></div>
-            <button class="btn color-grey undo-btn" style="margin-top: 2vh; width: 50%;" onclick="closeVictoryModal()">Cancel</button>
+            <button class="btn color-grey undo-btn" style="margin-top: 2vh; width: 50%; min-width: 150px;" onclick="closeVictoryModal()">Cancel</button>
         </div>
     </div>
     
