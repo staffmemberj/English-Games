@@ -837,6 +837,8 @@
         let soloRoundStartTime = 0;
         let soloRetries = 0;
         let isBotThinking = false;
+        let hasStartedRoundTimer = false;
+        let wasTimerPausedBySettings = false;
 
         // --- SOLO MODE SETUP ---
         function setSoloType(type, time = 0) {
@@ -878,6 +880,7 @@
                 document.getElementById('solo-time-wrapper').style.display = 'flex';
                 soloTimeRemaining = soloTimeLimit;
                 updateSoloGlobalTimer();
+                isTimerPaused = true;
                 soloTimerInterval = setInterval(handleSoloGlobalTimer, 1000);
             } else if (soloModeType === 'endless') {
                 document.getElementById('solo-round-wrapper').style.display = 'flex';
@@ -921,7 +924,12 @@
         // --- CORE GAME LOOP ---
         function initSoloRound() {
             soloGuessesUsed = 0; isBotThinking = false;
-            isTimerPaused = false;
+            hasStartedRoundTimer = false;
+            if (soloModeType === 'time') {
+                isTimerPaused = true;
+            } else {
+                isTimerPaused = false;
+            }
             document.body.classList.remove('last-guess-active');
             document.getElementById('solo-chat-log').innerHTML = '';
             
@@ -951,9 +959,9 @@
         }
 
         function updateSoloUI() {
-            let left = soloMaxGuesses - soloGuessesUsed;
-            document.getElementById('solo-guesses-left').innerText = left;
-            document.getElementById('top-solo-guesses').innerText = left;
+            let leftText = soloModeType === 'time' ? '∞' : Math.max(0, soloMaxGuesses - soloGuessesUsed);
+            document.getElementById('solo-guesses-left').innerText = leftText;
+            document.getElementById('top-solo-guesses').innerText = leftText;
             document.getElementById('top-solo-score').innerText = soloScore;
             
             if (soloModeType === 'standard') { document.getElementById('top-solo-round').innerText = `${soloRound}/5`; } 
@@ -983,6 +991,19 @@
         }
 
         function checkLastGuessState() {
+            if (soloModeType === 'time') {
+                if (isMobileMode) {
+                    setTimeout(() => { 
+                        hideChatOverlay(); 
+                        isBotThinking = false; 
+                        isTimerPaused = false;
+                    }, 1500);
+                } else {
+                    isBotThinking = false;
+                }
+                return;
+            }
+
             let left = soloMaxGuesses - soloGuessesUsed;
             if (left === 1) {
                 document.body.classList.add('last-guess-active');
@@ -998,7 +1019,10 @@
                 }
             } else {
                 if (isMobileMode) {
-                    setTimeout(() => { hideChatOverlay(); isBotThinking = false; }, 1500);
+                    setTimeout(() => { 
+                        hideChatOverlay(); 
+                        isBotThinking = false; 
+                    }, 1500);
                 } else {
                     isBotThinking = false;
                 }
@@ -1031,9 +1055,14 @@
             if (e.target.closest('.trait-col')) return; // Ignore clicks directly on trait icons
             if (isBotThinking) return;
 
+            if (soloModeType === 'time' && !hasStartedRoundTimer) {
+                hasStartedRoundTimer = true;
+                isTimerPaused = false;
+            }
+
             const card = e.target.closest('.card');
             const rect = card.getBoundingClientRect();
-            const isLastGuess = (soloMaxGuesses - soloGuessesUsed) <= 1;
+            const isLastGuess = soloModeType !== 'time' && (soloMaxGuesses - soloGuessesUsed) <= 1;
 
             // Auto-snap to closest trait if clicked on the bottom part (and not forced to guess)
             const shouldSnapToTrait = (!isMobileMode || isModalCard) && !isLastGuess;
@@ -1083,7 +1112,7 @@
                     if (isMobileMode) appendChatOverlay(`🤖: ${botReply}`, 'chat-bot-no');
                     updateSoloUI();
                     
-                    if (soloGuessesUsed >= soloMaxGuesses) { 
+                    if (soloModeType !== 'time' && soloGuessesUsed >= soloMaxGuesses) { 
                         setTimeout(() => { 
                             if (isMobileMode) hideChatOverlay();
                             isBotThinking = false;
@@ -1102,7 +1131,12 @@
             const c = document.getElementById(cardId); 
             if (c.classList.contains('eliminated') || isBotThinking) return;
             
-            if ((soloMaxGuesses - soloGuessesUsed) <= 1) {
+            if (soloModeType === 'time' && !hasStartedRoundTimer) {
+                hasStartedRoundTimer = true;
+                isTimerPaused = false;
+            }
+            
+            if (soloModeType !== 'time' && (soloMaxGuesses - soloGuessesUsed) <= 1) {
                 playSound('no');
                 addSoloChat("⚠️ Last guess! You must pick a card!", 'chat-sys');
                 if (isMobileMode) {
@@ -1141,7 +1175,7 @@
         function closeTraitModal() { playSound('select'); document.getElementById('trait-choice-modal').style.display = 'none'; }
 
         function askTraitQuestion(traitKey, targetValue) {
-            if ((soloMaxGuesses - soloGuessesUsed) <= 1) return; // double check guard
+            if (soloModeType !== 'time' && (soloMaxGuesses - soloGuessesUsed) <= 1) return; // double check guard
             
             const qText = getQuestionText(traitKey, targetValue, currentCategory); 
             const hasTrait = String(soloSecretItem[traitKey]).split(',').map(s=>s.trim()).includes(String(targetValue).trim());
@@ -1175,7 +1209,7 @@
             playSound('win');
             isTimerPaused = true;
             const timeTaken = (Date.now() - soloRoundStartTime) / 1000;
-            const pointsEarned = 10 + ((soloMaxGuesses - soloGuessesUsed) * 10);
+            const pointsEarned = 10 + (Math.max(0, soloMaxGuesses - soloGuessesUsed) * 10);
             soloScore += pointsEarned;
             
             soloRoundStats.push({ timeTaken: timeTaken, guessesUsed: soloGuessesUsed });
@@ -1218,10 +1252,12 @@
             const saveBtn = document.getElementById('solo-save-img-btn');
             const retryBtn = document.getElementById('solo-retry-round-btn');
             const playAgainBtn = document.getElementById('solo-play-again-btn');
+            const sRetriesBox = document.getElementById('solo-retries-box');
 
             sScore.innerText = soloScore || 0;
             sRetries.innerText = soloRetries || 0;
             rContainer.style.display = 'none';
+            sRetriesBox.style.display = (soloModeType === 'standard') ? 'flex' : 'none';
 
             if (reason === 'loss') {
                 title.innerText = "Game Over"; title.style.color = "#ff4757";
@@ -1230,9 +1266,15 @@
                 msg.innerHTML = `The correct answer was <span style="font-size:3.5vh;">${correctEmoji}</span> <br/><b>${correctName}</b>.`;
                 sRounds.innerText = Math.max(0, soloRound - 1); 
                 
-                saveBtn.style.display = 'none';
-                retryBtn.style.display = 'inline-block';
-                playAgainBtn.style.display = 'none';
+                if (soloModeType === 'standard') {
+                    saveBtn.style.display = 'none';
+                    retryBtn.style.display = 'inline-block';
+                    playAgainBtn.style.display = 'none';
+                } else {
+                    saveBtn.style.display = 'inline-block';
+                    retryBtn.style.display = 'none';
+                    playAgainBtn.style.display = 'inline-block';
+                }
             } else if (reason === 'time-out') {
                 title.innerText = "Time's Up!"; title.style.color = "#ffa502";
                 msg.innerText = `You ran out of time! You completed ${soloRound - 1} full rounds.`;
@@ -1307,6 +1349,7 @@
             const modal = document.getElementById('solo-results-modal');
             modal.style.display = 'none';
             modal.classList.remove('force-show');
+            clearInterval(soloTimerInterval);
             resetBoard(); 
             showScreen('main-menu');
         }
@@ -1324,10 +1367,6 @@
             resetBoard();
             renderGrid();
             initSoloRound();
-            
-            if (soloModeType === 'time') {
-                isTimerPaused = false;
-            }
         }
 
         function restartSoloGame() {
@@ -1336,6 +1375,8 @@
             const modal = document.getElementById('solo-results-modal');
             modal.style.display = 'none';
             modal.classList.remove('force-show');
+
+            clearInterval(soloTimerInterval);
 
             soloScore = 0; 
             soloRound = 1; 
@@ -1348,6 +1389,7 @@
             if (soloModeType === 'time') {
                 soloTimeRemaining = soloTimeLimit;
                 updateSoloGlobalTimer();
+                isTimerPaused = true;
                 soloTimerInterval = setInterval(handleSoloGlobalTimer, 1000);
             }
             
@@ -1356,7 +1398,7 @@
         }
 
         function returnToMainMenu() {
-            playSound('select'); closeSettingsModal(); resetBoard(); closeAllDrawers();
+            playSound('select'); closeSettingsModal(); clearInterval(soloTimerInterval); resetBoard(); closeAllDrawers();
             soloScore = 0; soloRound = 1; soloRetries = 0; isInGame = false; syncToggleUI(); showScreen('main-menu');
         }
 
@@ -1402,14 +1444,13 @@
             document.querySelectorAll('.card').forEach(c => c.classList.remove('eliminated')); 
             document.querySelectorAll('.trait-col').forEach(t => t.classList.remove('trait-disabled'));
             document.body.classList.remove('last-guess-active');
-            clearInterval(soloTimerInterval); 
         }
 
         function openMobileCardModal(itemName) {
             const gridCard = document.getElementById('card-' + itemName); if (gridCard && gridCard.classList.contains('eliminated')) return; playSound('select');
             const cat = gameData[currentCategory]; const item = cat.items.find(i => i.name === itemName); const container = document.getElementById('mobile-modal-card-container'); let traitsHTML = '';
             
-            const isLastGuess = (soloMaxGuesses - soloGuessesUsed) <= 1;
+            const isLastGuess = soloModeType !== 'time' && (soloMaxGuesses - soloGuessesUsed) <= 1;
             
             if (!isLastGuess) {
                 cat.traits.forEach(trait => { 
@@ -1429,8 +1470,23 @@
 
         function closeMobileCardModal(playSnd = true) { if (playSnd) playSound('select'); document.getElementById('mobile-card-modal').style.display = 'none'; }
         
-        function openSettingsModal() { playSound('select'); document.getElementById('settings-modal').style.display = 'flex'; }
-        function closeSettingsModal() { playSound('select'); document.getElementById('settings-modal').style.display = 'none'; resetCooldownButton('settings-restart-btn', '🔄 Restart Game', 'color-pink');}
+        function openSettingsModal() { 
+            playSound('select'); 
+            document.getElementById('settings-modal').style.display = 'flex'; 
+            if (soloModeType === 'time' && hasStartedRoundTimer && !isTimerPaused) {
+                isTimerPaused = true;
+                wasTimerPausedBySettings = true;
+            }
+        }
+        function closeSettingsModal() { 
+            playSound('select'); 
+            document.getElementById('settings-modal').style.display = 'none'; 
+            resetCooldownButton('settings-restart-btn', '🔄 Restart Game', 'color-pink');
+            if (wasTimerPausedBySettings) {
+                isTimerPaused = false;
+                wasTimerPausedBySettings = false;
+            }
+        }
 
         let cooldownTicks = {};
         let revertTimeouts = {};
